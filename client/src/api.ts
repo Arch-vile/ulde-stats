@@ -2,13 +2,21 @@ import type { Event, GameMeta } from './types'
 
 const BASE = '/api'
 
-export async function createGame(opponent: string, date: string): Promise<{ gameId: string }> {
+export async function createGame(meta: Omit<GameMeta, 'id' | 'roster'>): Promise<{ gameId: string }> {
   const res = await fetch(`${BASE}/games`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ opponent, date }),
+    body: JSON.stringify(meta),
   })
   return res.json() as Promise<{ gameId: string }>
+}
+
+export async function updateGameMeta(gameId: string, patch: Partial<Omit<GameMeta, 'id'>>): Promise<void> {
+  await fetch(`${BASE}/games/${gameId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(patch),
+  })
 }
 
 export async function listGames(): Promise<GameMeta[]> {

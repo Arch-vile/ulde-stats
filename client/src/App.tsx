@@ -9,7 +9,9 @@ import './App.css'
 
 interface GameContext {
   gameId: string
+  teamName: string
   opponent: string
+  tournament: string
   date: string
   players: string[]
   initialTimestamp: number
@@ -20,8 +22,8 @@ export default function App() {
   const [phase, setPhase] = useState<AppPhase>('idle')
   const [ctx, setCtx] = useState<GameContext | null>(null)
 
-  const handleGameCreated = (gameId: string, opponent: string, date: string) => {
-    setCtx({ gameId, opponent, date, players: [], initialTimestamp: 0 })
+  const handleGameCreated = (gameId: string, meta: Omit<GameMeta, 'id' | 'roster'>) => {
+    setCtx({ gameId, ...meta, players: [], initialTimestamp: 0 })
     setPhase('playerSetup')
   }
 
@@ -33,9 +35,11 @@ export default function App() {
   const handleOpenGame = (_gameId: string, meta: GameMeta, events: Event[]) => {
     setCtx({
       gameId: meta.id,
+      teamName: meta.teamName,
       opponent: meta.opponent,
+      tournament: meta.tournament,
       date: meta.date,
-      players: [],
+      players: meta.roster,
       initialTimestamp: events.length > 0 ? events[events.length - 1].timestamp : 0,
       existingEvents: events,
     })

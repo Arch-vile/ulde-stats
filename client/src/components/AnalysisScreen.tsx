@@ -112,7 +112,10 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
                 onChange={() => toggleGame(g.id)}
               />
               <span className="game-item-date">{g.date}</span>
-              <span className="game-item-opponent">{g.opponent}</span>
+              <span className="game-item-opponent">
+                {g.teamName ? `${g.teamName} vs ` : ''}{g.opponent}
+                {g.tournament ? ` · ${g.tournament}` : ''}
+              </span>
             </label>
           ))}
           {games.length === 0 && <p className="muted">No games recorded yet.</p>}

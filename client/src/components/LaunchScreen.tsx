@@ -27,15 +27,9 @@ export function LaunchScreen({ onNewGame, onOpenGame, onAnalysis }: LaunchScreen
     <div className="launch-screen">
       <h1>ulde stats</h1>
       <div className="launch-buttons">
-        <button className="btn-primary btn-large" onClick={onNewGame}>
-          New Game
-        </button>
-        <button className="btn-secondary btn-large" onClick={() => setShowList(true)}>
-          Open Existing
-        </button>
-        <button className="btn-secondary btn-large" onClick={onAnalysis}>
-          Analysis
-        </button>
+        <button className="btn-primary btn-large" onClick={onNewGame}>New Game</button>
+        <button className="btn-secondary btn-large" onClick={() => setShowList(true)}>Open Existing</button>
+        <button className="btn-secondary btn-large" onClick={onAnalysis}>Analysis</button>
       </div>
       {showList && (
         <div className="game-list">
@@ -46,7 +40,9 @@ export function LaunchScreen({ onNewGame, onOpenGame, onAnalysis }: LaunchScreen
           ) : (
             games.map(g => (
               <button key={g.id} className="game-list-item" onClick={() => handleOpen(g.id)}>
-                {g.date} — {g.opponent}
+                <span className="game-list-date">{g.date}</span>
+                <span className="game-list-matchup">{g.teamName || '—'} vs {g.opponent}</span>
+                {g.tournament && <span className="game-list-tournament">{g.tournament}</span>}
               </button>
             ))
           )}

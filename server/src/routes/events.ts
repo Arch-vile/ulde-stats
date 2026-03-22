@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { appendEvent, updateEvent, deleteEvent } from '../services/csv'
+import { appendEvent, updateEvent, deleteEvent } from '../services/storage'
 import type { Event } from '../types'
 
 const router = Router({ mergeParams: true })

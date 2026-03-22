@@ -1,12 +1,19 @@
 import { Router } from 'express'
-import { createGame, listGames, loadGame } from '../services/csv'
+import { createGame, listGames, loadGame, updateGameMeta } from '../services/storage'
+import type { GameMeta } from '../types'
 
 const router = Router()
 
 router.post('/', (req, res) => {
-  const { opponent, date } = req.body as { opponent: string; date: string }
-  const gameId = createGame(opponent, date)
+  const { date, teamName, opponent, tournament } = req.body as Omit<GameMeta, 'id' | 'roster'>
+  const gameId = createGame({ date, teamName, opponent, tournament, roster: [] })
   res.json({ gameId })
+})
+
+router.patch('/:id', (req, res) => {
+  const { id } = req.params
+  updateGameMeta(id, req.body as Partial<Omit<GameMeta, 'id'>>)
+  res.json({ ok: true })
 })
 
 router.get('/', (_req, res) => {
