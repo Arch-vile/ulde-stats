@@ -217,29 +217,18 @@ export function useGameState() {
 
   const deleteGameEvent = useCallback((index: number) => {
     const s = stateRef.current
-    void deleteEventApi(s.gameId, s.events[index].event_number)
-
-    setState(prev => {
-      const newEvents = prev.events.filter((_, i) => i !== index)
-
-      let newPendingPassIndex = prev.pendingPassIndex
-      if (prev.pendingPassIndex === index) {
-        newPendingPassIndex = null
-      } else if (prev.pendingPassIndex !== null && prev.pendingPassIndex > index) {
-        newPendingPassIndex = prev.pendingPassIndex - 1
-      }
-
-      const derived = deriveState(newEvents)
-      // If there's still a pending pass, currentPlayer was set explicitly — preserve it
-      const currentPlayer = newPendingPassIndex !== null ? prev.currentPlayer : derived.currentPlayer
-
-      return {
-        ...prev,
-        events: newEvents,
-        pendingPassIndex: newPendingPassIndex,
-        ...derived,
-        currentPlayer,
-      }
+    void deleteEventApi(s.gameId, s.events[index].event_number).then(events => {
+      setState(prev => {
+        let newPendingPassIndex = prev.pendingPassIndex
+        if (prev.pendingPassIndex === index) {
+          newPendingPassIndex = null
+        } else if (prev.pendingPassIndex !== null && prev.pendingPassIndex > index) {
+          newPendingPassIndex = prev.pendingPassIndex - 1
+        }
+        const derived = deriveState(events)
+        const currentPlayer = newPendingPassIndex !== null ? prev.currentPlayer : derived.currentPlayer
+        return { ...prev, events, pendingPassIndex: newPendingPassIndex, ...derived, currentPlayer }
+      })
     })
   }, [])
 

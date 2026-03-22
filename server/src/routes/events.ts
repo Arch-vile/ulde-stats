@@ -18,8 +18,8 @@ router.put('/:eventNumber', (req, res) => {
 
 router.delete('/:eventNumber', (req, res) => {
   const { id, eventNumber } = req.params as { id: string; eventNumber: string }
-  deleteEvent(id, parseInt(eventNumber))
-  res.json({ ok: true })
+  const events = deleteEvent(id, parseInt(eventNumber))
+  res.json({ events })
 })
 
 export default router

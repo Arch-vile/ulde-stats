@@ -107,9 +107,13 @@ export function updateEvent(gameId: string, event: Event): void {
   dirty.add(gameId)
 }
 
-export function deleteEvent(gameId: string, eventNumber: number): void {
+export function deleteEvent(gameId: string, eventNumber: number): Event[] {
   const events = getOrLoad(gameId)
   const idx = events.findIndex(e => e.event_number === eventNumber)
-  if (idx !== -1) events.splice(idx, 1)
+  if (idx !== -1) {
+    events.splice(idx, 1)
+    events.forEach((e, i) => { e.event_number = i + 1 })
+  }
   dirty.add(gameId)
+  return events
 }
