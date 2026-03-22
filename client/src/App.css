@@ -777,3 +777,13 @@ button:not(:disabled):active {
 .muted {
   color: var(--text-muted);
 }
+
+.stats-section-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--border);
+}

@@ -2,12 +2,17 @@ import type { Event } from './types'
 
 export interface PlayerStats {
   name: string
+  // throwing
   throws: number
   completions: number
   throwaways: number
+  dropsForced: number   // times your throw was dropped by receiver
   goalsThrown: number
-  catches: number
-  drops: number
+  totalHoldTime: number // sum of seconds holding disc before throwing/turning over
+  holdCount: number     // number of possession sequences counted
+  // receiving
+  catches: number       // successful receptions (success + goal)
+  drops: number         // times you personally dropped
   goalsScored: number
 }
 
@@ -19,33 +24,44 @@ export interface TeamSummary {
   turnovers: number
 }
 
-function pct(num: number, den: number): string {
+export function pct(num: number, den: number): string {
   if (den === 0) return '—'
   return `${Math.round((num / den) * 100)}%`
 }
 
-export function completionPct(p: PlayerStats): string {
-  return pct(p.completions, p.throws)
+export function failPct(p: PlayerStats): string {
+  return pct(p.throwaways + p.dropsForced, p.throws)
+}
+
+export function taPct(p: PlayerStats): string {
+  return pct(p.throwaways, p.throws)
+}
+
+export function dropForcedPct(p: PlayerStats): string {
+  return pct(p.dropsForced, p.throws)
 }
 
 export function catchPct(p: PlayerStats): string {
   return pct(p.catches, p.catches + p.drops)
 }
 
-export function computeStats(events: Event[]): { players: PlayerStats[]; team: TeamSummary } {
+export function avgHold(p: PlayerStats): string {
+  if (p.holdCount === 0) return '—'
+  return `${(p.totalHoldTime / p.holdCount).toFixed(1)}s`
+}
+
+// Takes events grouped by game so possession times don't bleed between games
+export function computeStats(eventsByGame: Event[][]): { players: PlayerStats[]; team: TeamSummary } {
   const playerMap = new Map<string, PlayerStats>()
 
   function get(name: string): PlayerStats {
+    if (!name) return { name: '', throws: 0, completions: 0, throwaways: 0, dropsForced: 0, goalsThrown: 0, totalHoldTime: 0, holdCount: 0, catches: 0, drops: 0, goalsScored: 0 }
     if (!playerMap.has(name)) {
       playerMap.set(name, {
         name,
-        throws: 0,
-        completions: 0,
-        throwaways: 0,
-        goalsThrown: 0,
-        catches: 0,
-        drops: 0,
-        goalsScored: 0,
+        throws: 0, completions: 0, throwaways: 0, dropsForced: 0, goalsThrown: 0,
+        totalHoldTime: 0, holdCount: 0,
+        catches: 0, drops: 0, goalsScored: 0,
       })
     }
     return playerMap.get(name)!
@@ -53,37 +69,65 @@ export function computeStats(events: Event[]): { players: PlayerStats[]; team: T
 
   const team: TeamSummary = { goals: 0, possessions: 0, completions: 0, throws: 0, turnovers: 0 }
 
-  for (const ev of events) {
-    if (ev.event_type === 'possession_start') {
-      team.possessions++
-    } else if (ev.event_type === 'pass') {
-      const thrower = get(ev.player)
-      team.throws++
-      thrower.throws++
+  for (const events of eventsByGame) {
+    // discHeldSince tracks when each player got the disc within this game
+    const discHeldSince = new Map<string, number>()
 
-      if (ev.outcome === 'success') {
-        thrower.completions++
-        team.completions++
-        if (ev.target_player) get(ev.target_player).catches++
-      } else if (ev.outcome === 'goal') {
-        thrower.completions++
-        thrower.goalsThrown++
-        team.completions++
-        team.goals++
-        if (ev.target_player) {
-          const receiver = get(ev.target_player)
-          receiver.catches++
-          receiver.goalsScored++
+    for (const ev of events) {
+      if (ev.event_type === 'possession_start') {
+        team.possessions++
+        discHeldSince.set(ev.player, ev.timestamp)
+
+      } else if (ev.event_type === 'pass') {
+        const thrower = get(ev.player)
+        team.throws++
+        thrower.throws++
+
+        // Accumulate hold time for the thrower
+        const heldSince = discHeldSince.get(ev.player)
+        if (heldSince !== undefined) {
+          thrower.totalHoldTime += ev.timestamp - heldSince
+          thrower.holdCount++
+          discHeldSince.delete(ev.player)
         }
-      } else if (ev.outcome === 'throwaway') {
-        thrower.throwaways++
+
+        if (ev.outcome === 'success') {
+          thrower.completions++
+          team.completions++
+          if (ev.target_player) {
+            get(ev.target_player).catches++
+            discHeldSince.set(ev.target_player, ev.timestamp)
+          }
+        } else if (ev.outcome === 'goal') {
+          thrower.completions++
+          thrower.goalsThrown++
+          team.completions++
+          team.goals++
+          if (ev.target_player) {
+            const receiver = get(ev.target_player)
+            receiver.catches++
+            receiver.goalsScored++
+            // Receiver scored — no further disc holding needed
+          }
+        } else if (ev.outcome === 'throwaway') {
+          thrower.throwaways++
+          team.turnovers++
+        } else if (ev.outcome === 'drop') {
+          thrower.dropsForced++
+          team.turnovers++
+          if (ev.target_player) get(ev.target_player).drops++
+        }
+
+      } else if (ev.event_type === 'turnover') {
         team.turnovers++
-      } else if (ev.outcome === 'drop') {
-        team.turnovers++
-        if (ev.target_player) get(ev.target_player).drops++
+        const thrower = get(ev.player)
+        const heldSince = discHeldSince.get(ev.player)
+        if (heldSince !== undefined) {
+          thrower.totalHoldTime += ev.timestamp - heldSince
+          thrower.holdCount++
+          discHeldSince.delete(ev.player)
+        }
       }
-    } else if (ev.event_type === 'turnover') {
-      team.turnovers++
     }
   }
 

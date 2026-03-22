@@ -1,11 +1,30 @@
 import { useState, useEffect } from 'react'
 import { listGames, loadGame } from '../api'
-import { computeStats, completionPct, catchPct } from '../stats'
+import { computeStats, pct, failPct, taPct, dropForcedPct, catchPct, avgHold } from '../stats'
 import type { GameMeta, Event } from '../types'
-import type { PlayerStats, TeamSummary } from '../stats'
+import type { PlayerStats } from '../stats'
 
-type SortKey = keyof PlayerStats
 type SortDir = 'asc' | 'desc'
+interface SortState<K> { key: K; dir: SortDir }
+
+function useSort<K>(initial: K): [SortState<K>, (k: K) => void] {
+  const [sort, setSort] = useState<SortState<K>>({ key: initial, dir: 'desc' })
+  function toggle(key: K) {
+    setSort(s => s.key === key ? { key, dir: s.dir === 'desc' ? 'asc' : 'desc' } : { key, dir: 'desc' })
+  }
+  return [sort, toggle]
+}
+
+function sortPlayers<K extends keyof PlayerStats>(players: PlayerStats[], sort: SortState<K>): PlayerStats[] {
+  return [...players].sort((a, b) => {
+    const av = a[sort.key] as number
+    const bv = b[sort.key] as number
+    return sort.dir === 'desc' ? bv - av : av - bv
+  })
+}
+
+type ThrowSortKey = 'throws' | 'throwaways' | 'dropsForced' | 'completions' | 'goalsThrown' | 'holdCount'
+type CatchSortKey = 'catches' | 'drops' | 'goalsScored'
 
 interface AnalysisScreenProps {
   onBack: () => void
@@ -16,8 +35,8 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [eventsByGame, setEventsByGame] = useState<Map<string, Event[]>>(new Map())
   const [loading, setLoading] = useState<Set<string>>(new Set())
-  const [sortKey, setSortKey] = useState<SortKey>('throws')
-  const [sortDir, setSortDir] = useState<SortDir>('desc')
+  const [throwSort, toggleThrowSort] = useSort<ThrowSortKey>('throws')
+  const [catchSort, toggleCatchSort] = useSort<CatchSortKey>('catches')
 
   useEffect(() => {
     listGames().then(setGames)
@@ -54,42 +73,26 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
     setSelected(new Set(ids))
   }
 
-  const allEvents: Event[] = [...selected]
+  const selectedGameEvents: Event[][] = [...selected]
     .filter(id => eventsByGame.has(id))
-    .flatMap(id => eventsByGame.get(id)!)
+    .map(id => eventsByGame.get(id)!)
 
-  const { players, team } = computeStats(allEvents)
+  const { players, team } = computeStats(selectedGameEvents)
 
-  function handleSort(key: SortKey) {
-    if (sortKey === key) {
-      setSortDir(d => d === 'desc' ? 'asc' : 'desc')
-    } else {
-      setSortKey(key)
-      setSortDir('desc')
-    }
-  }
+  const throwPlayers = sortPlayers(players.filter(p => p.throws > 0), throwSort)
+  const catchPlayers = sortPlayers(players.filter(p => p.catches + p.drops > 0), catchSort)
 
-  const sorted = [...players].sort((a, b) => {
-    const av = a[sortKey] as number
-    const bv = b[sortKey] as number
-    return sortDir === 'desc' ? bv - av : av - bv
-  })
-
-  function th(label: string, key: SortKey, title?: string) {
-    const active = sortKey === key
+  function Th<K extends string>({
+    label, k, active, dir, onClick, title
+  }: { label: string; k: K; active: boolean; dir: SortDir; onClick: (k: K) => void; title?: string }) {
     return (
-      <th
-        key={key}
-        className={`stats-th ${active ? 'active' : ''}`}
-        onClick={() => handleSort(key)}
-        title={title}
-      >
-        {label}{active ? (sortDir === 'desc' ? ' ↓' : ' ↑') : ''}
+      <th className={`stats-th ${active ? 'active' : ''}`} onClick={() => onClick(k)} title={title}>
+        {label}{active ? (dir === 'desc' ? ' ↓' : ' ↑') : ''}
       </th>
     )
   }
 
-  const hasData = selected.size > 0 && allEvents.length > 0
+  const hasData = selectedGameEvents.length > 0 && players.length > 0
   const isLoading = loading.size > 0
 
   return (
@@ -135,15 +138,11 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
                 <span className="summary-label">Possessions</span>
               </div>
               <div className="summary-stat">
-                <span className="summary-value">
-                  {team.possessions > 0 ? `${Math.round((team.goals / team.possessions) * 100)}%` : '—'}
-                </span>
+                <span className="summary-value">{pct(team.goals, team.possessions)}</span>
                 <span className="summary-label">Efficiency</span>
               </div>
               <div className="summary-stat">
-                <span className="summary-value">
-                  {team.throws > 0 ? `${Math.round((team.completions / team.throws) * 100)}%` : '—'}
-                </span>
+                <span className="summary-value">{pct(team.completions, team.throws)}</span>
                 <span className="summary-label">Completion %</span>
               </div>
               <div className="summary-stat">
@@ -152,35 +151,65 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
               </div>
             </div>
 
+            <div className="stats-section-label">Throwing</div>
             <div className="stats-table-wrap">
               <table className="stats-table">
                 <thead>
                   <tr>
                     <th className="stats-th stats-th-name">Player</th>
-                    {th('Throws', 'throws', 'Total throws')}
-                    {th('Comp', 'completions', 'Completions')}
-                    {th('C%', 'completions', 'Completion %')}
-                    {th('TA', 'throwaways', 'Throwaways')}
-                    {th('Ast', 'goalsThrown', 'Goals thrown (assists)')}
-                    {th('Catches', 'catches', 'Successful catches')}
-                    {th('Drops', 'drops', 'Drops')}
-                    {th('Rec%', 'catches', 'Receive success rate')}
-                    {th('Goals', 'goalsScored', 'Goals scored')}
+                    <Th label="Throws" k="throws" active={throwSort.key==='throws'} dir={throwSort.dir} onClick={toggleThrowSort} title="Total throws" />
+                    <Th label="Fail%" k="throwaways" active={throwSort.key==='throwaways'} dir={throwSort.dir} onClick={toggleThrowSort} title="Total failure rate (TA + drops caused)" />
+                    <Th label="TA" k="throwaways" active={false} dir={throwSort.dir} onClick={toggleThrowSort} title="Throwaways" />
+                    <Th label="TA%" k="throwaways" active={false} dir={throwSort.dir} onClick={toggleThrowSort} title="Throwaway rate" />
+                    <Th label="Drops caused" k="dropsForced" active={throwSort.key==='dropsForced'} dir={throwSort.dir} onClick={toggleThrowSort} title="Times your throw was dropped by receiver" />
+                    <Th label="Drop%" k="dropsForced" active={false} dir={throwSort.dir} onClick={toggleThrowSort} title="Drop rate on your throws" />
+                    <Th label="Comp" k="completions" active={throwSort.key==='completions'} dir={throwSort.dir} onClick={toggleThrowSort} title="Completions" />
+                    <Th label="Ast" k="goalsThrown" active={throwSort.key==='goalsThrown'} dir={throwSort.dir} onClick={toggleThrowSort} title="Goals thrown (assists)" />
+                    <Th label="Avg hold" k="holdCount" active={throwSort.key==='holdCount'} dir={throwSort.dir} onClick={toggleThrowSort} title="Average time holding disc before throwing" />
                   </tr>
                 </thead>
                 <tbody>
-                  {sorted.map(p => (
+                  {throwPlayers.map(p => {
+                    const failRate = p.throws > 0 ? (p.throwaways + p.dropsForced) / p.throws : 0
+                    return (
+                      <tr key={p.name}>
+                        <td className="stats-name">{p.name}</td>
+                        <td>{p.throws}</td>
+                        <td className={failRate > 0.2 ? 'stat-bad' : failRate > 0 ? '' : 'muted'}>{failPct(p)}</td>
+                        <td className={p.throwaways > 0 ? 'stat-bad' : 'muted'}>{p.throwaways || '—'}</td>
+                        <td className="muted">{taPct(p)}</td>
+                        <td className={p.dropsForced > 0 ? 'stat-bad' : 'muted'}>{p.dropsForced || '—'}</td>
+                        <td className="muted">{dropForcedPct(p)}</td>
+                        <td>{p.completions}</td>
+                        <td className={p.goalsThrown > 0 ? 'stat-good' : 'muted'}>{p.goalsThrown || '—'}</td>
+                        <td className="muted">{avgHold(p)}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="stats-section-label">Receiving</div>
+            <div className="stats-table-wrap">
+              <table className="stats-table">
+                <thead>
+                  <tr>
+                    <th className="stats-th stats-th-name">Player</th>
+                    <Th label="Catches" k="catches" active={catchSort.key==='catches'} dir={catchSort.dir} onClick={toggleCatchSort} title="Successful catches" />
+                    <Th label="Drops" k="drops" active={catchSort.key==='drops'} dir={catchSort.dir} onClick={toggleCatchSort} title="Drops" />
+                    <Th label="Catch%" k="catches" active={false} dir={catchSort.dir} onClick={toggleCatchSort} title="Catch success rate" />
+                    <Th label="Goals" k="goalsScored" active={catchSort.key==='goalsScored'} dir={catchSort.dir} onClick={toggleCatchSort} title="Goals scored" />
+                  </tr>
+                </thead>
+                <tbody>
+                  {catchPlayers.map(p => (
                     <tr key={p.name}>
                       <td className="stats-name">{p.name}</td>
-                      <td>{p.throws}</td>
-                      <td>{p.completions}</td>
-                      <td className="muted">{completionPct(p)}</td>
-                      <td className={p.throwaways > 0 ? 'stat-bad' : ''}>{p.throwaways || '—'}</td>
-                      <td className={p.goalsThrown > 0 ? 'stat-good' : ''}>{p.goalsThrown || '—'}</td>
                       <td>{p.catches}</td>
-                      <td className={p.drops > 0 ? 'stat-bad' : ''}>{p.drops || '—'}</td>
+                      <td className={p.drops > 0 ? 'stat-bad' : 'muted'}>{p.drops || '—'}</td>
                       <td className="muted">{catchPct(p)}</td>
-                      <td className={p.goalsScored > 0 ? 'stat-good' : ''}>{p.goalsScored || '—'}</td>
+                      <td className={p.goalsScored > 0 ? 'stat-good' : 'muted'}>{p.goalsScored || '—'}</td>
                     </tr>
                   ))}
                 </tbody>
