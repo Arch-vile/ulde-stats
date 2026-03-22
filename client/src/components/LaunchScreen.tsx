@@ -5,9 +5,10 @@ import { listGames, loadGame } from '../api'
 interface LaunchScreenProps {
   onNewGame: () => void
   onOpenGame: (gameId: string, meta: GameMeta, events: Event[]) => void
+  onAnalysis: () => void
 }
 
-export function LaunchScreen({ onNewGame, onOpenGame }: LaunchScreenProps) {
+export function LaunchScreen({ onNewGame, onOpenGame, onAnalysis }: LaunchScreenProps) {
   const [games, setGames] = useState<GameMeta[] | null>(null)
   const [showList, setShowList] = useState(false)
 
@@ -31,6 +32,9 @@ export function LaunchScreen({ onNewGame, onOpenGame }: LaunchScreenProps) {
         </button>
         <button className="btn-secondary btn-large" onClick={() => setShowList(true)}>
           Open Existing
+        </button>
+        <button className="btn-secondary btn-large" onClick={onAnalysis}>
+          Analysis
         </button>
       </div>
       {showList && (

@@ -17,4 +17,4 @@ export interface GameMeta {
   date: string
 }
 
-export type AppPhase = 'idle' | 'setup' | 'playerSetup' | 'recording'
+export type AppPhase = 'idle' | 'setup' | 'playerSetup' | 'recording' | 'analysis'

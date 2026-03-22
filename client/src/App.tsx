@@ -3,6 +3,7 @@ import { LaunchScreen } from './components/LaunchScreen'
 import { GameSetup } from './components/GameSetup'
 import { PlayerSetup } from './components/PlayerSetup'
 import { RecordingScreen } from './components/RecordingScreen'
+import { AnalysisScreen } from './components/AnalysisScreen'
 import type { AppPhase, Event, GameMeta } from './types'
 import './App.css'
 
@@ -44,7 +45,7 @@ export default function App() {
   return (
     <div className="app">
       {phase === 'idle' && (
-        <LaunchScreen onNewGame={() => setPhase('setup')} onOpenGame={handleOpenGame} />
+        <LaunchScreen onNewGame={() => setPhase('setup')} onOpenGame={handleOpenGame} onAnalysis={() => setPhase('analysis')} />
       )}
       {phase === 'setup' && (
         <GameSetup onGameCreated={handleGameCreated} onBack={() => setPhase('idle')} />
@@ -57,6 +58,9 @@ export default function App() {
           onStart={handlePlayerSetupDone}
           onBack={() => setPhase('setup')}
         />
+      )}
+      {phase === 'analysis' && (
+        <AnalysisScreen onBack={() => setPhase('idle')} />
       )}
       {phase === 'recording' && ctx && (
         <RecordingScreen
