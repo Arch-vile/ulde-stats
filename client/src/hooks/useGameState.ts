@@ -5,6 +5,7 @@ import { saveEvent } from '../api'
 interface GameState {
   gameId: string
   events: Event[]
+  pendingPassIndex: number | null  // index of unsaved pass — saved when next action fires
   players: string[]
   currentPlayer: string
   possessionId: number
@@ -43,6 +44,7 @@ function deriveState(
 const initialState: GameState = {
   gameId: '',
   events: [],
+  pendingPassIndex: null,
   players: [],
   currentPlayer: '',
   possessionId: 0,
@@ -69,6 +71,7 @@ export function useGameState() {
         ...initialState,
         gameId,
         events,
+        pendingPassIndex: null, // all loaded events already in CSV
         players: [...playerSet],
         ...deriveState(events),
       })
@@ -78,8 +81,14 @@ export function useGameState() {
 
   const recordPlayerClick = useCallback(async (playerName: string, timestamp: number) => {
     const s = stateRef.current
-    let event: Event
+
+    // Flush any pending pass with its current outcome before recording the next event
+    if (s.pendingPassIndex !== null) {
+      void saveEvent(s.gameId, s.events[s.pendingPassIndex])
+    }
+
     let nextPossessionId = s.possessionId
+    let event: Event
 
     if (s.needsPossessionStart) {
       nextPossessionId = s.possessionId + 1
@@ -91,6 +100,7 @@ export function useGameState() {
         outcome: '',
         possession_id: nextPossessionId,
       }
+      void saveEvent(s.gameId, event) // possession_start saved immediately
     } else {
       event = {
         timestamp,
@@ -100,19 +110,24 @@ export function useGameState() {
         outcome: 'success',
         possession_id: s.possessionId,
       }
+      // pass is NOT saved yet — held pending until next action or terminal outcome
     }
-
-    void saveEvent(s.gameId, event)
 
     setState(prev => {
       const newEvents = [...prev.events, event]
-      return { ...prev, events: newEvents, possessionId: nextPossessionId, ...deriveState(newEvents) }
+      const pendingPassIndex = event.event_type === 'pass' ? newEvents.length - 1 : null
+      return { ...prev, events: newEvents, possessionId: nextPossessionId, pendingPassIndex, ...deriveState(newEvents) }
     })
   }, [])
 
   const recordTurnover = useCallback(async (timestamp: number) => {
     const s = stateRef.current
     if (s.needsPossessionStart) return
+
+    // Flush pending pass (success) before recording turnover
+    if (s.pendingPassIndex !== null) {
+      void saveEvent(s.gameId, s.events[s.pendingPassIndex])
+    }
 
     const event: Event = {
       timestamp,
@@ -122,19 +137,29 @@ export function useGameState() {
       outcome: 'turnover',
       possession_id: s.possessionId,
     }
-
     void saveEvent(s.gameId, event)
 
     setState(prev => {
       const newEvents = [...prev.events, event]
-      return { ...prev, events: newEvents, ...deriveState(newEvents) }
+      return { ...prev, events: newEvents, pendingPassIndex: null, ...deriveState(newEvents) }
     })
   }, [])
 
   const updateEventOutcome = useCallback((index: number, outcome: Outcome) => {
+    const s = stateRef.current
+
+    // Terminal outcome on the pending pass → save it now with the correct outcome
+    const isTerminal = outcome === 'goal' || outcome === 'drop' || outcome === 'throwaway'
+    const isPending = s.pendingPassIndex === index
+
+    if (isPending && isTerminal) {
+      void saveEvent(s.gameId, { ...s.events[index], outcome })
+    }
+
     setState(prev => {
       const newEvents = prev.events.map((e, i) => (i === index ? { ...e, outcome } : e))
-      return { ...prev, events: newEvents, ...deriveState(newEvents) }
+      const pendingPassIndex = isPending && isTerminal ? null : prev.pendingPassIndex
+      return { ...prev, events: newEvents, pendingPassIndex, ...deriveState(newEvents) }
     })
   }, [])
 
