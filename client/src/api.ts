@@ -1,4 +1,4 @@
-import type { Event, GameMeta, Outcome } from './types'
+import type { Event, GameMeta } from './types'
 
 const BASE = '/api'
 
@@ -29,10 +29,16 @@ export async function saveEvent(gameId: string, event: Event): Promise<void> {
   })
 }
 
-export async function updateOutcome(gameId: string, eventNumber: number, outcome: Outcome): Promise<void> {
-  await fetch(`${BASE}/games/${gameId}/events/${eventNumber}`, {
-    method: 'PATCH',
+export async function updateEvent(gameId: string, event: Event): Promise<void> {
+  await fetch(`${BASE}/games/${gameId}/events/${event.event_number}`, {
+    method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ outcome }),
+    body: JSON.stringify(event),
+  })
+}
+
+export async function deleteEvent(gameId: string, eventNumber: number): Promise<void> {
+  await fetch(`${BASE}/games/${gameId}/events/${eventNumber}`, {
+    method: 'DELETE',
   })
 }

@@ -58,6 +58,14 @@ export function RecordingScreen({ gameId, players, initialTimestamp, existingEve
     gs.updateEventOutcome(index, outcome)
   }
 
+  const handleUpdateTimestamp = (index: number, timestamp: number) => {
+    gs.updateEventTimestamp(index, timestamp)
+  }
+
+  const handleDeleteEvent = (index: number) => {
+    gs.deleteGameEvent(index)
+  }
+
   const events = gs.state.events
   const lastEvent = events.length > 0 ? events[events.length - 1] : null
   const lastIsPass = lastEvent?.event_type === 'pass'
@@ -112,7 +120,12 @@ export function RecordingScreen({ gameId, players, initialTimestamp, existingEve
           </button>
         </div>
         <div className="recording-right">
-          <EventTimeline events={gs.state.events} onUpdateOutcome={handleUpdateOutcome} />
+          <EventTimeline
+            events={gs.state.events}
+            onUpdateOutcome={handleUpdateOutcome}
+            onUpdateTimestamp={handleUpdateTimestamp}
+            onDeleteEvent={handleDeleteEvent}
+          />
         </div>
       </div>
     </div>

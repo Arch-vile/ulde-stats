@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { appendEvent, updateEventOutcome } from '../services/csv'
-import type { Event, Outcome } from '../types'
+import { appendEvent, updateEvent, deleteEvent } from '../services/csv'
+import type { Event } from '../types'
 
 const router = Router({ mergeParams: true })
 
@@ -10,10 +10,15 @@ router.post('/', (req, res) => {
   res.json({ ok: true })
 })
 
-router.patch('/:eventNumber', (req, res) => {
+router.put('/:eventNumber', (req, res) => {
+  const { id } = req.params as { id: string }
+  updateEvent(id, req.body as Event)
+  res.json({ ok: true })
+})
+
+router.delete('/:eventNumber', (req, res) => {
   const { id, eventNumber } = req.params as { id: string; eventNumber: string }
-  const { outcome } = req.body as { outcome: Outcome }
-  updateEventOutcome(id, parseInt(eventNumber), outcome)
+  deleteEvent(id, parseInt(eventNumber))
   res.json({ ok: true })
 })
 

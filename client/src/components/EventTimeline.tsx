@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import type { Event, Outcome } from '../types'
 
 function formatTime(s: number): string {
@@ -8,6 +8,14 @@ function formatTime(s: number): string {
   const ss = sec % 60
   if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(ss).padStart(2, '0')}`
   return `${m}:${String(ss).padStart(2, '0')}`
+}
+
+function parseTime(value: string): number | null {
+  const parts = value.trim().split(':').map(Number)
+  if (parts.some(isNaN)) return null
+  if (parts.length === 2) return parts[0] * 60 + parts[1]
+  if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2]
+  return null
 }
 
 function eventLabel(ev: Event): string {
@@ -29,10 +37,31 @@ const OUTCOMES: Outcome[] = ['success', 'goal', 'drop', 'throwaway']
 interface EventTimelineProps {
   events: Event[]
   onUpdateOutcome: (index: number, outcome: Outcome) => void
+  onUpdateTimestamp: (index: number, timestamp: number) => void
+  onDeleteEvent: (index: number) => void
 }
 
-export function EventTimeline({ events, onUpdateOutcome }: EventTimelineProps) {
+export function EventTimeline({ events, onUpdateOutcome, onUpdateTimestamp, onDeleteEvent }: EventTimelineProps) {
   const [expanded, setExpanded] = useState<number | null>(null)
+  const [editingTime, setEditingTime] = useState<number | null>(null)
+  const [editValue, setEditValue] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (editingTime !== null) inputRef.current?.select()
+  }, [editingTime])
+
+  function startEditTime(index: number, current: number, e: React.MouseEvent) {
+    e.stopPropagation()
+    setEditingTime(index)
+    setEditValue(formatTime(current))
+  }
+
+  function commitEditTime(index: number) {
+    const parsed = parseTime(editValue)
+    if (parsed !== null) onUpdateTimestamp(index, parsed)
+    setEditingTime(null)
+  }
 
   const possessions = new Map<number, { index: number; event: Event }[]>()
   events.forEach((ev, i) => {
@@ -52,6 +81,7 @@ export function EventTimeline({ events, onUpdateOutcome }: EventTimelineProps) {
             {evs.map(({ index, event: ev }) => {
               const isLast = index === events.length - 1
               const isExpanded = expanded === index
+              const isEditingTime = editingTime === index
               return (
                 <div
                   key={index}
@@ -66,11 +96,38 @@ export function EventTimeline({ events, onUpdateOutcome }: EventTimelineProps) {
                   onClick={() => setExpanded(isExpanded ? null : index)}
                 >
                   <span className="ev-num">#{ev.event_number}</span>
-                  <span className="ev-time">{formatTime(ev.timestamp)}</span>
+                  {isEditingTime ? (
+                    <input
+                      ref={inputRef}
+                      className="ev-time-input"
+                      value={editValue}
+                      onChange={e => setEditValue(e.target.value)}
+                      onBlur={() => commitEditTime(index)}
+                      onKeyDown={e => {
+                        if (e.key === 'Enter') commitEditTime(index)
+                        if (e.key === 'Escape') setEditingTime(null)
+                        e.stopPropagation()
+                      }}
+                      onClick={e => e.stopPropagation()}
+                    />
+                  ) : (
+                    <span
+                      className="ev-time"
+                      title="Click to edit"
+                      onClick={e => startEditTime(index, ev.timestamp, e)}
+                    >
+                      {formatTime(ev.timestamp)}
+                    </span>
+                  )}
                   <span className="ev-label">
                     {eventLabel(ev)}
                     {outcomeSuffix(ev)}
                   </span>
+                  <button
+                    className="ev-delete"
+                    onClick={e => { e.stopPropagation(); onDeleteEvent(index) }}
+                    title="Delete event"
+                  >×</button>
                   {isExpanded && ev.event_type === 'pass' && (
                     <div className="outcome-picker" onClick={e => e.stopPropagation()}>
                       {OUTCOMES.map(o => (

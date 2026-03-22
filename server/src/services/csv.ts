@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import type { Event, GameMeta, Outcome } from '../types'
+import type { Event, GameMeta } from '../types'
 
 const DATA_DIR = path.join(process.cwd(), 'data')
 
@@ -100,9 +100,16 @@ export function appendEvent(gameId: string, event: Event): void {
   dirty.add(gameId)
 }
 
-export function updateEventOutcome(gameId: string, eventNumber: number, outcome: Outcome): void {
+export function updateEvent(gameId: string, event: Event): void {
   const events = getOrLoad(gameId)
-  const ev = events.find(e => e.event_number === eventNumber)
-  if (ev) ev.outcome = outcome
+  const idx = events.findIndex(e => e.event_number === event.event_number)
+  if (idx !== -1) events[idx] = event
+  dirty.add(gameId)
+}
+
+export function deleteEvent(gameId: string, eventNumber: number): void {
+  const events = getOrLoad(gameId)
+  const idx = events.findIndex(e => e.event_number === eventNumber)
+  if (idx !== -1) events.splice(idx, 1)
   dirty.add(gameId)
 }
