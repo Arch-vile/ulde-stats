@@ -1,4 +1,4 @@
-export type EventType = 'possession_start' | 'pass' | 'turnover'
+export type EventType = 'possession_start' | 'pass' | 'turnover' | 'game-paused' | 'game-continued'
 export type Outcome = 'success' | 'drop' | 'throwaway' | 'goal' | 'goal-drop' | 'goal-throwaway' | 'turnover' | ''
 
 export interface Event {

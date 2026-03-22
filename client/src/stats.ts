@@ -118,22 +118,38 @@ export function computeStats(eventsByGame: Event[][]): { players: PlayerStats[];
 
   for (const events of eventsByGame) {
     // discHeldSince tracks when each player got the disc within this game
-    const discHeldSince = new Map<string, number>()
+    // Value: { timestamp, pauseAccumAtStart } — lets us subtract pause time from the hold
+    const discHeldSince = new Map<string, { timestamp: number; pauseAccumAtStart: number }>()
+    let pausedAt: number | null = null
+    let totalPauseAccum = 0
 
     for (const ev of events) {
+      if (ev.event_type === 'game-paused') {
+        pausedAt = ev.timestamp
+        continue
+      }
+      if (ev.event_type === 'game-continued') {
+        if (pausedAt !== null) {
+          totalPauseAccum += ev.timestamp - pausedAt
+          pausedAt = null
+        }
+        continue
+      }
+
       if (ev.event_type === 'possession_start') {
         team.possessions++
-        discHeldSince.set(ev.player, ev.timestamp)
+        discHeldSince.set(ev.player, { timestamp: ev.timestamp, pauseAccumAtStart: totalPauseAccum })
 
       } else if (ev.event_type === 'pass') {
         const thrower = get(ev.player)
         team.throws++
         thrower.throws++
 
-        // Accumulate hold time for the thrower
-        const heldSince = discHeldSince.get(ev.player)
-        if (heldSince !== undefined) {
-          thrower.totalHoldTime += ev.timestamp - heldSince
+        // Accumulate hold time for the thrower, excluding any pause intervals
+        const held = discHeldSince.get(ev.player)
+        if (held !== undefined) {
+          const pauseDuringHold = totalPauseAccum - held.pauseAccumAtStart
+          thrower.totalHoldTime += (ev.timestamp - held.timestamp) - pauseDuringHold
           thrower.holdCount++
           discHeldSince.delete(ev.player)
         }
@@ -143,7 +159,7 @@ export function computeStats(eventsByGame: Event[][]): { players: PlayerStats[];
           team.completions++
           if (ev.target_player) {
             get(ev.target_player).catches++
-            discHeldSince.set(ev.target_player, ev.timestamp)
+            discHeldSince.set(ev.target_player, { timestamp: ev.timestamp, pauseAccumAtStart: totalPauseAccum })
           }
         } else if (ev.outcome === 'goal') {
           thrower.completions++
@@ -179,9 +195,10 @@ export function computeStats(eventsByGame: Event[][]): { players: PlayerStats[];
       } else if (ev.event_type === 'turnover') {
         team.turnovers++
         const thrower = get(ev.player)
-        const heldSince = discHeldSince.get(ev.player)
-        if (heldSince !== undefined) {
-          thrower.totalHoldTime += ev.timestamp - heldSince
+        const held = discHeldSince.get(ev.player)
+        if (held !== undefined) {
+          const pauseDuringHold = totalPauseAccum - held.pauseAccumAtStart
+          thrower.totalHoldTime += (ev.timestamp - held.timestamp) - pauseDuringHold
           thrower.holdCount++
           discHeldSince.delete(ev.player)
         }

@@ -11,16 +11,18 @@ interface GameState {
   currentPlayer: string
   possessionId: number
   needsPossessionStart: boolean
+  isPaused: boolean
 }
 
 function deriveState(
   events: Event[],
-): Pick<GameState, 'currentPlayer' | 'possessionId' | 'needsPossessionStart'> {
-  if (events.length === 0) return { currentPlayer: '', possessionId: 0, needsPossessionStart: true }
+): Pick<GameState, 'currentPlayer' | 'possessionId' | 'needsPossessionStart' | 'isPaused'> {
+  if (events.length === 0) return { currentPlayer: '', possessionId: 0, needsPossessionStart: true, isPaused: false }
 
   let currentPlayer = ''
   let possessionId = 0
   let needsPossessionStart = true
+  let isPaused = false
 
   for (const ev of events) {
     possessionId = ev.possession_id
@@ -36,10 +38,14 @@ function deriveState(
       }
     } else if (ev.event_type === 'turnover') {
       needsPossessionStart = true
+    } else if (ev.event_type === 'game-paused') {
+      isPaused = true
+    } else if (ev.event_type === 'game-continued') {
+      isPaused = false
     }
   }
 
-  return { currentPlayer, possessionId, needsPossessionStart }
+  return { currentPlayer, possessionId, needsPossessionStart, isPaused }
 }
 
 const initialState: GameState = {
@@ -50,6 +56,7 @@ const initialState: GameState = {
   currentPlayer: '',
   possessionId: 0,
   needsPossessionStart: true,
+  isPaused: false,
 }
 
 export function useGameState() {
@@ -189,6 +196,44 @@ export function useGameState() {
     })
   }, [])
 
+  const recordGamePause = useCallback((timestamp: number) => {
+    const s = stateRef.current
+    const event: Event = {
+      timestamp,
+      event_type: 'game-paused',
+      player: '',
+      target_player: '',
+      outcome: '',
+      possession_id: s.possessionId,
+      event_number: s.events.length + 1,
+    }
+    void saveEvent(s.gameId, event)
+    setState(prev => ({
+      ...prev,
+      events: [...prev.events, event],
+      isPaused: true,
+    }))
+  }, [])
+
+  const recordGameContinue = useCallback((timestamp: number) => {
+    const s = stateRef.current
+    const event: Event = {
+      timestamp,
+      event_type: 'game-continued',
+      player: '',
+      target_player: '',
+      outcome: '',
+      possession_id: s.possessionId,
+      event_number: s.events.length + 1,
+    }
+    void saveEvent(s.gameId, event)
+    setState(prev => ({
+      ...prev,
+      events: [...prev.events, event],
+      isPaused: false,
+    }))
+  }, [])
+
   const addPlayer = useCallback((name: string) => {
     setState(prev => {
       if (prev.players.includes(name)) return prev
@@ -202,6 +247,8 @@ export function useGameState() {
     initFromEvents,
     recordPlayerClick,
     recordTurnover,
+    recordGamePause,
+    recordGameContinue,
     updateEventOutcome,
     updateEventTimestamp,
     deleteGameEvent,

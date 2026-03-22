@@ -121,6 +121,15 @@ export function RecordingScreen({ gameId, players, initialTimestamp, existingEve
           >
             TURNOVER
           </button>
+          <button
+            className={`btn-game-pause ${gs.state.isPaused ? 'active' : ''}`}
+            onClick={() => gs.state.isPaused
+              ? gs.recordGameContinue(clock.currentTime())
+              : gs.recordGamePause(clock.currentTime())
+            }
+          >
+            {gs.state.isPaused ? 'GAME CONTINUED' : 'GAME PAUSED'}
+          </button>
         </div>
         <div className="recording-right">
           <EventTimeline

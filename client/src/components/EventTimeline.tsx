@@ -21,6 +21,8 @@ function parseTime(value: string): number | null {
 function eventLabel(ev: Event): string {
   if (ev.event_type === 'possession_start') return `▶ ${ev.player}`
   if (ev.event_type === 'turnover') return `↩ ${ev.player} turnover`
+  if (ev.event_type === 'game-paused') return '⏸ Game paused'
+  if (ev.event_type === 'game-continued') return '▶ Game continued'
   return `${ev.player} → ${ev.target_player}`
 }
 
@@ -92,6 +94,8 @@ export function EventTimeline({ events, onUpdateOutcome, onUpdateTimestamp, onDe
                     isLast ? 'last-event' : '',
                     ev.event_type === 'possession_start' ? 'ev-start' : '',
                     ev.event_type === 'turnover' ? 'ev-turnover' : '',
+                    ev.event_type === 'game-paused' ? 'ev-game-paused' : '',
+                    ev.event_type === 'game-continued' ? 'ev-game-continued' : '',
                   ]
                     .filter(Boolean)
                     .join(' ')}

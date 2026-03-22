@@ -468,6 +468,25 @@ button:not(:disabled):active {
   color: var(--text-muted);
 }
 
+.btn-game-pause {
+  background: var(--surface2);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.btn-game-pause.active {
+  background: #5a3a00;
+  border-color: #cc8800;
+  color: #ffb300;
+}
+
 /* ── Event Timeline ── */
 .event-timeline {
   padding: 0.6rem;
@@ -516,6 +535,13 @@ button:not(:disabled):active {
 
 .event-row.ev-turnover {
   color: var(--danger);
+}
+
+.event-row.ev-game-paused,
+.event-row.ev-game-continued {
+  color: #ffb300;
+  font-style: italic;
+  opacity: 0.75;
 }
 
 .ev-num {
