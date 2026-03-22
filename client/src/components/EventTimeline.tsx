@@ -65,6 +65,7 @@ export function EventTimeline({ events, onUpdateOutcome }: EventTimelineProps) {
                     .join(' ')}
                   onClick={() => setExpanded(isExpanded ? null : index)}
                 >
+                  <span className="ev-num">#{ev.event_number}</span>
                   <span className="ev-time">{formatTime(ev.timestamp)}</span>
                   <span className="ev-label">
                     {eventLabel(ev)}

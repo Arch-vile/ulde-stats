@@ -489,6 +489,14 @@ button:not(:disabled):active {
   color: var(--danger);
 }
 
+.ev-num {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 2rem;
+  opacity: 0.6;
+}
+
 .ev-time {
   font-size: 0.68rem;
   color: var(--text-muted);

@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import type { Event, Outcome } from '../types'
-import { saveEvent } from '../api'
+import { saveEvent, updateOutcome } from '../api'
 
 interface GameState {
   gameId: string
@@ -99,6 +99,7 @@ export function useGameState() {
         target_player: '',
         outcome: '',
         possession_id: nextPossessionId,
+        event_number: s.events.length + 1,
       }
       void saveEvent(s.gameId, event) // possession_start saved immediately
     } else {
@@ -109,6 +110,7 @@ export function useGameState() {
         target_player: playerName,
         outcome: 'success',
         possession_id: s.possessionId,
+        event_number: s.events.length + 1,
       }
       // pass is NOT saved yet — held pending until next action or terminal outcome
     }
@@ -136,6 +138,7 @@ export function useGameState() {
       target_player: '',
       outcome: 'turnover',
       possession_id: s.possessionId,
+      event_number: s.events.length + 1,
     }
     void saveEvent(s.gameId, event)
 
@@ -148,12 +151,15 @@ export function useGameState() {
   const updateEventOutcome = useCallback((index: number, outcome: Outcome) => {
     const s = stateRef.current
 
-    // Terminal outcome on the pending pass → save it now with the correct outcome
     const isTerminal = outcome === 'goal' || outcome === 'drop' || outcome === 'throwaway'
     const isPending = s.pendingPassIndex === index
 
     if (isPending && isTerminal) {
+      // Pending pass getting a terminal outcome — save the full event now
       void saveEvent(s.gameId, { ...s.events[index], outcome })
+    } else if (!isPending) {
+      // Already-saved event — patch outcome on server
+      void updateOutcome(s.gameId, s.events[index].event_number, outcome)
     }
 
     setState(prev => {

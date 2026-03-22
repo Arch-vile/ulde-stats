@@ -8,6 +8,7 @@ export interface Event {
   target_player: string
   outcome: Outcome
   possession_id: number
+  event_number: number
 }
 
 export interface GameMeta {
