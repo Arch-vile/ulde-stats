@@ -1,5 +1,5 @@
 export type EventType = 'possession_start' | 'pass' | 'turnover'
-export type Outcome = 'success' | 'drop' | 'throwaway' | 'goal' | 'turnover' | ''
+export type Outcome = 'success' | 'drop' | 'throwaway' | 'goal' | 'goal-drop' | 'goal-throwaway' | 'turnover' | ''
 
 export interface Event {
   timestamp: number

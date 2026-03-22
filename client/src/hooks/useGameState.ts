@@ -31,7 +31,7 @@ function deriveState(
       if (ev.outcome === 'success') {
         currentPlayer = ev.target_player
         needsPossessionStart = false
-      } else if (ev.outcome === 'drop' || ev.outcome === 'throwaway' || ev.outcome === 'goal') {
+      } else if (ev.outcome === 'drop' || ev.outcome === 'throwaway' || ev.outcome === 'goal' || ev.outcome === 'goal-drop' || ev.outcome === 'goal-throwaway') {
         needsPossessionStart = true
       }
     } else if (ev.event_type === 'turnover') {
@@ -150,7 +150,7 @@ export function useGameState() {
 
   const updateEventOutcome = useCallback((index: number, outcome: Outcome) => {
     const s = stateRef.current
-    const isTerminal = outcome === 'goal' || outcome === 'drop' || outcome === 'throwaway'
+    const isTerminal = outcome === 'goal' || outcome === 'drop' || outcome === 'throwaway' || outcome === 'goal-drop' || outcome === 'goal-throwaway'
     const isPending = s.pendingPassIndex === index
     const updated = { ...s.events[index], outcome }
     void updateEvent(s.gameId, updated)

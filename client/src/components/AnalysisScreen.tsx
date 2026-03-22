@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { listGames, loadGame } from '../api'
-import { computeStats, pct, failPct, taPct, dropForcedPct, catchPct, avgHold } from '../stats'
+import { computeStats, pct, failPct, taPct, dropForcedPct, catchPct, avgHold, goalAttempts, goalConvPct } from '../stats'
 import type { GameMeta, Event } from '../types'
 import type { PlayerStats } from '../stats'
 
@@ -23,8 +23,8 @@ function sortPlayers<K extends keyof PlayerStats>(players: PlayerStats[], sort: 
   })
 }
 
-type ThrowSortKey = 'throws' | 'throwaways' | 'dropsForced' | 'completions' | 'goalsThrown' | 'holdCount'
-type CatchSortKey = 'catches' | 'drops' | 'goalsScored'
+type ThrowSortKey = 'throws' | 'throwaways' | 'dropsForced' | 'completions' | 'goalsThrown' | 'holdCount' | 'goalDropsForced' | 'goalThrowaways'
+type CatchSortKey = 'catches' | 'drops' | 'goalDropsReceived' | 'goalsScored'
 
 interface AnalysisScreenProps {
   onBack: () => void
@@ -165,6 +165,8 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
                     <Th label="Drop%" k="dropsForced" active={false} dir={throwSort.dir} onClick={toggleThrowSort} title="Drop rate on your throws" />
                     <Th label="Comp" k="completions" active={throwSort.key==='completions'} dir={throwSort.dir} onClick={toggleThrowSort} title="Completions" />
                     <Th label="Ast" k="goalsThrown" active={throwSort.key==='goalsThrown'} dir={throwSort.dir} onClick={toggleThrowSort} title="Goals thrown (assists)" />
+                    <Th label="Goal att." k="goalDropsForced" active={throwSort.key==='goalDropsForced'} dir={throwSort.dir} onClick={toggleThrowSort} title="Goal attempts (goal + goal-drop + goal-TA)" />
+                    <Th label="Conv%" k="goalThrowaways" active={throwSort.key==='goalThrowaways'} dir={throwSort.dir} onClick={toggleThrowSort} title="Goal conversion rate" />
                     <Th label="Avg hold" k="holdCount" active={throwSort.key==='holdCount'} dir={throwSort.dir} onClick={toggleThrowSort} title="Average time holding disc before throwing" />
                   </tr>
                 </thead>
@@ -182,6 +184,8 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
                         <td className="muted">{dropForcedPct(p)}</td>
                         <td>{p.completions}</td>
                         <td className={p.goalsThrown > 0 ? 'stat-good' : 'muted'}>{p.goalsThrown || '—'}</td>
+                        <td className="muted">{goalAttempts(p) || '—'}</td>
+                        <td className={p.goalsThrown > 0 ? 'stat-good' : 'muted'}>{goalAttempts(p) > 0 ? goalConvPct(p) : '—'}</td>
                         <td className="muted">{avgHold(p)}</td>
                       </tr>
                     )
@@ -189,6 +193,20 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
                 </tbody>
               </table>
             </div>
+
+            <dl className="stats-legend">
+              <div><dt>Throws</dt><dd>Total passes attempted</dd></div>
+              <div><dt>Fail%</dt><dd>Share of throws that resulted in a turnover (TA or drop)</dd></div>
+              <div><dt>TA</dt><dd>Throwaways — disc thrown out of bounds or uncontested</dd></div>
+              <div><dt>TA%</dt><dd>Throwaway rate (TA / throws)</dd></div>
+              <div><dt>Drops caused</dt><dd>Times the receiver dropped your throw</dd></div>
+              <div><dt>Drop%</dt><dd>Drop rate on your throws (drops caused / throws)</dd></div>
+              <div><dt>Comp</dt><dd>Completed passes (success + goal)</dd></div>
+              <div><dt>Ast</dt><dd>Goal assists — completions that scored a goal</dd></div>
+              <div><dt>Goal att.</dt><dd>Goal attempts — throws where a goal was intended (goal + goal-drop + goal-TA)</dd></div>
+              <div><dt>Conv%</dt><dd>Goal conversion rate (goals scored / goal attempts)</dd></div>
+              <div><dt>Avg hold</dt><dd>Average seconds holding the disc before releasing</dd></div>
+            </dl>
 
             <div className="stats-section-label">Receiving</div>
             <div className="stats-table-wrap">
@@ -199,6 +217,7 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
                     <Th label="Catches" k="catches" active={catchSort.key==='catches'} dir={catchSort.dir} onClick={toggleCatchSort} title="Successful catches" />
                     <Th label="Drops" k="drops" active={catchSort.key==='drops'} dir={catchSort.dir} onClick={toggleCatchSort} title="Drops" />
                     <Th label="Catch%" k="catches" active={false} dir={catchSort.dir} onClick={toggleCatchSort} title="Catch success rate" />
+                    <Th label="Goal drops" k="goalDropsReceived" active={catchSort.key==='goalDropsReceived'} dir={catchSort.dir} onClick={toggleCatchSort} title="Times you dropped a goal pass" />
                     <Th label="Goals" k="goalsScored" active={catchSort.key==='goalsScored'} dir={catchSort.dir} onClick={toggleCatchSort} title="Goals scored" />
                   </tr>
                 </thead>
@@ -209,12 +228,20 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
                       <td>{p.catches}</td>
                       <td className={p.drops > 0 ? 'stat-bad' : 'muted'}>{p.drops || '—'}</td>
                       <td className="muted">{catchPct(p)}</td>
+                      <td className={p.goalDropsReceived > 0 ? 'stat-bad' : 'muted'}>{p.goalDropsReceived || '—'}</td>
                       <td className={p.goalsScored > 0 ? 'stat-good' : 'muted'}>{p.goalsScored || '—'}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+            <dl className="stats-legend">
+              <div><dt>Catches</dt><dd>Successful receptions (pass completed to you)</dd></div>
+              <div><dt>Drops</dt><dd>Times you failed to catch a throw intended for you</dd></div>
+              <div><dt>Catch%</dt><dd>Catch success rate (catches / (catches + drops))</dd></div>
+              <div><dt>Goal drops</dt><dd>Times you dropped a pass thrown as a goal attempt</dd></div>
+              <div><dt>Goals</dt><dd>Goals scored by catching a goal pass</dd></div>
+            </dl>
           </>
         )}
       </div>

@@ -29,10 +29,12 @@ function outcomeSuffix(ev: Event): string {
   if (ev.outcome === 'goal') return ' ✓ GOAL'
   if (ev.outcome === 'drop') return ' ✗ drop'
   if (ev.outcome === 'throwaway') return ' ✗ throwaway'
+  if (ev.outcome === 'goal-drop') return ' ✗ goal drop'
+  if (ev.outcome === 'goal-throwaway') return ' ✗ goal TA'
   return ''
 }
 
-const OUTCOMES: Outcome[] = ['success', 'goal', 'drop', 'throwaway']
+const OUTCOMES: Outcome[] = ['success', 'goal', 'drop', 'throwaway', 'goal-drop', 'goal-throwaway']
 
 interface EventTimelineProps {
   events: Event[]

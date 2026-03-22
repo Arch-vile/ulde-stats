@@ -79,6 +79,8 @@ export function RecordingScreen({ gameId, players, initialTimestamp, existingEve
     { label: 'GOAL', outcome: 'goal', className: 'btn-outcome-goal' },
     { label: 'DROP', outcome: 'drop', className: 'btn-outcome-bad' },
     { label: 'THROWAWAY', outcome: 'throwaway', className: 'btn-outcome-bad' },
+    { label: 'GOAL DROP', outcome: 'goal-drop', className: 'btn-outcome-bad' },
+    { label: 'GOAL TA', outcome: 'goal-throwaway', className: 'btn-outcome-bad' },
   ]
 
   return (

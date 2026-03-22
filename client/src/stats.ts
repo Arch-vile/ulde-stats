@@ -6,13 +6,16 @@ export interface PlayerStats {
   throws: number
   completions: number
   throwaways: number
-  dropsForced: number   // times your throw was dropped by receiver
+  dropsForced: number       // times your throw was dropped by receiver
   goalsThrown: number
-  totalHoldTime: number // sum of seconds holding disc before throwing/turning over
-  holdCount: number     // number of possession sequences counted
+  goalDropsForced: number   // goal throws dropped by receiver
+  goalThrowaways: number    // goal throws that were a throwaway
+  totalHoldTime: number     // sum of seconds holding disc before throwing/turning over
+  holdCount: number         // number of possession sequences counted
   // receiving
-  catches: number       // successful receptions (success + goal)
-  drops: number         // times you personally dropped
+  catches: number           // successful receptions (success + goal)
+  drops: number             // times you personally dropped
+  goalDropsReceived: number // dropped a goal pass
   goalsScored: number
 }
 
@@ -30,7 +33,7 @@ export function pct(num: number, den: number): string {
 }
 
 export function failPct(p: PlayerStats): string {
-  return pct(p.throwaways + p.dropsForced, p.throws)
+  return pct(p.throwaways + p.dropsForced + p.goalDropsForced + p.goalThrowaways, p.throws)
 }
 
 export function taPct(p: PlayerStats): string {
@@ -39,6 +42,14 @@ export function taPct(p: PlayerStats): string {
 
 export function dropForcedPct(p: PlayerStats): string {
   return pct(p.dropsForced, p.throws)
+}
+
+export function goalAttempts(p: PlayerStats): number {
+  return p.goalsThrown + p.goalDropsForced + p.goalThrowaways
+}
+
+export function goalConvPct(p: PlayerStats): string {
+  return pct(p.goalsThrown, goalAttempts(p))
 }
 
 export function catchPct(p: PlayerStats): string {
@@ -55,13 +66,14 @@ export function computeStats(eventsByGame: Event[][]): { players: PlayerStats[];
   const playerMap = new Map<string, PlayerStats>()
 
   function get(name: string): PlayerStats {
-    if (!name) return { name: '', throws: 0, completions: 0, throwaways: 0, dropsForced: 0, goalsThrown: 0, totalHoldTime: 0, holdCount: 0, catches: 0, drops: 0, goalsScored: 0 }
+    if (!name) return { name: '', throws: 0, completions: 0, throwaways: 0, dropsForced: 0, goalsThrown: 0, goalDropsForced: 0, goalThrowaways: 0, totalHoldTime: 0, holdCount: 0, catches: 0, drops: 0, goalDropsReceived: 0, goalsScored: 0 }
     if (!playerMap.has(name)) {
       playerMap.set(name, {
         name,
-        throws: 0, completions: 0, throwaways: 0, dropsForced: 0, goalsThrown: 0,
+        throws: 0, completions: 0, throwaways: 0, dropsForced: 0,
+        goalsThrown: 0, goalDropsForced: 0, goalThrowaways: 0,
         totalHoldTime: 0, holdCount: 0,
-        catches: 0, drops: 0, goalsScored: 0,
+        catches: 0, drops: 0, goalDropsReceived: 0, goalsScored: 0,
       })
     }
     return playerMap.get(name)!
@@ -116,6 +128,17 @@ export function computeStats(eventsByGame: Event[][]): { players: PlayerStats[];
           thrower.dropsForced++
           team.turnovers++
           if (ev.target_player) get(ev.target_player).drops++
+        } else if (ev.outcome === 'goal-drop') {
+          thrower.goalDropsForced++
+          team.turnovers++
+          if (ev.target_player) {
+            const receiver = get(ev.target_player)
+            receiver.drops++
+            receiver.goalDropsReceived++
+          }
+        } else if (ev.outcome === 'goal-throwaway') {
+          thrower.goalThrowaways++
+          team.turnovers++
         }
 
       } else if (ev.event_type === 'turnover') {
