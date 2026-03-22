@@ -54,5 +54,9 @@ export function useClock() {
     })
   }, [])
 
-  return { state, currentTime, setInitialTimestamp, pause, resume, setSpeed }
+  const seekTo = useCallback((seconds: number) => {
+    setState(s => ({ ...s, offsetSeconds: seconds, startedAt: s.running ? Date.now() : null }))
+  }, [])
+
+  return { state, currentTime, setInitialTimestamp, seekTo, pause, resume, setSpeed }
 }

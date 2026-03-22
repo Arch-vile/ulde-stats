@@ -90,6 +90,7 @@ export function RecordingScreen({ gameId, players, initialTimestamp, existingEve
         onPause={clock.pause}
         onResume={clock.resume}
         onSpeedChange={clock.setSpeed}
+        onSeek={clock.seekTo}
       />
       <div className="recording-main">
         <div className="recording-left">

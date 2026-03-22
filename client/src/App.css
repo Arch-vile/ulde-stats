@@ -273,6 +273,20 @@ button:not(:disabled):active {
   flex-shrink: 0;
 }
 
+.clock-time-input {
+  font-size: 2rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 7rem;
+  width: 7rem;
+  background: var(--surface2);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 0 4px;
+  outline: none;
+}
+
 .clock-time {
   font-size: 2rem;
   font-variant-numeric: tabular-nums;
