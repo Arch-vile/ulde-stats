@@ -61,6 +61,41 @@ export function avgHold(p: PlayerStats): string {
   return `${(p.totalHoldTime / p.holdCount).toFixed(1)}s`
 }
 
+export interface ThrowMatrix {
+  throwers: string[]
+  receivers: string[]
+  counts: Record<string, Record<string, number>>
+  throwTotals: Record<string, number>
+}
+
+export function computeThrowMatrix(eventsByGame: Event[][]): ThrowMatrix {
+  const counts: Record<string, Record<string, number>> = {}
+  const throwTotals: Record<string, number> = {}
+
+  for (const events of eventsByGame) {
+    for (const ev of events) {
+      if (ev.event_type === 'pass' && ev.target_player) {
+        const thrower = ev.player
+        const receiver = ev.target_player
+        if (!counts[thrower]) counts[thrower] = {}
+        counts[thrower][receiver] = (counts[thrower][receiver] ?? 0) + 1
+        throwTotals[thrower] = (throwTotals[thrower] ?? 0) + 1
+      }
+    }
+  }
+
+  const throwers = Object.keys(throwTotals).sort((a, b) => throwTotals[b] - throwTotals[a])
+  const receiverTotals: Record<string, number> = {}
+  for (const row of Object.values(counts)) {
+    for (const [r, c] of Object.entries(row)) {
+      receiverTotals[r] = (receiverTotals[r] ?? 0) + c
+    }
+  }
+  const receivers = Object.keys(receiverTotals).sort((a, b) => receiverTotals[b] - receiverTotals[a])
+
+  return { throwers, receivers, counts, throwTotals }
+}
+
 // Takes events grouped by game so possession times don't bleed between games
 export function computeStats(eventsByGame: Event[][]): { players: PlayerStats[]; team: TeamSummary } {
   const playerMap = new Map<string, PlayerStats>()

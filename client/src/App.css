@@ -27,7 +27,7 @@ body {
 }
 
 .app {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -597,8 +597,7 @@ button:not(:disabled):active {
 .analysis-screen {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
 }
 
 .analysis-sidebar {
@@ -690,8 +689,6 @@ button:not(:disabled):active {
 
 .analysis-main {
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
   padding: 1.25rem 1rem;
   display: flex;
   flex-direction: column;
@@ -840,4 +837,29 @@ button:not(:disabled):active {
   margin: 0;
   color: var(--text-muted);
   opacity: 0.7;
+}
+
+/* ── Throw Matrix ── */
+.matrix-wrap {
+  overflow-x: visible;
+}
+.throw-matrix .stats-th-name {
+  min-width: 8rem;
+}
+
+.matrix-cell {
+  text-align: center;
+  background: rgba(74, 158, 255, calc(var(--intensity, 0) * 0.45));
+}
+
+.matrix-cell .matrix-count {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95em;
+}
+
+.matrix-cell .matrix-pct {
+  display: block;
+  font-size: 0.75em;
+  color: var(--text-muted);
 }

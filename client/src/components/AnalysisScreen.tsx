@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { listGames, loadGame } from '../api'
-import { computeStats, pct, failPct, taPct, dropForcedPct, catchPct, avgHold, goalAttempts, goalConvPct } from '../stats'
+import { computeStats, computeThrowMatrix, pct, failPct, taPct, dropForcedPct, catchPct, avgHold, goalAttempts, goalConvPct } from '../stats'
 import type { GameMeta, Event } from '../types'
 import type { PlayerStats } from '../stats'
 
@@ -78,6 +78,7 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
     .map(id => eventsByGame.get(id)!)
 
   const { players, team } = computeStats(selectedGameEvents)
+  const matrix = computeThrowMatrix(selectedGameEvents)
 
   const throwPlayers = sortPlayers(players.filter(p => p.throws > 0), throwSort)
   const catchPlayers = sortPlayers(players.filter(p => p.catches + p.drops > 0), catchSort)
@@ -245,6 +246,53 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
               <div><dt>Goal drops</dt><dd>Times you dropped a pass thrown as a goal attempt</dd></div>
               <div><dt>Goals</dt><dd>Goals scored by catching a goal pass</dd></div>
             </dl>
+
+            {matrix.throwers.length > 0 && (
+              <>
+                <div className="stats-section-label">Throw Distribution</div>
+                <div className="stats-table-wrap matrix-wrap">
+                  <table className="stats-table throw-matrix">
+                    <thead>
+                      <tr>
+                        <th className="stats-th stats-th-name">Thrower \ Receiver</th>
+                        {matrix.receivers.map(r => (
+                          <th key={r} className="stats-th">{r}</th>
+                        ))}
+                        <th className="stats-th">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {matrix.throwers.map(thrower => {
+                        const total = matrix.throwTotals[thrower] ?? 0
+                        return (
+                          <tr key={thrower}>
+                            <td className="stats-name">{thrower}</td>
+                            {matrix.receivers.map(receiver => {
+                              const count = matrix.counts[thrower]?.[receiver] ?? 0
+                              const frac = total > 0 ? count / total : 0
+                              const pctVal = total > 0 ? Math.round(frac * 100) : 0
+                              return (
+                                <td
+                                  key={receiver}
+                                  className="matrix-cell"
+                                  style={{ '--intensity': frac } as React.CSSProperties}
+                                >
+                                  {count > 0 ? <><span className="matrix-count">{count}</span><span className="matrix-pct">{pctVal}%</span></> : <span className="muted">—</span>}
+                                </td>
+                              )
+                            })}
+                            <td className="muted">{total}</td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+                <dl className="stats-legend">
+                  <div><dt>Throw Distribution</dt><dd>Each cell shows the number of throws and percentage of that thrower's total directed at that receiver. Shading intensity reflects share of throws.</dd></div>
+                </dl>
+              </>
+            )}
           </>
         )}
       </div>
