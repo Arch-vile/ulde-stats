@@ -69,7 +69,7 @@ export function EventTimeline({ events, onUpdateOutcome, onUpdateTimestamp, onDe
     possessions.get(ev.possession_id)!.push({ index: i, event: ev })
   })
 
-  const possessionIds = [...possessions.keys()].sort((a, b) => a - b)
+  const possessionIds = [...possessions.keys()].sort((a, b) => b - a)
 
   return (
     <div className="event-timeline">
@@ -78,7 +78,7 @@ export function EventTimeline({ events, onUpdateOutcome, onUpdateTimestamp, onDe
         return (
           <div key={pid} className="possession-group">
             <div className="possession-header">Possession {pid}</div>
-            {evs.map(({ index, event: ev }) => {
+            {[...evs].reverse().map(({ index, event: ev }) => {
               const isLast = index === events.length - 1
               const isExpanded = expanded === index
               const isEditingTime = editingTime === index

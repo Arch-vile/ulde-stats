@@ -358,11 +358,6 @@ button:not(:disabled):active {
   transition: border-color 0.1s, background 0.1s;
 }
 
-.player-btn:not(:disabled):hover {
-  border-color: var(--accent);
-  filter: none;
-  background: #2e2e2e;
-}
 
 .player-btn.current {
   background: var(--current-bg);

@@ -5,8 +5,7 @@ import { saveEvent, updateEvent, deleteEvent as deleteEventApi } from '../api'
 interface GameState {
   gameId: string
   events: Event[]
-  // Index of a saved pass whose target_player is still empty.
-  // Filled in when the next player click confirms the receiver.
+  // Index of the most recently saved pass — tracked so outcome edits know which event to update
   pendingPassIndex: number | null
   players: string[]
   currentPlayer: string
@@ -14,8 +13,6 @@ interface GameState {
   needsPossessionStart: boolean
 }
 
-// Only used for initFromEvents (loading from disk). During live recording,
-// currentPlayer is tracked explicitly to avoid confusion from empty target_player.
 function deriveState(
   events: Event[],
 ): Pick<GameState, 'currentPlayer' | 'possessionId' | 'needsPossessionStart'> {
@@ -32,8 +29,7 @@ function deriveState(
       needsPossessionStart = false
     } else if (ev.event_type === 'pass') {
       if (ev.outcome === 'success') {
-        // If target is empty (pending from a previous session), keep the thrower as current
-        currentPlayer = ev.target_player !== '' ? ev.target_player : ev.player
+        currentPlayer = ev.target_player
         needsPossessionStart = false
       } else if (ev.outcome === 'drop' || ev.outcome === 'throwaway' || ev.outcome === 'goal') {
         needsPossessionStart = true
@@ -72,18 +68,13 @@ export function useGameState() {
         if (e.player) playerSet.add(e.player)
         if (e.target_player) playerSet.add(e.target_player)
       })
-      const lastEvent = events[events.length - 1]
-      const pendingPassIndex =
-        lastEvent?.event_type === 'pass' &&
-        lastEvent?.target_player === '' &&
-        lastEvent?.outcome === 'success'
-          ? events.length - 1
-          : null
+      const lastIdx = events.length - 1
+      const lastIsPass = events[lastIdx]?.event_type === 'pass'
       setState({
         ...initialState,
         gameId,
         events,
-        pendingPassIndex,
+        pendingPassIndex: lastIsPass ? lastIdx : null,
         players: [...playerSet],
         ...deriveState(events),
       })
@@ -115,51 +106,29 @@ export function useGameState() {
         pendingPassIndex: null,
       }))
     } else {
-      // If there's a pending pass, the current click confirms its receiver (s.currentPlayer)
-      if (s.pendingPassIndex !== null) {
-        const confirmed = { ...s.events[s.pendingPassIndex], target_player: s.currentPlayer }
-        void updateEvent(s.gameId, confirmed)
-      }
-
-      // Save the new pass immediately with empty target — receiver confirmed on next click
       const event: Event = {
         timestamp,
         event_type: 'pass',
         player: s.currentPlayer,
-        target_player: '',
+        target_player: playerName,
         outcome: 'success',
         possession_id: s.possessionId,
         event_number: s.events.length + 1,
       }
       void saveEvent(s.gameId, event)
-
-      setState(prev => {
-        const updated = prev.pendingPassIndex !== null
-          ? prev.events.map((e, i) =>
-              i === prev.pendingPassIndex ? { ...e, target_player: prev.currentPlayer } : e
-            )
-          : [...prev.events]
-        updated.push(event)
-        return {
-          ...prev,
-          events: updated,
-          currentPlayer: playerName,
-          pendingPassIndex: updated.length - 1,
-          needsPossessionStart: false,
-        }
-      })
+      setState(prev => ({
+        ...prev,
+        events: [...prev.events, event],
+        currentPlayer: playerName,
+        pendingPassIndex: prev.events.length,
+        needsPossessionStart: false,
+      }))
     }
   }, [])
 
   const recordTurnover = useCallback((timestamp: number) => {
     const s = stateRef.current
     if (s.needsPossessionStart) return
-
-    // Confirm the pending pass receiver before recording the turnover
-    if (s.pendingPassIndex !== null) {
-      const confirmed = { ...s.events[s.pendingPassIndex], target_player: s.currentPlayer }
-      void updateEvent(s.gameId, confirmed)
-    }
 
     const event: Event = {
       timestamp,
@@ -171,32 +140,20 @@ export function useGameState() {
       event_number: s.events.length + 1,
     }
     void saveEvent(s.gameId, event)
-
-    setState(prev => {
-      const updated = prev.pendingPassIndex !== null
-        ? prev.events.map((e, i) =>
-            i === prev.pendingPassIndex ? { ...e, target_player: prev.currentPlayer } : e
-          )
-        : [...prev.events]
-      updated.push(event)
-      return { ...prev, events: updated, pendingPassIndex: null, needsPossessionStart: true }
-    })
+    setState(prev => ({
+      ...prev,
+      events: [...prev.events, event],
+      pendingPassIndex: null,
+      needsPossessionStart: true,
+    }))
   }, [])
 
   const updateEventOutcome = useCallback((index: number, outcome: Outcome) => {
     const s = stateRef.current
-    const isPending = s.pendingPassIndex === index
     const isTerminal = outcome === 'goal' || outcome === 'drop' || outcome === 'throwaway'
-
-    // For goal/drop on pending pass, fill in the receiver we know from currentPlayer
-    const target_player =
-      isPending && (outcome === 'goal' || outcome === 'drop')
-        ? s.currentPlayer
-        : s.events[index].target_player
-
-    const updated = { ...s.events[index], outcome, target_player }
+    const isPending = s.pendingPassIndex === index
+    const updated = { ...s.events[index], outcome }
     void updateEvent(s.gameId, updated)
-
     setState(prev => ({
       ...prev,
       events: prev.events.map((e, i) => (i === index ? updated : e)),
