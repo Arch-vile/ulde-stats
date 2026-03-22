@@ -1,121 +1,71 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { LaunchScreen } from './components/LaunchScreen'
+import { GameSetup } from './components/GameSetup'
+import { PlayerSetup } from './components/PlayerSetup'
+import { RecordingScreen } from './components/RecordingScreen'
+import type { AppPhase, Event, GameMeta } from './types'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+interface GameContext {
+  gameId: string
+  opponent: string
+  date: string
+  players: string[]
+  initialTimestamp: number
+  existingEvents?: Event[]
 }
 
-export default App
+export default function App() {
+  const [phase, setPhase] = useState<AppPhase>('idle')
+  const [ctx, setCtx] = useState<GameContext | null>(null)
+
+  const handleGameCreated = (gameId: string, opponent: string, date: string) => {
+    setCtx({ gameId, opponent, date, players: [], initialTimestamp: 0 })
+    setPhase('playerSetup')
+  }
+
+  const handlePlayerSetupDone = (players: string[], initialTimestamp: number) => {
+    setCtx(c => (c ? { ...c, players, initialTimestamp } : c))
+    setPhase('recording')
+  }
+
+  const handleOpenGame = (_gameId: string, meta: GameMeta, events: Event[]) => {
+    setCtx({
+      gameId: meta.id,
+      opponent: meta.opponent,
+      date: meta.date,
+      players: [],
+      initialTimestamp: events.length > 0 ? events[events.length - 1].timestamp : 0,
+      existingEvents: events,
+    })
+    setPhase('recording')
+  }
+
+  return (
+    <div className="app">
+      {phase === 'idle' && (
+        <LaunchScreen onNewGame={() => setPhase('setup')} onOpenGame={handleOpenGame} />
+      )}
+      {phase === 'setup' && (
+        <GameSetup onGameCreated={handleGameCreated} onBack={() => setPhase('idle')} />
+      )}
+      {phase === 'playerSetup' && ctx && (
+        <PlayerSetup
+          gameId={ctx.gameId}
+          opponent={ctx.opponent}
+          date={ctx.date}
+          onStart={handlePlayerSetupDone}
+          onBack={() => setPhase('setup')}
+        />
+      )}
+      {phase === 'recording' && ctx && (
+        <RecordingScreen
+          gameId={ctx.gameId}
+          players={ctx.players}
+          initialTimestamp={ctx.initialTimestamp}
+          existingEvents={ctx.existingEvents}
+        />
+      )}
+    </div>
+  )
+}
