@@ -85,6 +85,15 @@ export function updateEvent(gameId: string, event: Event): void {
   dirty.add(gameId)
 }
 
+export function insertEvent(gameId: string, afterEventNumber: number, event: Event): Event[] {
+  const events = getOrLoad(gameId).events
+  const idx = events.findIndex(e => e.event_number === afterEventNumber)
+  events.splice(idx + 1, 0, event)
+  events.forEach((e, i) => { e.event_number = i + 1 })
+  dirty.add(gameId)
+  return events
+}
+
 export function deleteEvent(gameId: string, eventNumber: number): Event[] {
   const events = getOrLoad(gameId).events
   const idx = events.findIndex(e => e.event_number === eventNumber)

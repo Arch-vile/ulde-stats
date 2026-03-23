@@ -1,8 +1,15 @@
 import { Router } from 'express'
-import { appendEvent, updateEvent, deleteEvent } from '../services/storage'
+import { appendEvent, insertEvent, updateEvent, deleteEvent } from '../services/storage'
 import type { Event } from '../types'
 
 const router = Router({ mergeParams: true })
+
+router.post('/insert', (req, res) => {
+  const { id } = req.params as { id: string }
+  const { after_event_number, event } = req.body as { after_event_number: number; event: Event }
+  const events = insertEvent(id, after_event_number, event)
+  res.json({ events })
+})
 
 router.post('/', (req, res) => {
   const { id } = req.params as { id: string }

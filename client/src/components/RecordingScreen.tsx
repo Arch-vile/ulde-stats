@@ -169,9 +169,11 @@ export function RecordingScreen({ gameId, meta: initialMeta, players, initialTim
         <div className="recording-right">
           <EventTimeline
             events={gs.state.events}
+            players={gs.state.players}
             onUpdateOutcome={handleUpdateOutcome}
             onUpdateTimestamp={handleUpdateTimestamp}
             onDeleteEvent={handleDeleteEvent}
+            onInsertEvent={gs.insertGameEvent}
           />
         </div>
       </div>

@@ -20,7 +20,6 @@
       "player": "Mikko",
       "target_player": "",
       "outcome": "",
-      "possession_id": 1,
       "event_number": 1
     },
     {
@@ -29,7 +28,6 @@
       "player": "Mikko",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 1,
       "event_number": 2
     },
     {
@@ -38,7 +36,6 @@
       "player": "Ville",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 1,
       "event_number": 3
     },
     {
@@ -47,7 +44,6 @@
       "player": "Mikko",
       "target_player": "Eero",
       "outcome": "success",
-      "possession_id": 1,
       "event_number": 4
     },
     {
@@ -56,7 +52,6 @@
       "player": "Eero",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 1,
       "event_number": 5
     },
     {
@@ -65,7 +60,6 @@
       "player": "Mikko",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 1,
       "event_number": 6
     },
     {
@@ -74,7 +68,6 @@
       "player": "Aku",
       "target_player": "Eero",
       "outcome": "success",
-      "possession_id": 1,
       "event_number": 7
     },
     {
@@ -83,7 +76,6 @@
       "player": "Eero",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 1,
       "event_number": 8
     },
     {
@@ -92,7 +84,6 @@
       "player": "Mikko",
       "target_player": "Pekka",
       "outcome": "success",
-      "possession_id": 1,
       "event_number": 9
     },
     {
@@ -101,7 +92,6 @@
       "player": "Pekka",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 1,
       "event_number": 10
     },
     {
@@ -110,7 +100,6 @@
       "player": "Mikko",
       "target_player": "Ville",
       "outcome": "goal",
-      "possession_id": 1,
       "event_number": 11
     },
     {
@@ -119,7 +108,6 @@
       "player": "Antti",
       "target_player": "",
       "outcome": "",
-      "possession_id": 2,
       "event_number": 12
     },
     {
@@ -128,7 +116,6 @@
       "player": "Antti",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 2,
       "event_number": 13
     },
     {
@@ -137,26 +124,31 @@
       "player": "Ville",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 2,
       "event_number": 14
     },
     {
-      "timestamp": 6227,
+      "timestamp": 6225,
       "event_type": "pass",
       "player": "Aku",
       "target_player": "Antti",
       "outcome": "success",
-      "possession_id": 2,
       "event_number": 15
+    },
+    {
+      "timestamp": 6227,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Eero",
+      "outcome": "success",
+      "event_number": 16
     },
     {
       "timestamp": 6230,
       "event_type": "pass",
-      "player": "Antti",
-      "target_player": "Eero",
+      "player": "Eero",
+      "target_player": "Aku",
       "outcome": "goal-throwaway",
-      "possession_id": 2,
-      "event_number": 16
+      "event_number": 17
     },
     {
       "timestamp": 6252,
@@ -164,8 +156,7 @@
       "player": "Antti",
       "target_player": "",
       "outcome": "",
-      "possession_id": 3,
-      "event_number": 17
+      "event_number": 18
     },
     {
       "timestamp": 6255,
@@ -173,8 +164,7 @@
       "player": "Antti",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 3,
-      "event_number": 18
+      "event_number": 19
     },
     {
       "timestamp": 6261,
@@ -182,8 +172,7 @@
       "player": "Mikko",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 3,
-      "event_number": 19
+      "event_number": 20
     },
     {
       "timestamp": 6264,
@@ -191,8 +180,7 @@
       "player": "Ville",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 3,
-      "event_number": 20
+      "event_number": 21
     },
     {
       "timestamp": 6269,
@@ -200,8 +188,7 @@
       "player": "Aku",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 3,
-      "event_number": 21
+      "event_number": 22
     },
     {
       "timestamp": 6270,
@@ -209,8 +196,7 @@
       "player": "Mikko",
       "target_player": "Ville",
       "outcome": "goal",
-      "possession_id": 3,
-      "event_number": 22
+      "event_number": 23
     },
     {
       "timestamp": 6382,
@@ -218,8 +204,7 @@
       "player": "Mikko",
       "target_player": "",
       "outcome": "",
-      "possession_id": 4,
-      "event_number": 23
+      "event_number": 24
     },
     {
       "timestamp": 6384,
@@ -227,8 +212,7 @@
       "player": "Mikko",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 4,
-      "event_number": 24
+      "event_number": 25
     },
     {
       "timestamp": 6387,
@@ -236,8 +220,7 @@
       "player": "Ville",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 4,
-      "event_number": 25
+      "event_number": 26
     },
     {
       "timestamp": 6391,
@@ -245,8 +228,7 @@
       "player": "Mikko",
       "target_player": "Pekka",
       "outcome": "success",
-      "possession_id": 4,
-      "event_number": 26
+      "event_number": 27
     },
     {
       "timestamp": 6392,
@@ -254,8 +236,7 @@
       "player": "Pekka",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 4,
-      "event_number": 27
+      "event_number": 28
     },
     {
       "timestamp": 6394,
@@ -263,8 +244,7 @@
       "player": "Ville",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 4,
-      "event_number": 28
+      "event_number": 29
     },
     {
       "timestamp": 6400,
@@ -272,8 +252,7 @@
       "player": "Aku",
       "target_player": "Pekka",
       "outcome": "success",
-      "possession_id": 4,
-      "event_number": 29
+      "event_number": 30
     },
     {
       "timestamp": 6407,
@@ -281,8 +260,7 @@
       "player": "Pekka",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 4,
-      "event_number": 30
+      "event_number": 31
     },
     {
       "timestamp": 6415,
@@ -290,8 +268,7 @@
       "player": "Mikko",
       "target_player": "Eero",
       "outcome": "success",
-      "possession_id": 4,
-      "event_number": 31
+      "event_number": 32
     },
     {
       "timestamp": 6415,
@@ -299,8 +276,7 @@
       "player": "Eero",
       "target_player": "Ville",
       "outcome": "goal",
-      "possession_id": 4,
-      "event_number": 32
+      "event_number": 33
     },
     {
       "timestamp": 6471,
@@ -308,8 +284,7 @@
       "player": "Ville",
       "target_player": "",
       "outcome": "",
-      "possession_id": 5,
-      "event_number": 33
+      "event_number": 34
     },
     {
       "timestamp": 6475,
@@ -317,8 +292,7 @@
       "player": "Ville",
       "target_player": "Antti",
       "outcome": "success",
-      "possession_id": 5,
-      "event_number": 34
+      "event_number": 35
     },
     {
       "timestamp": 6478,
@@ -326,8 +300,7 @@
       "player": "Antti",
       "target_player": "Ida",
       "outcome": "success",
-      "possession_id": 5,
-      "event_number": 35
+      "event_number": 36
     },
     {
       "timestamp": 6481,
@@ -335,8 +308,7 @@
       "player": "Ida",
       "target_player": "Eero",
       "outcome": "success",
-      "possession_id": 5,
-      "event_number": 36
+      "event_number": 37
     },
     {
       "timestamp": 6487,
@@ -344,8 +316,7 @@
       "player": "Eero",
       "target_player": "Antti",
       "outcome": "success",
-      "possession_id": 5,
-      "event_number": 37
+      "event_number": 38
     },
     {
       "timestamp": 6489,
@@ -353,8 +324,7 @@
       "player": "Antti",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 5,
-      "event_number": 38
+      "event_number": 39
     },
     {
       "timestamp": 6492,
@@ -362,8 +332,7 @@
       "player": "Aku",
       "target_player": "Eero",
       "outcome": "success",
-      "possession_id": 5,
-      "event_number": 39
+      "event_number": 40
     },
     {
       "timestamp": 6494,
@@ -371,8 +340,7 @@
       "player": "Eero",
       "target_player": "Ida",
       "outcome": "success",
-      "possession_id": 5,
-      "event_number": 40
+      "event_number": 41
     },
     {
       "timestamp": 6498,
@@ -380,8 +348,7 @@
       "player": "Ida",
       "target_player": "Eero",
       "outcome": "success",
-      "possession_id": 5,
-      "event_number": 41
+      "event_number": 42
     },
     {
       "timestamp": 6499,
@@ -389,8 +356,7 @@
       "player": "Eero",
       "target_player": "Ida",
       "outcome": "success",
-      "possession_id": 5,
-      "event_number": 42
+      "event_number": 43
     },
     {
       "timestamp": 6501,
@@ -398,8 +364,7 @@
       "player": "Ida",
       "target_player": "Ville",
       "outcome": "goal",
-      "possession_id": 5,
-      "event_number": 43
+      "event_number": 44
     },
     {
       "timestamp": 6580,
@@ -407,8 +372,7 @@
       "player": "Ville",
       "target_player": "",
       "outcome": "",
-      "possession_id": 6,
-      "event_number": 44
+      "event_number": 45
     },
     {
       "timestamp": 6581,
@@ -416,8 +380,7 @@
       "player": "Ville",
       "target_player": "Pekka",
       "outcome": "success",
-      "possession_id": 6,
-      "event_number": 45
+      "event_number": 46
     },
     {
       "timestamp": 6584,
@@ -425,8 +388,7 @@
       "player": "Pekka",
       "target_player": "Ida",
       "outcome": "success",
-      "possession_id": 6,
-      "event_number": 46
+      "event_number": 47
     },
     {
       "timestamp": 6588,
@@ -434,8 +396,7 @@
       "player": "Ida",
       "target_player": "Eero",
       "outcome": "success",
-      "possession_id": 6,
-      "event_number": 47
+      "event_number": 48
     },
     {
       "timestamp": 6589,
@@ -443,8 +404,7 @@
       "player": "Eero",
       "target_player": "Antti",
       "outcome": "success",
-      "possession_id": 6,
-      "event_number": 48
+      "event_number": 49
     },
     {
       "timestamp": 6592,
@@ -452,8 +412,7 @@
       "player": "Antti",
       "target_player": "Pekka",
       "outcome": "goal",
-      "possession_id": 6,
-      "event_number": 49
+      "event_number": 50
     },
     {
       "timestamp": 6840,
@@ -461,8 +420,7 @@
       "player": "Antti",
       "target_player": "",
       "outcome": "",
-      "possession_id": 7,
-      "event_number": 50
+      "event_number": 51
     },
     {
       "timestamp": 6843,
@@ -470,8 +428,7 @@
       "player": "Antti",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 7,
-      "event_number": 51
+      "event_number": 52
     },
     {
       "timestamp": 6847,
@@ -479,8 +436,7 @@
       "player": "Mikko",
       "target_player": "Ida",
       "outcome": "success",
-      "possession_id": 7,
-      "event_number": 52
+      "event_number": 53
     },
     {
       "timestamp": 6853,
@@ -488,8 +444,7 @@
       "player": "Ida",
       "target_player": "Antti",
       "outcome": "success",
-      "possession_id": 7,
-      "event_number": 53
+      "event_number": 54
     },
     {
       "timestamp": 6856,
@@ -497,8 +452,7 @@
       "player": "Antti",
       "target_player": "Ida",
       "outcome": "throwaway",
-      "possession_id": 7,
-      "event_number": 54
+      "event_number": 55
     },
     {
       "timestamp": 6918,
@@ -506,8 +460,7 @@
       "player": "Mikko",
       "target_player": "",
       "outcome": "",
-      "possession_id": 8,
-      "event_number": 55
+      "event_number": 56
     },
     {
       "timestamp": 6920,
@@ -515,8 +468,7 @@
       "player": "Mikko",
       "target_player": "Antti",
       "outcome": "success",
-      "possession_id": 8,
-      "event_number": 56
+      "event_number": 57
     },
     {
       "timestamp": 6922,
@@ -524,8 +476,7 @@
       "player": "Antti",
       "target_player": "Pekka",
       "outcome": "success",
-      "possession_id": 8,
-      "event_number": 57
+      "event_number": 58
     },
     {
       "timestamp": 6925,
@@ -533,8 +484,7 @@
       "player": "Pekka",
       "target_player": "Antti",
       "outcome": "success",
-      "possession_id": 8,
-      "event_number": 58
+      "event_number": 59
     },
     {
       "timestamp": 6927,
@@ -542,8 +492,7 @@
       "player": "Antti",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 8,
-      "event_number": 59
+      "event_number": 60
     },
     {
       "timestamp": 6929,
@@ -551,8 +500,7 @@
       "player": "Mikko",
       "target_player": "Pekka",
       "outcome": "success",
-      "possession_id": 8,
-      "event_number": 60
+      "event_number": 61
     },
     {
       "timestamp": 6931,
@@ -560,8 +508,7 @@
       "player": "Pekka",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 8,
-      "event_number": 61
+      "event_number": 62
     },
     {
       "timestamp": 6936,
@@ -569,8 +516,7 @@
       "player": "Ville",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 8,
-      "event_number": 62
+      "event_number": 63
     },
     {
       "timestamp": 6938,
@@ -578,8 +524,7 @@
       "player": "Mikko",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 8,
-      "event_number": 63
+      "event_number": 64
     },
     {
       "timestamp": 6941,
@@ -587,8 +532,7 @@
       "player": "Aku",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 8,
-      "event_number": 64
+      "event_number": 65
     },
     {
       "timestamp": 6944,
@@ -596,8 +540,7 @@
       "player": "Ville",
       "target_player": "Antti",
       "outcome": "goal",
-      "possession_id": 8,
-      "event_number": 65
+      "event_number": 66
     },
     {
       "timestamp": 7081,
@@ -605,8 +548,7 @@
       "player": "Mikko",
       "target_player": "",
       "outcome": "",
-      "possession_id": 9,
-      "event_number": 66
+      "event_number": 67
     },
     {
       "timestamp": 7083,
@@ -614,8 +556,7 @@
       "player": "Mikko",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 9,
-      "event_number": 67
+      "event_number": 68
     },
     {
       "timestamp": 7086,
@@ -623,8 +564,7 @@
       "player": "Ville",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 9,
-      "event_number": 68
+      "event_number": 69
     },
     {
       "timestamp": 7088,
@@ -632,8 +572,7 @@
       "player": "Aku",
       "target_player": "Pekka",
       "outcome": "success",
-      "possession_id": 9,
-      "event_number": 69
+      "event_number": 70
     },
     {
       "timestamp": 7091,
@@ -641,8 +580,7 @@
       "player": "Pekka",
       "target_player": "Eero",
       "outcome": "drop",
-      "possession_id": 9,
-      "event_number": 70
+      "event_number": 71
     },
     {
       "timestamp": 7134,
@@ -650,8 +588,7 @@
       "player": "Antti",
       "target_player": "",
       "outcome": "",
-      "possession_id": 10,
-      "event_number": 71
+      "event_number": 72
     },
     {
       "timestamp": 7136,
@@ -659,8 +596,7 @@
       "player": "Antti",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 10,
-      "event_number": 72
+      "event_number": 73
     },
     {
       "timestamp": 7139,
@@ -668,8 +604,7 @@
       "player": "Aku",
       "target_player": "Ida",
       "outcome": "success",
-      "possession_id": 10,
-      "event_number": 73
+      "event_number": 74
     },
     {
       "timestamp": 7141,
@@ -677,8 +612,7 @@
       "player": "Ida",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 10,
-      "event_number": 74
+      "event_number": 75
     },
     {
       "timestamp": 7144,
@@ -686,8 +620,7 @@
       "player": "Mikko",
       "target_player": "Ida",
       "outcome": "drop",
-      "possession_id": 10,
-      "event_number": 75
+      "event_number": 76
     },
     {
       "timestamp": 7170,
@@ -695,8 +628,7 @@
       "player": "Mikko",
       "target_player": "",
       "outcome": "",
-      "possession_id": 11,
-      "event_number": 76
+      "event_number": 77
     },
     {
       "timestamp": 7179,
@@ -704,8 +636,7 @@
       "player": "Mikko",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 11,
-      "event_number": 77
+      "event_number": 78
     },
     {
       "timestamp": 7181,
@@ -713,8 +644,7 @@
       "player": "",
       "target_player": "",
       "outcome": "",
-      "possession_id": 11,
-      "event_number": 78
+      "event_number": 79
     },
     {
       "timestamp": 7207,
@@ -722,8 +652,7 @@
       "player": "",
       "target_player": "",
       "outcome": "",
-      "possession_id": 11,
-      "event_number": 79
+      "event_number": 80
     },
     {
       "timestamp": 7212,
@@ -731,8 +660,7 @@
       "player": "Ville",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 11,
-      "event_number": 80
+      "event_number": 81
     },
     {
       "timestamp": 7215,
@@ -740,8 +668,7 @@
       "player": "Mikko",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 11,
-      "event_number": 81
+      "event_number": 82
     },
     {
       "timestamp": 7217,
@@ -749,8 +676,7 @@
       "player": "Aku",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 11,
-      "event_number": 82
+      "event_number": 83
     },
     {
       "timestamp": 7220,
@@ -758,8 +684,7 @@
       "player": "Ville",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 11,
-      "event_number": 83
+      "event_number": 84
     },
     {
       "timestamp": 7223,
@@ -767,8 +692,7 @@
       "player": "Mikko",
       "target_player": "Antti",
       "outcome": "success",
-      "possession_id": 11,
-      "event_number": 84
+      "event_number": 85
     },
     {
       "timestamp": 7226,
@@ -776,8 +700,7 @@
       "player": "Antti",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 11,
-      "event_number": 85
+      "event_number": 86
     },
     {
       "timestamp": 7233,
@@ -785,8 +708,7 @@
       "player": "Aku",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 11,
-      "event_number": 86
+      "event_number": 87
     },
     {
       "timestamp": 7237,
@@ -794,8 +716,7 @@
       "player": "Mikko",
       "target_player": "Ida",
       "outcome": "success",
-      "possession_id": 11,
-      "event_number": 87
+      "event_number": 88
     },
     {
       "timestamp": 7240,
@@ -803,8 +724,7 @@
       "player": "",
       "target_player": "",
       "outcome": "",
-      "possession_id": 11,
-      "event_number": 88
+      "event_number": 89
     },
     {
       "timestamp": 7256,
@@ -812,8 +732,7 @@
       "player": "",
       "target_player": "",
       "outcome": "",
-      "possession_id": 11,
-      "event_number": 89
+      "event_number": 90
     },
     {
       "timestamp": 7258,
@@ -821,8 +740,7 @@
       "player": "Ida",
       "target_player": "Ville",
       "outcome": "goal",
-      "possession_id": 11,
-      "event_number": 90
+      "event_number": 91
     },
     {
       "timestamp": 7366,
@@ -830,8 +748,7 @@
       "player": "Ville",
       "target_player": "",
       "outcome": "",
-      "possession_id": 12,
-      "event_number": 91
+      "event_number": 92
     },
     {
       "timestamp": 7369,
@@ -839,8 +756,7 @@
       "player": "Ville",
       "target_player": "Pekka",
       "outcome": "success",
-      "possession_id": 12,
-      "event_number": 92
+      "event_number": 93
     },
     {
       "timestamp": 7375,
@@ -848,8 +764,7 @@
       "player": "Pekka",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 12,
-      "event_number": 93
+      "event_number": 94
     },
     {
       "timestamp": 7376,
@@ -857,8 +772,7 @@
       "player": "Mikko",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 12,
-      "event_number": 94
+      "event_number": 95
     },
     {
       "timestamp": 7381,
@@ -866,8 +780,7 @@
       "player": "Ville",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 12,
-      "event_number": 95
+      "event_number": 96
     },
     {
       "timestamp": 7384,
@@ -875,8 +788,7 @@
       "player": "Mikko",
       "target_player": "Pekka",
       "outcome": "success",
-      "possession_id": 12,
-      "event_number": 96
+      "event_number": 97
     },
     {
       "timestamp": 7387,
@@ -884,8 +796,7 @@
       "player": "Pekka",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 12,
-      "event_number": 97
+      "event_number": 98
     },
     {
       "timestamp": 7392,
@@ -893,8 +804,7 @@
       "player": "Ville",
       "target_player": "Eero",
       "outcome": "goal-throwaway",
-      "possession_id": 12,
-      "event_number": 98
+      "event_number": 99
     },
     {
       "timestamp": 7596,
@@ -902,8 +812,7 @@
       "player": "Ville",
       "target_player": "",
       "outcome": "",
-      "possession_id": 13,
-      "event_number": 99
+      "event_number": 100
     },
     {
       "timestamp": 7601,
@@ -911,8 +820,7 @@
       "player": "Ville",
       "target_player": "Antti",
       "outcome": "success",
-      "possession_id": 13,
-      "event_number": 100
+      "event_number": 101
     },
     {
       "timestamp": 7601,
@@ -920,8 +828,7 @@
       "player": "",
       "target_player": "",
       "outcome": "",
-      "possession_id": 13,
-      "event_number": 101
+      "event_number": 102
     },
     {
       "timestamp": 7639,
@@ -929,8 +836,7 @@
       "player": "",
       "target_player": "",
       "outcome": "",
-      "possession_id": 13,
-      "event_number": 102
+      "event_number": 103
     },
     {
       "timestamp": 7644,
@@ -938,8 +844,7 @@
       "player": "Antti",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 13,
-      "event_number": 103
+      "event_number": 104
     },
     {
       "timestamp": 7649,
@@ -947,8 +852,7 @@
       "player": "Ville",
       "target_player": "Eero",
       "outcome": "success",
-      "possession_id": 13,
-      "event_number": 104
+      "event_number": 105
     },
     {
       "timestamp": 7651,
@@ -956,8 +860,7 @@
       "player": "Eero",
       "target_player": "Ida",
       "outcome": "success",
-      "possession_id": 13,
-      "event_number": 105
+      "event_number": 106
     },
     {
       "timestamp": 7652,
@@ -965,8 +868,7 @@
       "player": "Ida",
       "target_player": "Antti",
       "outcome": "success",
-      "possession_id": 13,
-      "event_number": 106
+      "event_number": 107
     },
     {
       "timestamp": 7654,
@@ -974,8 +876,7 @@
       "player": "Antti",
       "target_player": "Eero",
       "outcome": "goal-throwaway",
-      "possession_id": 13,
-      "event_number": 107
+      "event_number": 108
     },
     {
       "timestamp": 7701,
@@ -983,8 +884,7 @@
       "player": "Antti",
       "target_player": "",
       "outcome": "",
-      "possession_id": 14,
-      "event_number": 108
+      "event_number": 109
     },
     {
       "timestamp": 7704,
@@ -992,8 +892,7 @@
       "player": "Antti",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 14,
-      "event_number": 109
+      "event_number": 110
     },
     {
       "timestamp": 7704,
@@ -1001,8 +900,7 @@
       "player": "Aku",
       "target_player": "Ville",
       "outcome": "goal-throwaway",
-      "possession_id": 14,
-      "event_number": 110
+      "event_number": 111
     },
     {
       "timestamp": 7789,
@@ -1010,8 +908,7 @@
       "player": "Antti",
       "target_player": "",
       "outcome": "",
-      "possession_id": 15,
-      "event_number": 111
+      "event_number": 112
     },
     {
       "timestamp": 7792,
@@ -1019,8 +916,7 @@
       "player": "Antti",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 15,
-      "event_number": 112
+      "event_number": 113
     },
     {
       "timestamp": 7795,
@@ -1028,8 +924,7 @@
       "player": "Mikko",
       "target_player": "Eero",
       "outcome": "success",
-      "possession_id": 15,
-      "event_number": 113
+      "event_number": 114
     },
     {
       "timestamp": 7802,
@@ -1037,8 +932,7 @@
       "player": "Eero",
       "target_player": "Pekka",
       "outcome": "throwaway",
-      "possession_id": 15,
-      "event_number": 114
+      "event_number": 115
     },
     {
       "timestamp": 7823,
@@ -1046,8 +940,7 @@
       "player": "Antti",
       "target_player": "",
       "outcome": "",
-      "possession_id": 16,
-      "event_number": 115
+      "event_number": 116
     },
     {
       "timestamp": 7828,
@@ -1055,8 +948,7 @@
       "player": "Antti",
       "target_player": "Eero",
       "outcome": "success",
-      "possession_id": 16,
-      "event_number": 116
+      "event_number": 117
     },
     {
       "timestamp": 7832,
@@ -1064,8 +956,7 @@
       "player": "Eero",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 16,
-      "event_number": 117
+      "event_number": 118
     },
     {
       "timestamp": 7841,
@@ -1073,8 +964,7 @@
       "player": "Mikko",
       "target_player": "Antti",
       "outcome": "success",
-      "possession_id": 16,
-      "event_number": 118
+      "event_number": 119
     },
     {
       "timestamp": 7847,
@@ -1082,8 +972,7 @@
       "player": "Antti",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 16,
-      "event_number": 119
+      "event_number": 120
     },
     {
       "timestamp": 7853,
@@ -1091,8 +980,7 @@
       "player": "Mikko",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 16,
-      "event_number": 120
+      "event_number": 121
     },
     {
       "timestamp": 7859,
@@ -1100,8 +988,7 @@
       "player": "Aku",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 16,
-      "event_number": 121
+      "event_number": 122
     },
     {
       "timestamp": 7862,
@@ -1109,8 +996,7 @@
       "player": "Mikko",
       "target_player": "Pekka",
       "outcome": "success",
-      "possession_id": 16,
-      "event_number": 122
+      "event_number": 123
     },
     {
       "timestamp": 7866,
@@ -1118,8 +1004,7 @@
       "player": "Pekka",
       "target_player": "Mikko",
       "outcome": "success",
-      "possession_id": 16,
-      "event_number": 123
+      "event_number": 124
     },
     {
       "timestamp": 7870,
@@ -1127,8 +1012,7 @@
       "player": "Mikko",
       "target_player": "Antti",
       "outcome": "success",
-      "possession_id": 16,
-      "event_number": 124
+      "event_number": 125
     },
     {
       "timestamp": 7876,
@@ -1136,8 +1020,7 @@
       "player": "Antti",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 16,
-      "event_number": 125
+      "event_number": 126
     },
     {
       "timestamp": 7878,
@@ -1145,8 +1028,7 @@
       "player": "Aku",
       "target_player": "Antti",
       "outcome": "goal",
-      "possession_id": 16,
-      "event_number": 126
+      "event_number": 127
     },
     {
       "timestamp": 7931,
@@ -1154,8 +1036,7 @@
       "player": "Antti",
       "target_player": "",
       "outcome": "",
-      "possession_id": 17,
-      "event_number": 127
+      "event_number": 128
     },
     {
       "timestamp": 7932,
@@ -1163,8 +1044,7 @@
       "player": "Antti",
       "target_player": "Ida",
       "outcome": "success",
-      "possession_id": 17,
-      "event_number": 128
+      "event_number": 129
     },
     {
       "timestamp": 7935,
@@ -1172,8 +1052,7 @@
       "player": "Ida",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 17,
-      "event_number": 129
+      "event_number": 130
     },
     {
       "timestamp": 7941,
@@ -1181,8 +1060,7 @@
       "player": "Aku",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 17,
-      "event_number": 130
+      "event_number": 131
     },
     {
       "timestamp": 7943,
@@ -1190,8 +1068,7 @@
       "player": "Ville",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 17,
-      "event_number": 131
+      "event_number": 132
     },
     {
       "timestamp": 7947,
@@ -1199,8 +1076,7 @@
       "player": "Aku",
       "target_player": "Ville",
       "outcome": "success",
-      "possession_id": 17,
-      "event_number": 132
+      "event_number": 133
     },
     {
       "timestamp": 7952,
@@ -1208,8 +1084,7 @@
       "player": "Ville",
       "target_player": "Ida",
       "outcome": "success",
-      "possession_id": 17,
-      "event_number": 133
+      "event_number": 134
     },
     {
       "timestamp": 7955,
@@ -1217,8 +1092,7 @@
       "player": "Ida",
       "target_player": "Pekka",
       "outcome": "success",
-      "possession_id": 17,
-      "event_number": 134
+      "event_number": 135
     },
     {
       "timestamp": 7957,
@@ -1226,8 +1100,7 @@
       "player": "Pekka",
       "target_player": "Aku",
       "outcome": "success",
-      "possession_id": 17,
-      "event_number": 135
+      "event_number": 136
     },
     {
       "timestamp": 7959,
@@ -1235,8 +1108,7 @@
       "player": "Aku",
       "target_player": "Ville",
       "outcome": "goal",
-      "possession_id": 17,
-      "event_number": 136
+      "event_number": 137
     },
     {
       "timestamp": 8094,
@@ -1244,8 +1116,7 @@
       "player": "Antti",
       "target_player": "",
       "outcome": "",
-      "possession_id": 18,
-      "event_number": 137
+      "event_number": 138
     },
     {
       "timestamp": 8101,
@@ -1253,8 +1124,7 @@
       "player": "Antti",
       "target_player": "Ida",
       "outcome": "success",
-      "possession_id": 18,
-      "event_number": 138
+      "event_number": 139
     },
     {
       "timestamp": 8105,
@@ -1262,35 +1132,7 @@
       "player": "Ida",
       "target_player": "Ville",
       "outcome": "goal",
-      "possession_id": 18,
-      "event_number": 139
-    },
-    {
-      "timestamp": 8217,
-      "event_type": "possession_start",
-      "player": "Antti",
-      "target_player": "",
-      "outcome": "",
-      "possession_id": 19,
       "event_number": 140
-    },
-    {
-      "timestamp": 8218,
-      "event_type": "pass",
-      "player": "Antti",
-      "target_player": "Pekka",
-      "outcome": "success",
-      "possession_id": 19,
-      "event_number": 141
-    },
-    {
-      "timestamp": 8221,
-      "event_type": "pass",
-      "player": "Pekka",
-      "target_player": "Aku",
-      "outcome": "throwaway",
-      "possession_id": 19,
-      "event_number": 142
     }
   ],
   "videoUrl": "https://www.youtube.com/watch?v=rzXQUqehlh0"

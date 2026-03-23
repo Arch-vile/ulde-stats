@@ -45,6 +45,16 @@ export async function updateEvent(gameId: string, event: Event): Promise<void> {
   })
 }
 
+export async function insertEvent(gameId: string, afterEventNumber: number, event: Omit<Event, 'event_number'>): Promise<Event[]> {
+  const res = await fetch(`${BASE}/games/${gameId}/events/insert`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ after_event_number: afterEventNumber, event }),
+  })
+  const data = await res.json() as { events: Event[] }
+  return data.events
+}
+
 export async function deleteEvent(gameId: string, eventNumber: number): Promise<Event[]> {
   const res = await fetch(`${BASE}/games/${gameId}/events/${eventNumber}`, {
     method: 'DELETE',

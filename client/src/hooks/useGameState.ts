@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import type { Event, Outcome } from '../types'
-import { saveEvent, updateEvent, deleteEvent as deleteEventApi } from '../api'
+import { saveEvent, insertEvent as insertEventApi, updateEvent, deleteEvent as deleteEventApi } from '../api'
 
 interface GameState {
   gameId: string
@@ -9,23 +9,20 @@ interface GameState {
   pendingPassIndex: number | null
   players: string[]
   currentPlayer: string
-  possessionId: number
   needsPossessionStart: boolean
   isPaused: boolean
 }
 
 function deriveState(
   events: Event[],
-): Pick<GameState, 'currentPlayer' | 'possessionId' | 'needsPossessionStart' | 'isPaused'> {
-  if (events.length === 0) return { currentPlayer: '', possessionId: 0, needsPossessionStart: true, isPaused: false }
+): Pick<GameState, 'currentPlayer' | 'needsPossessionStart' | 'isPaused'> {
+  if (events.length === 0) return { currentPlayer: '', needsPossessionStart: true, isPaused: false }
 
   let currentPlayer = ''
-  let possessionId = 0
   let needsPossessionStart = true
   let isPaused = false
 
   for (const ev of events) {
-    possessionId = ev.possession_id
     if (ev.event_type === 'possession_start') {
       currentPlayer = ev.player
       needsPossessionStart = false
@@ -45,7 +42,7 @@ function deriveState(
     }
   }
 
-  return { currentPlayer, possessionId, needsPossessionStart, isPaused }
+  return { currentPlayer, needsPossessionStart, isPaused }
 }
 
 const initialState: GameState = {
@@ -54,7 +51,6 @@ const initialState: GameState = {
   pendingPassIndex: null,
   players: [],
   currentPlayer: '',
-  possessionId: 0,
   needsPossessionStart: true,
   isPaused: false,
 }
@@ -93,14 +89,12 @@ export function useGameState() {
     const s = stateRef.current
 
     if (s.needsPossessionStart) {
-      const nextPossessionId = s.possessionId + 1
       const event: Event = {
         timestamp,
         event_type: 'possession_start',
         player: playerName,
         target_player: '',
         outcome: '',
-        possession_id: nextPossessionId,
         event_number: s.events.length + 1,
       }
       void saveEvent(s.gameId, event)
@@ -108,7 +102,6 @@ export function useGameState() {
         ...prev,
         events: [...prev.events, event],
         currentPlayer: playerName,
-        possessionId: nextPossessionId,
         needsPossessionStart: false,
         pendingPassIndex: null,
       }))
@@ -119,7 +112,6 @@ export function useGameState() {
         player: s.currentPlayer,
         target_player: playerName,
         outcome: 'success',
-        possession_id: s.possessionId,
         event_number: s.events.length + 1,
       }
       void saveEvent(s.gameId, event)
@@ -143,7 +135,6 @@ export function useGameState() {
       player: s.currentPlayer,
       target_player: '',
       outcome: 'turnover',
-      possession_id: s.possessionId,
       event_number: s.events.length + 1,
     }
     void saveEvent(s.gameId, event)
@@ -179,6 +170,13 @@ export function useGameState() {
     }))
   }, [])
 
+  const insertGameEvent = useCallback((afterEventNumber: number, event: Omit<Event, 'event_number'>) => {
+    const s = stateRef.current
+    void insertEventApi(s.gameId, afterEventNumber, event).then(events => {
+      setState(prev => ({ ...prev, events, pendingPassIndex: null, ...deriveState(events) }))
+    })
+  }, [])
+
   const deleteGameEvent = useCallback((index: number) => {
     const s = stateRef.current
     void deleteEventApi(s.gameId, s.events[index].event_number).then(events => {
@@ -204,7 +202,6 @@ export function useGameState() {
       player: '',
       target_player: '',
       outcome: '',
-      possession_id: s.possessionId,
       event_number: s.events.length + 1,
     }
     void saveEvent(s.gameId, event)
@@ -223,7 +220,6 @@ export function useGameState() {
       player: '',
       target_player: '',
       outcome: '',
-      possession_id: s.possessionId,
       event_number: s.events.length + 1,
     }
     void saveEvent(s.gameId, event)
@@ -251,6 +247,7 @@ export function useGameState() {
     recordGameContinue,
     updateEventOutcome,
     updateEventTimestamp,
+    insertGameEvent,
     deleteGameEvent,
     addPlayer,
   }

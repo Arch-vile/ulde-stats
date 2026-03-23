@@ -16,7 +16,7 @@ function metaFromId(id: string): GameMeta {
   return { id, date, opponent }
 }
 
-const HEADER = 'event_number,timestamp,event_type,player,target_player,outcome,possession_id'
+const HEADER = 'event_number,timestamp,event_type,player,target_player,outcome'
 
 function parseEvent(line: string): Event {
   const parts = line.split(',')
@@ -27,7 +27,6 @@ function parseEvent(line: string): Event {
     player: parts[3],
     target_player: parts[4],
     outcome: parts[5] as Event['outcome'],
-    possession_id: parseInt(parts[6]),
   }
 }
 
@@ -39,7 +38,6 @@ function serializeEvent(event: Event): string {
     event.player,
     event.target_player,
     event.outcome,
-    event.possession_id,
   ].join(',')
 }
 
