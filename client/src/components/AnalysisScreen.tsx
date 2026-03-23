@@ -173,6 +173,32 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
   const throwPlayers = sortPlayers(players.filter(p => p.throws > 0), throwSort.dir, throwExtractors[throwSort.key])
   const catchPlayers = sortPlayers(players.filter(p => p.catches + p.drops > 0), catchSort.dir, catchExtractors[catchSort.key])
 
+  const throwTeam = throwPlayers.reduce(
+    (acc, p) => ({
+      throws: acc.throws + p.throws,
+      completions: acc.completions + p.completions,
+      goalAttempts: acc.goalAttempts + p.goalAttempts,
+      goalsThrown: acc.goalsThrown + p.goalsThrown,
+      dropsForced: acc.dropsForced + p.dropsForced,
+      throwaways: acc.throwaways + p.throwaways,
+      goalDropsForced: acc.goalDropsForced + p.goalDropsForced,
+      goalThrowaways: acc.goalThrowaways + p.goalThrowaways,
+      totalHoldTime: acc.totalHoldTime + p.totalHoldTime,
+      holdCount: acc.holdCount + p.holdCount,
+    }),
+    { throws: 0, completions: 0, goalAttempts: 0, goalsThrown: 0, dropsForced: 0, throwaways: 0, goalDropsForced: 0, goalThrowaways: 0, totalHoldTime: 0, holdCount: 0 }
+  )
+
+  const catchTeam = catchPlayers.reduce(
+    (acc, p) => ({
+      catches: acc.catches + p.catches,
+      drops: acc.drops + p.drops,
+      goalDropsReceived: acc.goalDropsReceived + p.goalDropsReceived,
+      goalsScored: acc.goalsScored + p.goalsScored,
+    }),
+    { catches: 0, drops: 0, goalDropsReceived: 0, goalsScored: 0 }
+  )
+
   function Th<K extends string>({
     label, k, active, dir, onClick, title
   }: { label: string; k: K; active: boolean; dir: SortDir; onClick: (k: K) => void; title?: string }) {
@@ -217,6 +243,13 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
             <span className="summary-label">Turnovers</span>
           </div>
         </div>
+        <dl className="stats-legend">
+          <div><dt>Goals</dt><dd>Total goals scored</dd></div>
+          <div><dt>Possessions</dt><dd>Number of times the team received or picked up the disc</dd></div>
+          <div><dt>Efficiency</dt><dd>Share of possessions that ended in a goal (goals / possessions)</dd></div>
+          <div><dt>Completion %</dt><dd>Share of all throws that were successfully received</dd></div>
+          <div><dt>Turnovers</dt><dd>Total turnovers — throwaways, drops, and stalls combined</dd></div>
+        </dl>
 
         <div className="stats-section-label">Throwing</div>
         <div className="stats-table-wrap">
@@ -257,6 +290,29 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
                 )
               })}
             </tbody>
+            <tfoot>
+              {(() => {
+                const throwPct = throwTeam.throws > 0 ? throwTeam.completions / throwTeam.throws * 100 : -1
+                const throwPctCls = throwPct < 0 ? 'muted' : throwPct >= 95 ? 'stat-good' : throwPct >= 90 ? 'stat-warn' : 'stat-bad'
+                const goalPct = throwTeam.goalAttempts > 0 ? throwTeam.goalsThrown / throwTeam.goalAttempts * 100 : -1
+                const goalPctCls = goalPct < 0 ? 'muted' : goalPct >= 90 ? 'stat-good' : goalPct >= 80 ? 'stat-warn' : 'stat-bad'
+                const avgHoldTeam = throwTeam.holdCount > 0 ? `${(throwTeam.totalHoldTime / throwTeam.holdCount).toFixed(1)}s` : '—'
+                return (
+                  <tr className="team-row">
+                    <td className="stats-name">TEAM</td>
+                    <td>{throwTeam.throws}</td>
+                    <td className={throwPctCls}>{throwPct < 0 ? '—' : pct(throwTeam.completions, throwTeam.throws)}</td>
+                    <td className="muted">{throwTeam.goalAttempts || '—'}</td>
+                    <td className={goalPctCls}>{goalPct < 0 ? '—' : pct(throwTeam.goalsThrown, throwTeam.goalAttempts)}</td>
+                    <td className={throwTeam.dropsForced > 0 ? 'stat-bad' : 'muted'}>{throwTeam.dropsForced || '—'}</td>
+                    <td className={throwTeam.throwaways > 0 ? 'stat-bad' : 'muted'}>{throwTeam.throwaways || '—'}</td>
+                    <td className={throwTeam.goalDropsForced > 0 ? 'stat-bad' : 'muted'}>{throwTeam.goalDropsForced || '—'}</td>
+                    <td className={throwTeam.goalThrowaways > 0 ? 'stat-bad' : 'muted'}>{throwTeam.goalThrowaways || '—'}</td>
+                    <td className="muted">{avgHoldTeam}</td>
+                  </tr>
+                )
+              })()}
+            </tfoot>
           </table>
         </div>
 
@@ -297,6 +353,16 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
                 </tr>
               ))}
             </tbody>
+            <tfoot>
+              <tr className="team-row">
+                <td className="stats-name">TEAM</td>
+                <td>{catchTeam.catches}</td>
+                <td className={catchTeam.drops > 0 ? 'stat-bad' : 'muted'}>{catchTeam.drops || '—'}</td>
+                <td className="muted">{pct(catchTeam.catches, catchTeam.catches + catchTeam.drops)}</td>
+                <td className={catchTeam.goalDropsReceived > 0 ? 'stat-bad' : 'muted'}>{catchTeam.goalDropsReceived || '—'}</td>
+                <td className={catchTeam.goalsScored > 0 ? 'stat-good' : 'muted'}>{catchTeam.goalsScored || '—'}</td>
+              </tr>
+            </tfoot>
           </table>
         </div>
         <dl className="stats-legend">
