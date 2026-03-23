@@ -33,6 +33,7 @@ function gameDataPlugin() {
 export default defineConfig(() => {
   const isViewer = process.env.VITE_VIEWER === 'true'
   return {
+    base: './',
     plugins: [react(), ...(isViewer ? [gameDataPlugin()] : [])],
     define: {
       'import.meta.env.VITE_VIEWER': JSON.stringify(isViewer),
