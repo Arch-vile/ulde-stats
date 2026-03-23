@@ -869,7 +869,10 @@ button:not(:disabled):active {
 
 .stat-good {
   color: var(--success);
-  font-weight: 600;
+}
+
+.stat-warn {
+  color: #ffb300;
 }
 
 .stat-bad {

@@ -10,6 +10,7 @@ export interface PlayerStats {
   goalsThrown: number
   goalDropsForced: number   // goal throws dropped by receiver
   goalThrowaways: number    // goal throws that were a throwaway
+  goalAttempts: number      // goalsThrown + goalDropsForced + goalThrowaways
   totalHoldTime: number     // sum of seconds holding disc before throwing/turning over
   holdCount: number         // number of possession sequences counted
   // receiving
@@ -44,12 +45,8 @@ export function dropForcedPct(p: PlayerStats): string {
   return pct(p.dropsForced, p.throws)
 }
 
-export function goalAttempts(p: PlayerStats): number {
-  return p.goalsThrown + p.goalDropsForced + p.goalThrowaways
-}
-
 export function goalConvPct(p: PlayerStats): string {
-  return pct(p.goalsThrown, goalAttempts(p))
+  return pct(p.goalsThrown, p.goalAttempts)
 }
 
 export function catchPct(p: PlayerStats): string {
@@ -106,7 +103,7 @@ export function computeStats(eventsByGame: Event[][]): { players: PlayerStats[];
       playerMap.set(name, {
         name,
         throws: 0, completions: 0, throwaways: 0, dropsForced: 0,
-        goalsThrown: 0, goalDropsForced: 0, goalThrowaways: 0,
+        goalsThrown: 0, goalDropsForced: 0, goalThrowaways: 0, goalAttempts: 0,
         totalHoldTime: 0, holdCount: 0,
         catches: 0, drops: 0, goalDropsReceived: 0, goalsScored: 0,
       })
@@ -164,13 +161,13 @@ export function computeStats(eventsByGame: Event[][]): { players: PlayerStats[];
         } else if (ev.outcome === 'goal') {
           thrower.completions++
           thrower.goalsThrown++
+          thrower.goalAttempts++
           team.completions++
           team.goals++
           if (ev.target_player) {
             const receiver = get(ev.target_player)
             receiver.catches++
             receiver.goalsScored++
-            // Receiver scored — no further disc holding needed
           }
         } else if (ev.outcome === 'throwaway') {
           thrower.throwaways++
@@ -181,6 +178,7 @@ export function computeStats(eventsByGame: Event[][]): { players: PlayerStats[];
           if (ev.target_player) get(ev.target_player).drops++
         } else if (ev.outcome === 'goal-drop') {
           thrower.goalDropsForced++
+          thrower.goalAttempts++
           team.turnovers++
           if (ev.target_player) {
             const receiver = get(ev.target_player)
@@ -189,6 +187,7 @@ export function computeStats(eventsByGame: Event[][]): { players: PlayerStats[];
           }
         } else if (ev.outcome === 'goal-throwaway') {
           thrower.goalThrowaways++
+          thrower.goalAttempts++
           team.turnovers++
         }
 
