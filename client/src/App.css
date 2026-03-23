@@ -619,35 +619,132 @@ button:not(:disabled):active {
   border-color: var(--accent);
 }
 
-/* ── Analysis Screen ── */
+/* ── Game Select Screen ── */
+.game-select-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.game-select-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.game-select-title {
+  font-size: 1rem;
+  font-weight: 600;
+  flex: 1;
+}
+
+.game-select-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  max-width: 700px;
+  width: 100%;
+  align-self: center;
+}
+
+.game-select-empty {
+  padding: 2rem 1.25rem;
+}
+
+.game-select-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.game-select-row:last-child {
+  border-bottom: none;
+}
+
+.game-select-row.selected {
+  background: var(--surface);
+}
+
+.game-select-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  cursor: pointer;
+}
+
+.game-select-label input[type="checkbox"] {
+  accent-color: var(--accent);
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+}
+
+.game-select-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.game-select-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.game-select-matchup {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.game-select-tournament {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.btn-pbp {
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.game-select-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  max-width: 700px;
+  width: 100%;
+  align-self: center;
+}
+
+/* ── Analysis Screen (stats view) ── */
 .analysis-screen {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-.analysis-sidebar {
-  flex-shrink: 0;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+.analysis-topbar {
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 1rem;
-  padding: 0.5rem 1rem;
-  overflow-x: auto;
+  padding: 0.6rem 1.25rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
 }
 
-.analysis-sidebar-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.analysis-topbar-title {
+  font-size: 0.9rem;
   color: var(--text-muted);
-  white-space: nowrap;
-  flex-shrink: 0;
 }
 
 .btn-back {
@@ -671,59 +768,6 @@ button:not(:disabled):active {
   white-space: nowrap;
 }
 
-.analysis-sidebar .game-list {
-  display: flex;
-  flex-direction: row;
-  gap: 0.25rem;
-  flex-wrap: nowrap;
-}
-
-.game-item-row {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.btn-review {
-  flex-shrink: 0;
-  font-size: 0.72rem;
-}
-
-.game-item {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.25rem 0.6rem;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  font-size: 0.8rem;
-  white-space: nowrap;
-}
-
-.game-item:hover {
-  border-color: var(--accent);
-}
-
-.game-item.selected {
-  background: var(--surface2);
-  border-color: var(--accent);
-}
-
-.game-item input[type="checkbox"] {
-  accent-color: var(--accent);
-  flex-shrink: 0;
-}
-
-.game-item-date {
-  color: var(--text-muted);
-  font-size: 0.72rem;
-}
-
-.game-item-opponent {
-  font-weight: 500;
-}
 
 .analysis-main {
   flex: 1;
@@ -738,11 +782,6 @@ button:not(:disabled):active {
   width: 100%;
 }
 
-.analysis-empty {
-  margin: auto;
-  color: var(--text-muted);
-  font-size: 1rem;
-}
 
 /* Team summary */
 .team-summary {

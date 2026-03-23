@@ -67,10 +67,7 @@ export function GameReviewScreen({ meta, events, onBack }: GameReviewScreenProps
   const filtered = useMemo(() => {
     return events.filter(ev => {
       if (selectedTypes.size > 0 && !selectedTypes.has(ev.event_type)) return false
-      if (selectedPlayers.size > 0) {
-        const matchesPlayer = selectedPlayers.has(ev.player) || selectedPlayers.has(ev.target_player)
-        if (!matchesPlayer) return false
-      }
+      if (selectedPlayers.size > 0 && !selectedPlayers.has(ev.player)) return false
       return true
     })
   }, [events, selectedPlayers, selectedTypes])
