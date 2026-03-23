@@ -228,6 +228,13 @@ body {
   margin-left: auto;
 }
 
+.build-hash {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-family: monospace;
+  opacity: 0.6;
+}
+
 /* ── Buttons ── */
 button {
   cursor: pointer;
@@ -744,6 +751,7 @@ button:not(:disabled):active {
 .game-select-title {
   font-size: 1rem;
   font-weight: 600;
+  color: var(--text);
   flex: 1;
 }
 

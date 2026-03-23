@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import fs from 'node:fs'
+import { execSync } from 'node:child_process'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -32,11 +33,15 @@ function gameDataPlugin() {
 // https://vite.dev/config/
 export default defineConfig(() => {
   const isViewer = process.env.VITE_VIEWER === 'true'
+  const gitHash = (() => {
+    try { return execSync('git rev-parse --short HEAD').toString().trim() } catch { return 'unknown' }
+  })()
   return {
     base: './',
     plugins: [react(), ...(isViewer ? [gameDataPlugin()] : [])],
     define: {
       'import.meta.env.VITE_VIEWER': JSON.stringify(isViewer),
+      __GIT_HASH__: JSON.stringify(gitHash),
     },
     resolve: {
       alias: isViewer ? [

@@ -92,7 +92,7 @@ In the AWS console (or CLI), create a bucket and enable static website hosting:
 **3. Upload the build output**
 
 ```sh
-aws s3 sync client/dist-viewer s3://your-bucket-name --delete
+aws s3 sync client/dist-viewer/ s3://www.mysio.org/ulde-stats/ --delete
 ```
 
 The `--delete` flag removes files from S3 that no longer exist in the local build (e.g. old hashed asset files after a rebuild).

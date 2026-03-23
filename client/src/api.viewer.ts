@@ -25,4 +25,5 @@ export async function createGame(): Promise<never>     { throw new Error('Read-o
 export async function updateGameMeta(): Promise<never> { throw new Error('Read-only viewer') }
 export async function saveEvent(): Promise<never>      { throw new Error('Read-only viewer') }
 export async function updateEvent(): Promise<never>    { throw new Error('Read-only viewer') }
+export async function insertEvent(): Promise<never>    { throw new Error('Read-only viewer') }
 export async function deleteEvent(): Promise<never>    { throw new Error('Read-only viewer') }

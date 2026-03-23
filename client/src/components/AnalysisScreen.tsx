@@ -123,6 +123,7 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
         <div className="game-select-header">
           {onBack && <button className="btn-back" onClick={onBack}>← Back</button>}
           <h2 className="game-select-title">Analysis</h2>
+          <span className="build-hash">{__GIT_HASH__}</span>
         </div>
         <div className="game-select-list">
           {games.length === 0 && <p className="muted game-select-empty">No games recorded yet.</p>}
