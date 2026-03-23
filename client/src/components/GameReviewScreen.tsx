@@ -3,7 +3,7 @@ import type { Event, EventType } from '../types'
 import type { GameMeta } from '../types'
 
 function videoTimestampUrl(videoUrl: string, seconds: number): string {
-  const s = Math.floor(seconds)
+  const s = Math.max(0, Math.floor(seconds) - 5)
   if (videoUrl.includes('youtu.be/')) {
     const sep = videoUrl.includes('?') ? '&' : '?'
     return `${videoUrl}${sep}t=${s}`
