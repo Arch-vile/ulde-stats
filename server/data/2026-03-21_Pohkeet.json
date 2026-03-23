@@ -1,0 +1,915 @@
+{
+  "date": "2026-03-21",
+  "teamName": "PolLo",
+  "opponent": "Pohkeet",
+  "tournament": "Hallitour 3 - 2025",
+  "roster": [
+    "Ida",
+    "Mikko",
+    "Pekka",
+    "Ville",
+    "Aku",
+    "Antti",
+    "Eero"
+  ],
+  "id": "2026-03-21_Pohkeet",
+  "events": [
+    {
+      "timestamp": 14300,
+      "event_type": "possession_start",
+      "player": "Antti",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 1
+    },
+    {
+      "timestamp": 14304,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 2
+    },
+    {
+      "timestamp": 14309,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Antti",
+      "outcome": "success",
+      "event_number": 3
+    },
+    {
+      "timestamp": 14313,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Eero",
+      "outcome": "success",
+      "event_number": 4
+    },
+    {
+      "timestamp": 14315,
+      "event_type": "pass",
+      "player": "Eero",
+      "target_player": "Antti",
+      "outcome": "success",
+      "event_number": 5
+    },
+    {
+      "timestamp": 14319,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Ville",
+      "outcome": "goal",
+      "event_number": 6
+    },
+    {
+      "timestamp": 14433,
+      "event_type": "possession_start",
+      "player": "Mikko",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 7
+    },
+    {
+      "timestamp": 14435,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Antti",
+      "outcome": "success",
+      "event_number": 8
+    },
+    {
+      "timestamp": 14440,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Ville",
+      "outcome": "success",
+      "event_number": 9
+    },
+    {
+      "timestamp": 14444,
+      "event_type": "pass",
+      "player": "Ville",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 10
+    },
+    {
+      "timestamp": 14447,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Antti",
+      "outcome": "success",
+      "event_number": 11
+    },
+    {
+      "timestamp": 14451,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Ville",
+      "outcome": "goal",
+      "event_number": 12
+    },
+    {
+      "timestamp": 14533,
+      "event_type": "possession_start",
+      "player": "Antti",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 13
+    },
+    {
+      "timestamp": 14536,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 14
+    },
+    {
+      "timestamp": 14540,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Antti",
+      "outcome": "success",
+      "event_number": 15
+    },
+    {
+      "timestamp": 14541,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Pekka",
+      "outcome": "success",
+      "event_number": 16
+    },
+    {
+      "timestamp": 14543,
+      "event_type": "pass",
+      "player": "Pekka",
+      "target_player": "Ville",
+      "outcome": "success",
+      "event_number": 17
+    },
+    {
+      "timestamp": 14549,
+      "event_type": "pass",
+      "player": "Ville",
+      "target_player": "Mikko",
+      "outcome": "goal-throwaway",
+      "event_number": 18
+    },
+    {
+      "timestamp": 14585,
+      "event_type": "possession_start",
+      "player": "Mikko",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 19
+    },
+    {
+      "timestamp": 14592,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Eero",
+      "outcome": "success",
+      "event_number": 20
+    },
+    {
+      "timestamp": 14596,
+      "event_type": "pass",
+      "player": "Eero",
+      "target_player": "Ville",
+      "outcome": "goal-throwaway",
+      "event_number": 21
+    },
+    {
+      "timestamp": 14713,
+      "event_type": "possession_start",
+      "player": "Ville",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 22
+    },
+    {
+      "timestamp": 14715,
+      "event_type": "pass",
+      "player": "Ville",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 23
+    },
+    {
+      "timestamp": 14718,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Ida",
+      "outcome": "goal",
+      "event_number": 24
+    },
+    {
+      "timestamp": 14828,
+      "event_type": "possession_start",
+      "player": "Antti",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 25
+    },
+    {
+      "timestamp": 14830,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Pekka",
+      "outcome": "success",
+      "event_number": 26
+    },
+    {
+      "timestamp": 14833,
+      "event_type": "pass",
+      "player": "Pekka",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 27
+    },
+    {
+      "timestamp": 14838,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 28
+    },
+    {
+      "timestamp": 14843,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Pekka",
+      "outcome": "success",
+      "event_number": 29
+    },
+    {
+      "timestamp": 14847,
+      "event_type": "pass",
+      "player": "Pekka",
+      "target_player": "Eero",
+      "outcome": "success",
+      "event_number": 30
+    },
+    {
+      "timestamp": 14849,
+      "event_type": "pass",
+      "player": "Eero",
+      "target_player": "Antti",
+      "outcome": "goal",
+      "event_number": 31
+    },
+    {
+      "timestamp": 14931,
+      "event_type": "possession_start",
+      "player": "Antti",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 32
+    },
+    {
+      "timestamp": 14935,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Eero",
+      "outcome": "success",
+      "event_number": 33
+    },
+    {
+      "timestamp": 14941,
+      "event_type": "pass",
+      "player": "Eero",
+      "target_player": "Ida",
+      "outcome": "success",
+      "event_number": 34
+    },
+    {
+      "timestamp": 14945,
+      "event_type": "pass",
+      "player": "Ida",
+      "target_player": "Ville",
+      "outcome": "success",
+      "event_number": 35
+    },
+    {
+      "timestamp": 14950,
+      "event_type": "pass",
+      "player": "Ville",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 36
+    },
+    {
+      "timestamp": 14951,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Ville",
+      "outcome": "success",
+      "event_number": 37
+    },
+    {
+      "timestamp": 14952,
+      "event_type": "pass",
+      "player": "Ville",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 38
+    },
+    {
+      "timestamp": 14958,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Antti",
+      "outcome": "goal-throwaway",
+      "event_number": 39
+    },
+    {
+      "timestamp": 15026,
+      "event_type": "possession_start",
+      "player": "Antti",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 40
+    },
+    {
+      "timestamp": 15028,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 41
+    },
+    {
+      "timestamp": 15031,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Pekka",
+      "outcome": "success",
+      "event_number": 42
+    },
+    {
+      "timestamp": 15035,
+      "event_type": "pass",
+      "player": "Pekka",
+      "target_player": "Antti",
+      "outcome": "success",
+      "event_number": 43
+    },
+    {
+      "timestamp": 15037,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 44
+    },
+    {
+      "timestamp": 15041,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Ville",
+      "outcome": "success",
+      "event_number": 45
+    },
+    {
+      "timestamp": 15044,
+      "event_type": "pass",
+      "player": "Ville",
+      "target_player": "Pekka",
+      "outcome": "success",
+      "event_number": 46
+    },
+    {
+      "timestamp": 15047,
+      "event_type": "pass",
+      "player": "Pekka",
+      "target_player": "Ville",
+      "outcome": "success",
+      "event_number": 47
+    },
+    {
+      "timestamp": 15052,
+      "event_type": "pass",
+      "player": "Ville",
+      "target_player": "Antti",
+      "outcome": "goal",
+      "event_number": 48
+    },
+    {
+      "timestamp": 15167,
+      "event_type": "possession_start",
+      "player": "Mikko",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 49
+    },
+    {
+      "timestamp": 15170,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Antti",
+      "outcome": "success",
+      "event_number": 50
+    },
+    {
+      "timestamp": 15177,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Ville",
+      "outcome": "goal-throwaway",
+      "event_number": 51
+    },
+    {
+      "timestamp": 15346,
+      "event_type": "possession_start",
+      "player": "Ville",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 52
+    },
+    {
+      "timestamp": 15348,
+      "event_type": "pass",
+      "player": "Ville",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 53
+    },
+    {
+      "timestamp": 15351,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Pekka",
+      "outcome": "success",
+      "event_number": 54
+    },
+    {
+      "timestamp": 15354,
+      "event_type": "pass",
+      "player": "Pekka",
+      "target_player": "Ida",
+      "outcome": "success",
+      "event_number": 55
+    },
+    {
+      "timestamp": 15357,
+      "event_type": "pass",
+      "player": "Ida",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 56
+    },
+    {
+      "timestamp": 15360,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 57
+    },
+    {
+      "timestamp": 15363,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Ville",
+      "outcome": "success",
+      "event_number": 58
+    },
+    {
+      "timestamp": 15365,
+      "event_type": "pass",
+      "player": "Ville",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 59
+    },
+    {
+      "timestamp": 15367,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Ida",
+      "outcome": "goal",
+      "event_number": 60
+    },
+    {
+      "timestamp": 15547,
+      "event_type": "possession_start",
+      "player": "Mikko",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 61
+    },
+    {
+      "timestamp": 15553,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Ida",
+      "outcome": "success",
+      "event_number": 62
+    },
+    {
+      "timestamp": 15558,
+      "event_type": "pass",
+      "player": "Ida",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 63
+    },
+    {
+      "timestamp": 15561,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Eero",
+      "outcome": "goal",
+      "event_number": 64
+    },
+    {
+      "timestamp": 15688,
+      "event_type": "possession_start",
+      "player": "Antti",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 65
+    },
+    {
+      "timestamp": 15690,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 66
+    },
+    {
+      "timestamp": 15696,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 67
+    },
+    {
+      "timestamp": 15701,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 68
+    },
+    {
+      "timestamp": 15705,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Antti",
+      "outcome": "success",
+      "event_number": 69
+    },
+    {
+      "timestamp": 15708,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Ida",
+      "outcome": "success",
+      "event_number": 70
+    },
+    {
+      "timestamp": 15709,
+      "event_type": "pass",
+      "player": "Ida",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 71
+    },
+    {
+      "timestamp": 15713,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Ida",
+      "outcome": "success",
+      "event_number": 72
+    },
+    {
+      "timestamp": 15716,
+      "event_type": "pass",
+      "player": "Ida",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 73
+    },
+    {
+      "timestamp": 15719,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 74
+    },
+    {
+      "timestamp": 15719,
+      "event_type": "game-paused",
+      "player": "",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 75
+    },
+    {
+      "timestamp": 15747,
+      "event_type": "game-continued",
+      "player": "",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 76
+    },
+    {
+      "timestamp": 15759,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 77
+    },
+    {
+      "timestamp": 15763,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 78
+    },
+    {
+      "timestamp": 15765,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Antti",
+      "outcome": "success",
+      "event_number": 79
+    },
+    {
+      "timestamp": 15768,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 80
+    },
+    {
+      "timestamp": 15772,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 81
+    },
+    {
+      "timestamp": 15774,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Mikko",
+      "outcome": "throwaway",
+      "event_number": 82
+    },
+    {
+      "timestamp": 15791,
+      "event_type": "possession_start",
+      "player": "Ida",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 83
+    },
+    {
+      "timestamp": 15792,
+      "event_type": "pass",
+      "player": "Ida",
+      "target_player": "Ville",
+      "outcome": "success",
+      "event_number": 84
+    },
+    {
+      "timestamp": 15794,
+      "event_type": "pass",
+      "player": "Ville",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 85
+    },
+    {
+      "timestamp": 15795,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Ida",
+      "outcome": "success",
+      "event_number": 86
+    },
+    {
+      "timestamp": 15799,
+      "event_type": "pass",
+      "player": "Ida",
+      "target_player": "Ville",
+      "outcome": "success",
+      "event_number": 87
+    },
+    {
+      "timestamp": 15806,
+      "event_type": "pass",
+      "player": "Ville",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 88
+    },
+    {
+      "timestamp": 15808,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 89
+    },
+    {
+      "timestamp": 15811,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Antti",
+      "outcome": "goal",
+      "event_number": 90
+    },
+    {
+      "timestamp": 15935,
+      "event_type": "possession_start",
+      "player": "Antti",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 91
+    },
+    {
+      "timestamp": 15939,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Eero",
+      "outcome": "success",
+      "event_number": 92
+    },
+    {
+      "timestamp": 15941,
+      "event_type": "pass",
+      "player": "Eero",
+      "target_player": "Ida",
+      "outcome": "throwaway",
+      "event_number": 93
+    },
+    {
+      "timestamp": 15973,
+      "event_type": "possession_start",
+      "player": "Mikko",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 94
+    },
+    {
+      "timestamp": 15975,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Antti",
+      "outcome": "success",
+      "event_number": 95
+    },
+    {
+      "timestamp": 15981,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Pekka",
+      "outcome": "success",
+      "event_number": 96
+    },
+    {
+      "timestamp": 15985,
+      "event_type": "pass",
+      "player": "Pekka",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 97
+    },
+    {
+      "timestamp": 15985,
+      "event_type": "game-paused",
+      "player": "",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 98
+    },
+    {
+      "timestamp": 15998,
+      "event_type": "game-continued",
+      "player": "",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 99
+    },
+    {
+      "timestamp": 16004,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Eero",
+      "outcome": "success",
+      "event_number": 100
+    },
+    {
+      "timestamp": 16008,
+      "event_type": "pass",
+      "player": "Eero",
+      "target_player": "Antti",
+      "outcome": "goal",
+      "event_number": 101
+    },
+    {
+      "timestamp": 16109,
+      "event_type": "possession_start",
+      "player": "Antti",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 102
+    },
+    {
+      "timestamp": 16113,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Ida",
+      "outcome": "throwaway",
+      "event_number": 103
+    },
+    {
+      "timestamp": 16191,
+      "event_type": "possession_start",
+      "player": "Antti",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 104
+    },
+    {
+      "timestamp": 16193,
+      "event_type": "pass",
+      "player": "Antti",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 105
+    },
+    {
+      "timestamp": 16195,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Ville",
+      "outcome": "success",
+      "event_number": 106
+    },
+    {
+      "timestamp": 16198,
+      "event_type": "pass",
+      "player": "Ville",
+      "target_player": "Aku",
+      "outcome": "success",
+      "event_number": 107
+    },
+    {
+      "timestamp": 16202,
+      "event_type": "pass",
+      "player": "Aku",
+      "target_player": "Ville",
+      "outcome": "success",
+      "event_number": 108
+    },
+    {
+      "timestamp": 16205,
+      "event_type": "pass",
+      "player": "Ville",
+      "target_player": "Mikko",
+      "outcome": "success",
+      "event_number": 109
+    },
+    {
+      "timestamp": 16207,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Ida",
+      "outcome": "goal",
+      "event_number": 110
+    },
+    {
+      "timestamp": 16386,
+      "event_type": "possession_start",
+      "player": "Mikko",
+      "target_player": "",
+      "outcome": "",
+      "event_number": 111
+    },
+    {
+      "timestamp": 16391,
+      "event_type": "pass",
+      "player": "Mikko",
+      "target_player": "Aku",
+      "outcome": "throwaway",
+      "event_number": 112
+    }
+  ],
+  "videoUrl": "https://www.youtube.com/watch?v=rzXQUqehlh0"
+}
