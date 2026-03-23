@@ -16,16 +16,35 @@ function useSort<K>(initial: K): [SortState<K>, (k: K) => void] {
   return [sort, toggle]
 }
 
-function sortPlayers<K extends keyof PlayerStats>(players: PlayerStats[], sort: SortState<K>): PlayerStats[] {
+function sortPlayers(players: PlayerStats[], dir: SortDir, getValue: (p: PlayerStats) => number): PlayerStats[] {
   return [...players].sort((a, b) => {
-    const av = a[sort.key] as number
-    const bv = b[sort.key] as number
-    return sort.dir === 'desc' ? bv - av : av - bv
+    const av = getValue(a)
+    const bv = getValue(b)
+    return dir === 'desc' ? bv - av : av - bv
   })
 }
 
-type ThrowSortKey = 'throws' | 'completions' | 'goalAttempts' | 'goalsThrown' | 'dropsForced' | 'throwaways' | 'goalDropsForced' | 'goalThrowaways' | 'holdCount'
+type ThrowSortKey = 'throws' | 'throwPct' | 'goalAttempts' | 'goalPct' | 'dropsForced' | 'throwaways' | 'goalDropsForced' | 'goalThrowaways' | 'holdCount'
 type CatchSortKey = 'catches' | 'drops' | 'goalDropsReceived' | 'goalsScored'
+
+const throwExtractors: Record<ThrowSortKey, (p: PlayerStats) => number> = {
+  throws:          p => p.throws,
+  throwPct:        p => p.throws > 0 ? p.completions / p.throws : 0,
+  goalAttempts:    p => p.goalAttempts,
+  goalPct:         p => p.goalAttempts > 0 ? p.goalsThrown / p.goalAttempts : 0,
+  dropsForced:     p => p.dropsForced,
+  throwaways:      p => p.throwaways,
+  goalDropsForced: p => p.goalDropsForced,
+  goalThrowaways:  p => p.goalThrowaways,
+  holdCount:       p => p.holdCount > 0 ? p.totalHoldTime / p.holdCount : 0,
+}
+
+const catchExtractors: Record<CatchSortKey, (p: PlayerStats) => number> = {
+  catches:           p => p.catches,
+  drops:             p => p.drops,
+  goalDropsReceived: p => p.goalDropsReceived,
+  goalsScored:       p => p.goalsScored,
+}
 
 interface AnalysisScreenProps {
   onBack: () => void
@@ -151,8 +170,8 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
   const { players, team } = computeStats(selectedGameEvents)
   const matrix = computeThrowMatrix(selectedGameEvents)
 
-  const throwPlayers = sortPlayers(players.filter(p => p.throws > 0), throwSort)
-  const catchPlayers = sortPlayers(players.filter(p => p.catches + p.drops > 0), catchSort)
+  const throwPlayers = sortPlayers(players.filter(p => p.throws > 0), throwSort.dir, throwExtractors[throwSort.key])
+  const catchPlayers = sortPlayers(players.filter(p => p.catches + p.drops > 0), catchSort.dir, catchExtractors[catchSort.key])
 
   function Th<K extends string>({
     label, k, active, dir, onClick, title
@@ -206,9 +225,9 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
               <tr>
                 <th className="stats-th stats-th-name">Player</th>
                 <Th label="Throws" k="throws" active={throwSort.key==='throws'} dir={throwSort.dir} onClick={toggleThrowSort} title="Total throws" />
-                <Th label="Throw %" k="completions" active={throwSort.key==='completions'} dir={throwSort.dir} onClick={toggleThrowSort} title="Completion rate (completions / throws)" />
-                <Th label="Throws to goal" k="goalAttempts" active={throwSort.key==='goalAttempts'} dir={throwSort.dir} onClick={toggleThrowSort} title="Throws to goal (goal + goal-drop + goal-TA)" />
-                <Th label="Goal%" k="goalsThrown" active={throwSort.key==='goalsThrown'} dir={throwSort.dir} onClick={toggleThrowSort} title="Goal conversion rate (goals / throws to goal)" />
+                <Th label="Throw %" k="throwPct" active={throwSort.key==='throwPct'} dir={throwSort.dir} onClick={toggleThrowSort} title="Completion rate (completions / throws)" />
+                <Th label="Goal attempts" k="goalAttempts" active={throwSort.key==='goalAttempts'} dir={throwSort.dir} onClick={toggleThrowSort} title="Throws intended as a goal" />
+                <Th label="Goal %" k="goalPct" active={throwSort.key==='goalPct'} dir={throwSort.dir} onClick={toggleThrowSort} title="Goal conversion rate (goals / goal attempts)" />
                 <Th label="Passes (D)" k="dropsForced" active={throwSort.key==='dropsForced'} dir={throwSort.dir} onClick={toggleThrowSort} title="Passes dropped by receiver" />
                 <Th label="Passes (TA)" k="throwaways" active={throwSort.key==='throwaways'} dir={throwSort.dir} onClick={toggleThrowSort} title="Passes lost as throwaways" />
                 <Th label="Goals (D)" k="goalDropsForced" active={throwSort.key==='goalDropsForced'} dir={throwSort.dir} onClick={toggleThrowSort} title="Goal throws dropped by receiver" />
@@ -242,14 +261,14 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
         </div>
 
         <dl className="stats-legend">
-          <div><dt>Throws</dt><dd>Total throws attempted (passes + throws to goal)</dd></div>
-          <div><dt>Throw %</dt><dd>Completion rate — share of throws that were completed (completions / throws)</dd></div>
-          <div><dt>Throws to goal</dt><dd>Throws intended as a goal (goal + goal-drop + goal-TA)</dd></div>
-          <div><dt>Goal%</dt><dd>Goal conversion rate — share of throws to goal that scored (goals / throws to goal)</dd></div>
-          <div><dt>Passes (D)</dt><dd>Passes dropped by the receiver</dd></div>
-          <div><dt>Passes (TA)</dt><dd>Passes lost out of bounds or uncontested</dd></div>
-          <div><dt>Goals (D)</dt><dd>Throws to goal dropped by the receiver</dd></div>
-          <div><dt>Goals (TA)</dt><dd>Throws to goal lost out of bounds or uncontested</dd></div>
+          <div><dt>Throws</dt><dd>Total throws attempted (passes and goal attempts)</dd></div>
+          <div><dt>Throw %</dt><dd>Completion rate — share of throws that were successfully received</dd></div>
+          <div><dt>Goal attempts</dt><dd>Throws intended as a goal</dd></div>
+          <div><dt>Goal %</dt><dd>Goal conversion rate — share of throws to goal that were successfully received</dd></div>
+          <div><dt>Passes (D)</dt><dd>Passes dropped by the receiver (made contact with receiver)</dd></div>
+          <div><dt>Passes (TA)</dt><dd>Pass throwaways — passes thrown out of reach of receiver (no contact with receiver)</dd></div>
+          <div><dt>Goals (D)</dt><dd>Throws to goal dropped by the receiver (made contact with receiver)</dd></div>
+          <div><dt>Goals (TA)</dt><dd>Goal throwaways — throws to goal out of reach of receiver</dd></div>
           <div><dt>Avg hold</dt><dd>Average seconds holding the disc before releasing</dd></div>
         </dl>
 
