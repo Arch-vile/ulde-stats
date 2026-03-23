@@ -19,8 +19,10 @@ interface GameContext {
   existingEvents?: Event[]
 }
 
+const isViewer = import.meta.env.VITE_VIEWER
+
 export default function App() {
-  const [phase, setPhase] = useState<AppPhase>('idle')
+  const [phase, setPhase] = useState<AppPhase>(isViewer ? 'analysis' : 'idle')
   const [ctx, setCtx] = useState<GameContext | null>(null)
 
   const handleGameCreated = (gameId: string, meta: Omit<GameMeta, 'id' | 'roster'>) => {
@@ -50,13 +52,13 @@ export default function App() {
 
   return (
     <div className="app">
-      {phase === 'idle' && (
+      {!isViewer && phase === 'idle' && (
         <LaunchScreen onNewGame={() => setPhase('setup')} onOpenGame={handleOpenGame} onAnalysis={() => setPhase('analysis')} />
       )}
-      {phase === 'setup' && (
+      {!isViewer && phase === 'setup' && (
         <GameSetup onGameCreated={handleGameCreated} onBack={() => setPhase('idle')} />
       )}
-      {phase === 'playerSetup' && ctx && (
+      {!isViewer && phase === 'playerSetup' && ctx && (
         <PlayerSetup
           gameId={ctx.gameId}
           opponent={ctx.opponent}
@@ -66,9 +68,9 @@ export default function App() {
         />
       )}
       {phase === 'analysis' && (
-        <AnalysisScreen onBack={() => setPhase('idle')} />
+        <AnalysisScreen onBack={isViewer ? undefined : () => setPhase('idle')} />
       )}
-      {phase === 'recording' && ctx && (
+      {!isViewer && phase === 'recording' && ctx && (
         <RecordingScreen
           gameId={ctx.gameId}
           meta={{ teamName: ctx.teamName, opponent: ctx.opponent, tournament: ctx.tournament, date: ctx.date, videoUrl: ctx.videoUrl }}

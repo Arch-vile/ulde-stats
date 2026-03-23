@@ -1,6 +1,19 @@
 import { useState, useMemo } from 'react'
-import type { Event, EventType, Outcome } from '../types'
+import type { Event, EventType } from '../types'
 import type { GameMeta } from '../types'
+
+function videoTimestampUrl(videoUrl: string, seconds: number): string {
+  const s = Math.floor(seconds)
+  if (videoUrl.includes('youtu.be/')) {
+    const sep = videoUrl.includes('?') ? '&' : '?'
+    return `${videoUrl}${sep}t=${s}`
+  }
+  if (videoUrl.includes('youtube.com/')) {
+    const sep = videoUrl.includes('?') ? '&' : '?'
+    return `${videoUrl}${sep}t=${s}`
+  }
+  return videoUrl
+}
 
 function formatTime(s: number): string {
   const sec = Math.floor(Math.abs(s))
@@ -147,6 +160,15 @@ export function GameReviewScreen({ meta, events, onBack }: GameReviewScreenProps
           <div key={ev.event_number} className={`review-event-row review-et-${ev.event_type}`}>
             <span className="review-num">#{ev.event_number}</span>
             <span className="review-time">{formatTime(ev.timestamp)}</span>
+            {meta.videoUrl ? (
+              <a
+                className="review-video-link"
+                href={videoTimestampUrl(meta.videoUrl, ev.timestamp)}
+                target="_blank"
+                rel="noreferrer"
+                title="Open in video"
+            ><span className="yt-icon"><span className="yt-play" /></span></a>
+            ) : null}
             <span className="review-type">{EVENT_TYPE_LABELS[ev.event_type]}</span>
             <span className="review-players">
               {ev.player && <span className="review-player">{ev.player}</span>}

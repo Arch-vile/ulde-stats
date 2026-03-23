@@ -98,7 +98,7 @@ export function computeStats(eventsByGame: Event[][]): { players: PlayerStats[];
   const playerMap = new Map<string, PlayerStats>()
 
   function get(name: string): PlayerStats {
-    if (!name) return { name: '', throws: 0, completions: 0, throwaways: 0, dropsForced: 0, goalsThrown: 0, goalDropsForced: 0, goalThrowaways: 0, totalHoldTime: 0, holdCount: 0, catches: 0, drops: 0, goalDropsReceived: 0, goalsScored: 0 }
+    if (!name) return { name: '', throws: 0, completions: 0, throwaways: 0, dropsForced: 0, goalsThrown: 0, goalDropsForced: 0, goalThrowaways: 0, goalAttempts: 0, totalHoldTime: 0, holdCount: 0, catches: 0, drops: 0, goalDropsReceived: 0, goalsScored: 0 }
     if (!playerMap.has(name)) {
       playerMap.set(name, {
         name,

@@ -47,7 +47,7 @@ const catchExtractors: Record<CatchSortKey, (p: PlayerStats) => number> = {
 }
 
 interface AnalysisScreenProps {
-  onBack: () => void
+  onBack?: () => void
 }
 
 type View = 'select' | 'stats'
@@ -95,10 +95,12 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
   }
 
   async function openReview(g: GameMeta) {
-    const events = eventsByGame.get(g.id) ?? await loadGame(g.id).then(r => {
+    let events = eventsByGame.get(g.id)
+    if (!events) {
+      const r = await loadGame(g.id)
+      events = r.events
       setEventsByGame(m => new Map(m).set(g.id, r.events))
-      return r.events
-    })
+    }
     setReviewGame({ meta: g, events })
   }
 
@@ -119,7 +121,7 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
     return (
       <div className="game-select-screen">
         <div className="game-select-header">
-          <button className="btn-back" onClick={onBack}>← Back</button>
+          {onBack && <button className="btn-back" onClick={onBack}>← Back</button>}
           <h2 className="game-select-title">Analysis</h2>
         </div>
         <div className="game-select-list">
