@@ -717,7 +717,7 @@
       "event_number": 78
     },
     {
-      "timestamp": 3607,
+      "timestamp": 7207,
       "event_type": "game-continued",
       "player": "",
       "target_player": "",
@@ -726,7 +726,7 @@
       "event_number": 79
     },
     {
-      "timestamp": 3612,
+      "timestamp": 7212,
       "event_type": "pass",
       "player": "Ville",
       "target_player": "Mikko",
@@ -735,7 +735,7 @@
       "event_number": 80
     },
     {
-      "timestamp": 3615,
+      "timestamp": 7215,
       "event_type": "pass",
       "player": "Mikko",
       "target_player": "Aku",
@@ -744,7 +744,7 @@
       "event_number": 81
     },
     {
-      "timestamp": 3617,
+      "timestamp": 7217,
       "event_type": "pass",
       "player": "Aku",
       "target_player": "Ville",
@@ -753,7 +753,7 @@
       "event_number": 82
     },
     {
-      "timestamp": 3620,
+      "timestamp": 7220,
       "event_type": "pass",
       "player": "Ville",
       "target_player": "Mikko",
@@ -762,7 +762,7 @@
       "event_number": 83
     },
     {
-      "timestamp": 3623,
+      "timestamp": 7223,
       "event_type": "pass",
       "player": "Mikko",
       "target_player": "Antti",
@@ -771,7 +771,7 @@
       "event_number": 84
     },
     {
-      "timestamp": 3626,
+      "timestamp": 7226,
       "event_type": "pass",
       "player": "Antti",
       "target_player": "Aku",
@@ -780,7 +780,7 @@
       "event_number": 85
     },
     {
-      "timestamp": 3633,
+      "timestamp": 7233,
       "event_type": "pass",
       "player": "Aku",
       "target_player": "Mikko",
@@ -789,7 +789,7 @@
       "event_number": 86
     },
     {
-      "timestamp": 3637,
+      "timestamp": 7237,
       "event_type": "pass",
       "player": "Mikko",
       "target_player": "Ida",
@@ -798,7 +798,7 @@
       "event_number": 87
     },
     {
-      "timestamp": 3640,
+      "timestamp": 7240,
       "event_type": "game-paused",
       "player": "",
       "target_player": "",
@@ -807,7 +807,7 @@
       "event_number": 88
     },
     {
-      "timestamp": 3656,
+      "timestamp": 7256,
       "event_type": "game-continued",
       "player": "",
       "target_player": "",
@@ -816,7 +816,7 @@
       "event_number": 89
     },
     {
-      "timestamp": 3658,
+      "timestamp": 7258,
       "event_type": "pass",
       "player": "Ida",
       "target_player": "Ville",
@@ -825,7 +825,7 @@
       "event_number": 90
     },
     {
-      "timestamp": 3766,
+      "timestamp": 7366,
       "event_type": "possession_start",
       "player": "Ville",
       "target_player": "",
@@ -834,7 +834,7 @@
       "event_number": 91
     },
     {
-      "timestamp": 3769,
+      "timestamp": 7369,
       "event_type": "pass",
       "player": "Ville",
       "target_player": "Pekka",
@@ -843,7 +843,7 @@
       "event_number": 92
     },
     {
-      "timestamp": 3775,
+      "timestamp": 7375,
       "event_type": "pass",
       "player": "Pekka",
       "target_player": "Mikko",
@@ -852,7 +852,7 @@
       "event_number": 93
     },
     {
-      "timestamp": 3776,
+      "timestamp": 7376,
       "event_type": "pass",
       "player": "Mikko",
       "target_player": "Ville",
@@ -861,7 +861,7 @@
       "event_number": 94
     },
     {
-      "timestamp": 3781,
+      "timestamp": 7381,
       "event_type": "pass",
       "player": "Ville",
       "target_player": "Mikko",
@@ -870,7 +870,7 @@
       "event_number": 95
     },
     {
-      "timestamp": 3784,
+      "timestamp": 7384,
       "event_type": "pass",
       "player": "Mikko",
       "target_player": "Pekka",
@@ -879,7 +879,7 @@
       "event_number": 96
     },
     {
-      "timestamp": 3787,
+      "timestamp": 7387,
       "event_type": "pass",
       "player": "Pekka",
       "target_player": "Ville",
@@ -888,7 +888,7 @@
       "event_number": 97
     },
     {
-      "timestamp": 3792,
+      "timestamp": 7392,
       "event_type": "pass",
       "player": "Ville",
       "target_player": "Eero",
@@ -897,7 +897,7 @@
       "event_number": 98
     },
     {
-      "timestamp": 3996,
+      "timestamp": 7596,
       "event_type": "possession_start",
       "player": "Ville",
       "target_player": "",
@@ -906,7 +906,7 @@
       "event_number": 99
     },
     {
-      "timestamp": 4001,
+      "timestamp": 7601,
       "event_type": "pass",
       "player": "Ville",
       "target_player": "Antti",
@@ -915,7 +915,7 @@
       "event_number": 100
     },
     {
-      "timestamp": 4001,
+      "timestamp": 7601,
       "event_type": "game-paused",
       "player": "",
       "target_player": "",
@@ -924,7 +924,7 @@
       "event_number": 101
     },
     {
-      "timestamp": 4039,
+      "timestamp": 7639,
       "event_type": "game-continued",
       "player": "",
       "target_player": "",
@@ -933,7 +933,7 @@
       "event_number": 102
     },
     {
-      "timestamp": 4044,
+      "timestamp": 7644,
       "event_type": "pass",
       "player": "Antti",
       "target_player": "Ville",
@@ -942,7 +942,7 @@
       "event_number": 103
     },
     {
-      "timestamp": 4049,
+      "timestamp": 7649,
       "event_type": "pass",
       "player": "Ville",
       "target_player": "Eero",
@@ -951,7 +951,7 @@
       "event_number": 104
     },
     {
-      "timestamp": 4051,
+      "timestamp": 7651,
       "event_type": "pass",
       "player": "Eero",
       "target_player": "Ida",
@@ -960,7 +960,7 @@
       "event_number": 105
     },
     {
-      "timestamp": 4052,
+      "timestamp": 7652,
       "event_type": "pass",
       "player": "Ida",
       "target_player": "Antti",
@@ -969,7 +969,7 @@
       "event_number": 106
     },
     {
-      "timestamp": 4054,
+      "timestamp": 7654,
       "event_type": "pass",
       "player": "Antti",
       "target_player": "Eero",
@@ -978,7 +978,7 @@
       "event_number": 107
     },
     {
-      "timestamp": 4101,
+      "timestamp": 7701,
       "event_type": "possession_start",
       "player": "Antti",
       "target_player": "",
@@ -987,7 +987,7 @@
       "event_number": 108
     },
     {
-      "timestamp": 4104,
+      "timestamp": 7704,
       "event_type": "pass",
       "player": "Antti",
       "target_player": "Aku",
@@ -996,7 +996,7 @@
       "event_number": 109
     },
     {
-      "timestamp": 4104,
+      "timestamp": 7704,
       "event_type": "pass",
       "player": "Aku",
       "target_player": "Ville",
@@ -1005,7 +1005,7 @@
       "event_number": 110
     },
     {
-      "timestamp": 4189,
+      "timestamp": 7789,
       "event_type": "possession_start",
       "player": "Antti",
       "target_player": "",
@@ -1014,7 +1014,7 @@
       "event_number": 111
     },
     {
-      "timestamp": 4192,
+      "timestamp": 7792,
       "event_type": "pass",
       "player": "Antti",
       "target_player": "Mikko",
@@ -1023,7 +1023,7 @@
       "event_number": 112
     },
     {
-      "timestamp": 4195,
+      "timestamp": 7795,
       "event_type": "pass",
       "player": "Mikko",
       "target_player": "Eero",
@@ -1032,7 +1032,7 @@
       "event_number": 113
     },
     {
-      "timestamp": 4202,
+      "timestamp": 7802,
       "event_type": "pass",
       "player": "Eero",
       "target_player": "Pekka",
@@ -1041,7 +1041,7 @@
       "event_number": 114
     },
     {
-      "timestamp": 4223,
+      "timestamp": 7823,
       "event_type": "possession_start",
       "player": "Antti",
       "target_player": "",
@@ -1050,7 +1050,7 @@
       "event_number": 115
     },
     {
-      "timestamp": 4228,
+      "timestamp": 7828,
       "event_type": "pass",
       "player": "Antti",
       "target_player": "Eero",
@@ -1059,7 +1059,7 @@
       "event_number": 116
     },
     {
-      "timestamp": 4232,
+      "timestamp": 7832,
       "event_type": "pass",
       "player": "Eero",
       "target_player": "Mikko",
@@ -1068,7 +1068,7 @@
       "event_number": 117
     },
     {
-      "timestamp": 4241,
+      "timestamp": 7841,
       "event_type": "pass",
       "player": "Mikko",
       "target_player": "Antti",
@@ -1077,7 +1077,7 @@
       "event_number": 118
     },
     {
-      "timestamp": 4247,
+      "timestamp": 7847,
       "event_type": "pass",
       "player": "Antti",
       "target_player": "Mikko",
@@ -1086,7 +1086,7 @@
       "event_number": 119
     },
     {
-      "timestamp": 4253,
+      "timestamp": 7853,
       "event_type": "pass",
       "player": "Mikko",
       "target_player": "Aku",
@@ -1095,7 +1095,7 @@
       "event_number": 120
     },
     {
-      "timestamp": 4259,
+      "timestamp": 7859,
       "event_type": "pass",
       "player": "Aku",
       "target_player": "Mikko",
@@ -1104,7 +1104,7 @@
       "event_number": 121
     },
     {
-      "timestamp": 4262,
+      "timestamp": 7862,
       "event_type": "pass",
       "player": "Mikko",
       "target_player": "Pekka",
@@ -1113,7 +1113,7 @@
       "event_number": 122
     },
     {
-      "timestamp": 4266,
+      "timestamp": 7866,
       "event_type": "pass",
       "player": "Pekka",
       "target_player": "Mikko",
@@ -1122,7 +1122,7 @@
       "event_number": 123
     },
     {
-      "timestamp": 4270,
+      "timestamp": 7870,
       "event_type": "pass",
       "player": "Mikko",
       "target_player": "Antti",
@@ -1131,7 +1131,7 @@
       "event_number": 124
     },
     {
-      "timestamp": 4276,
+      "timestamp": 7876,
       "event_type": "pass",
       "player": "Antti",
       "target_player": "Aku",
@@ -1140,7 +1140,7 @@
       "event_number": 125
     },
     {
-      "timestamp": 4278,
+      "timestamp": 7878,
       "event_type": "pass",
       "player": "Aku",
       "target_player": "Antti",
@@ -1149,7 +1149,7 @@
       "event_number": 126
     },
     {
-      "timestamp": 4331,
+      "timestamp": 7931,
       "event_type": "possession_start",
       "player": "Antti",
       "target_player": "",
@@ -1158,7 +1158,7 @@
       "event_number": 127
     },
     {
-      "timestamp": 4332,
+      "timestamp": 7932,
       "event_type": "pass",
       "player": "Antti",
       "target_player": "Ida",
@@ -1167,7 +1167,7 @@
       "event_number": 128
     },
     {
-      "timestamp": 4335,
+      "timestamp": 7935,
       "event_type": "pass",
       "player": "Ida",
       "target_player": "Aku",
@@ -1176,7 +1176,7 @@
       "event_number": 129
     },
     {
-      "timestamp": 4341,
+      "timestamp": 7941,
       "event_type": "pass",
       "player": "Aku",
       "target_player": "Ville",
@@ -1185,7 +1185,7 @@
       "event_number": 130
     },
     {
-      "timestamp": 4343,
+      "timestamp": 7943,
       "event_type": "pass",
       "player": "Ville",
       "target_player": "Aku",
@@ -1194,7 +1194,7 @@
       "event_number": 131
     },
     {
-      "timestamp": 4347,
+      "timestamp": 7947,
       "event_type": "pass",
       "player": "Aku",
       "target_player": "Ville",
@@ -1203,7 +1203,7 @@
       "event_number": 132
     },
     {
-      "timestamp": 4352,
+      "timestamp": 7952,
       "event_type": "pass",
       "player": "Ville",
       "target_player": "Ida",
@@ -1212,7 +1212,7 @@
       "event_number": 133
     },
     {
-      "timestamp": 4355,
+      "timestamp": 7955,
       "event_type": "pass",
       "player": "Ida",
       "target_player": "Pekka",
@@ -1221,7 +1221,7 @@
       "event_number": 134
     },
     {
-      "timestamp": 4357,
+      "timestamp": 7957,
       "event_type": "pass",
       "player": "Pekka",
       "target_player": "Aku",
@@ -1230,7 +1230,7 @@
       "event_number": 135
     },
     {
-      "timestamp": 4359,
+      "timestamp": 7959,
       "event_type": "pass",
       "player": "Aku",
       "target_player": "Ville",
@@ -1239,7 +1239,7 @@
       "event_number": 136
     },
     {
-      "timestamp": 4494,
+      "timestamp": 8094,
       "event_type": "possession_start",
       "player": "Antti",
       "target_player": "",
@@ -1248,7 +1248,7 @@
       "event_number": 137
     },
     {
-      "timestamp": 4501,
+      "timestamp": 8101,
       "event_type": "pass",
       "player": "Antti",
       "target_player": "Ida",
@@ -1257,7 +1257,7 @@
       "event_number": 138
     },
     {
-      "timestamp": 4505,
+      "timestamp": 8105,
       "event_type": "pass",
       "player": "Ida",
       "target_player": "Ville",
@@ -1266,7 +1266,7 @@
       "event_number": 139
     },
     {
-      "timestamp": 4617,
+      "timestamp": 8217,
       "event_type": "possession_start",
       "player": "Antti",
       "target_player": "",
@@ -1275,7 +1275,7 @@
       "event_number": 140
     },
     {
-      "timestamp": 4618,
+      "timestamp": 8218,
       "event_type": "pass",
       "player": "Antti",
       "target_player": "Pekka",
@@ -1284,7 +1284,7 @@
       "event_number": 141
     },
     {
-      "timestamp": 4621,
+      "timestamp": 8221,
       "event_type": "pass",
       "player": "Pekka",
       "target_player": "Aku",
