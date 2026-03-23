@@ -12,13 +12,14 @@ export function GameSetup({ onGameCreated, onBack }: GameSetupProps) {
   const [opponent, setOpponent] = useState('')
   const [tournament, setTournament] = useState('')
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
+  const [videoUrl, setVideoUrl] = useState('')
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!opponent.trim()) return
     setLoading(true)
-    const meta = { teamName: teamName.trim(), opponent: opponent.trim(), tournament: tournament.trim(), date }
+    const meta = { teamName: teamName.trim(), opponent: opponent.trim(), tournament: tournament.trim(), date, videoUrl: videoUrl.trim() }
     const { gameId } = await createGame(meta)
     setLoading(false)
     onGameCreated(gameId, meta)
@@ -60,6 +61,15 @@ export function GameSetup({ onGameCreated, onBack }: GameSetupProps) {
         <label>
           Date
           <input type="date" value={date} onChange={e => setDate(e.target.value)} />
+        </label>
+        <label>
+          YouTube URL
+          <input
+            type="text"
+            value={videoUrl}
+            onChange={e => setVideoUrl(e.target.value)}
+            placeholder="https://youtube.com/watch?v=... (optional)"
+          />
         </label>
         <button type="submit" className="btn-primary" disabled={!opponent.trim() || loading}>
           {loading ? 'Creating...' : 'Create Game'}

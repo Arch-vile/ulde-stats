@@ -1,21 +1,33 @@
-import { useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useClock } from '../hooks/useClock'
 import { useGameState } from '../hooks/useGameState'
 import { ClockBar } from './ClockBar'
 import { PlayerGrid } from './PlayerGrid'
 import { EventTimeline } from './EventTimeline'
+import { GameMetaEditor } from './GameMetaEditor'
 import type { Event, Outcome } from '../types'
+
+interface GameMeta {
+  teamName: string
+  opponent: string
+  tournament: string
+  date: string
+  videoUrl: string
+}
 
 interface RecordingScreenProps {
   gameId: string
+  meta: GameMeta
   players: string[]
   initialTimestamp: number
   existingEvents?: Event[]
 }
 
-export function RecordingScreen({ gameId, players, initialTimestamp, existingEvents }: RecordingScreenProps) {
+export function RecordingScreen({ gameId, meta: initialMeta, players, initialTimestamp, existingEvents }: RecordingScreenProps) {
   const clock = useClock()
   const gs = useGameState()
+  const [meta, setMeta] = useState(initialMeta)
+  const [showMetaEditor, setShowMetaEditor] = useState(false)
 
   const toggleClock = useCallback(() => {
     if (clock.state.running) clock.pause()
@@ -85,6 +97,29 @@ export function RecordingScreen({ gameId, players, initialTimestamp, existingEve
 
   return (
     <div className="recording-screen">
+      <div className="recording-game-header">
+        <div className="recording-game-info">
+          <span className="recording-game-date">{meta.date}</span>
+          <span className="recording-game-matchup">
+            {meta.teamName ? `${meta.teamName} vs ` : ''}{meta.opponent}
+            {meta.tournament ? ` · ${meta.tournament}` : ''}
+          </span>
+          {meta.videoUrl && (
+            <a className="recording-game-video" href={meta.videoUrl} target="_blank" rel="noreferrer">
+              ▶ Video
+            </a>
+          )}
+        </div>
+        <button className="btn-text" onClick={() => setShowMetaEditor(true)}>Edit</button>
+      </div>
+      {showMetaEditor && (
+        <GameMetaEditor
+          gameId={gameId}
+          initial={meta}
+          onSave={updated => { setMeta(updated); setShowMetaEditor(false) }}
+          onClose={() => setShowMetaEditor(false)}
+        />
+      )}
       <ClockBar
         currentTime={clock.currentTime}
         running={clock.state.running}

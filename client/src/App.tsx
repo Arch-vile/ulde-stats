@@ -13,6 +13,7 @@ interface GameContext {
   opponent: string
   tournament: string
   date: string
+  videoUrl: string
   players: string[]
   initialTimestamp: number
   existingEvents?: Event[]
@@ -23,7 +24,7 @@ export default function App() {
   const [ctx, setCtx] = useState<GameContext | null>(null)
 
   const handleGameCreated = (gameId: string, meta: Omit<GameMeta, 'id' | 'roster'>) => {
-    setCtx({ gameId, ...meta, players: [], initialTimestamp: 0 })
+    setCtx({ gameId, ...meta, videoUrl: meta.videoUrl ?? '', players: [], initialTimestamp: 0 })
     setPhase('playerSetup')
   }
 
@@ -39,6 +40,7 @@ export default function App() {
       opponent: meta.opponent,
       tournament: meta.tournament,
       date: meta.date,
+      videoUrl: meta.videoUrl ?? '',
       players: meta.roster,
       initialTimestamp: events.length > 0 ? events[events.length - 1].timestamp : 0,
       existingEvents: events,
@@ -69,6 +71,7 @@ export default function App() {
       {phase === 'recording' && ctx && (
         <RecordingScreen
           gameId={ctx.gameId}
+          meta={{ teamName: ctx.teamName, opponent: ctx.opponent, tournament: ctx.tournament, date: ctx.date, videoUrl: ctx.videoUrl }}
           players={ctx.players}
           initialTimestamp={ctx.initialTimestamp}
           existingEvents={ctx.existingEvents}

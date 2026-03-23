@@ -17,6 +17,7 @@ export interface GameMeta {
   teamName: string
   opponent: string
   tournament: string
+  videoUrl: string
   roster: string[]
 }
 
