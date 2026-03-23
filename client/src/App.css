@@ -678,7 +678,19 @@ button:not(:disabled):active {
   flex-wrap: nowrap;
 }
 
+.game-item-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-review {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+}
+
 .game-item {
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 0.35rem;
@@ -888,4 +900,182 @@ button:not(:disabled):active {
   display: block;
   font-size: 0.75em;
   color: var(--text-muted);
+}
+
+/* ── Game Review Screen ── */
+.game-review {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.game-review-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.game-review-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  flex: 1;
+}
+
+.game-review-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.game-review-matchup {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.game-review-count {
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.game-review-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.review-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.review-filter-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  white-space: nowrap;
+  min-width: 5.5rem;
+}
+
+.review-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.review-chip {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.review-chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.review-event-list {
+  flex: 1;
+  padding: 0.5rem 0;
+}
+
+.review-empty {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.review-event-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+
+.review-event-row:last-child {
+  border-bottom: none;
+}
+
+.review-num {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  min-width: 2.5rem;
+  text-align: right;
+}
+
+.review-time {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 3.5rem;
+}
+
+.review-type {
+  min-width: 9rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.review-players {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.review-player {
+  font-weight: 500;
+}
+
+.review-arrow {
+  color: var(--text-muted);
+}
+
+.review-outcome {
+  font-size: 0.75rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  background: var(--surface2);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.review-outcome.review-outcome-good {
+  background: #1a3a1a;
+  color: var(--success);
+}
+
+.review-outcome.review-outcome-bad {
+  background: #3a1a1a;
+  color: var(--danger);
+}
+
+/* per-type row tints */
+.review-et-game-paused,
+.review-et-game-continued {
+  opacity: 0.6;
+  font-style: italic;
+}
+
+.review-et-possession_start .review-type {
+  color: var(--accent);
+}
+
+.review-et-turnover .review-type {
+  color: var(--danger);
 }

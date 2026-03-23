@@ -3,6 +3,7 @@ import { listGames, loadGame } from '../api'
 import { computeStats, computeThrowMatrix, pct, failPct, taPct, dropForcedPct, catchPct, avgHold, goalAttempts, goalConvPct } from '../stats'
 import type { GameMeta, Event } from '../types'
 import type { PlayerStats } from '../stats'
+import { GameReviewScreen } from './GameReviewScreen'
 
 type SortDir = 'asc' | 'desc'
 interface SortState<K> { key: K; dir: SortDir }
@@ -37,6 +38,7 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
   const [loading, setLoading] = useState<Set<string>>(new Set())
   const [throwSort, toggleThrowSort] = useSort<ThrowSortKey>('throws')
   const [catchSort, toggleCatchSort] = useSort<CatchSortKey>('catches')
+  const [reviewGame, setReviewGame] = useState<{ meta: GameMeta; events: Event[] } | null>(null)
 
   useEffect(() => {
     listGames().then(setGames)
@@ -57,6 +59,14 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
       }
     }
     setSelected(next)
+  }
+
+  async function openReview(g: GameMeta) {
+    const events = eventsByGame.get(g.id) ?? (await loadGame(g.id).then(r => {
+      setEventsByGame(m => new Map(m).set(g.id, r.events))
+      return r.events
+    }))
+    setReviewGame({ meta: g, events })
   }
 
   function selectAll() {
@@ -96,6 +106,16 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
   const hasData = selectedGameEvents.length > 0 && players.length > 0
   const isLoading = loading.size > 0
 
+  if (reviewGame) {
+    return (
+      <GameReviewScreen
+        meta={reviewGame.meta}
+        events={reviewGame.events}
+        onBack={() => setReviewGame(null)}
+      />
+    )
+  }
+
   return (
     <div className="analysis-screen">
       <div className="analysis-sidebar">
@@ -106,18 +126,23 @@ export function AnalysisScreen({ onBack }: AnalysisScreenProps) {
         </div>
         <div className="game-list">
           {games.map(g => (
-            <label key={g.id} className={`game-item ${selected.has(g.id) ? 'selected' : ''}`}>
-              <input
-                type="checkbox"
-                checked={selected.has(g.id)}
-                onChange={() => toggleGame(g.id)}
-              />
-              <span className="game-item-date">{g.date}</span>
-              <span className="game-item-opponent">
-                {g.teamName ? `${g.teamName} vs ` : ''}{g.opponent}
-                {g.tournament ? ` · ${g.tournament}` : ''}
-              </span>
-            </label>
+            <div key={g.id} className="game-item-row">
+              <label className={`game-item ${selected.has(g.id) ? 'selected' : ''}`}>
+                <input
+                  type="checkbox"
+                  checked={selected.has(g.id)}
+                  onChange={() => toggleGame(g.id)}
+                />
+                <span className="game-item-date">{g.date}</span>
+                <span className="game-item-opponent">
+                  {g.teamName ? `${g.teamName} vs ` : ''}{g.opponent}
+                  {g.tournament ? ` · ${g.tournament}` : ''}
+                </span>
+              </label>
+              <button className="btn-text btn-review" onClick={() => openReview(g)} title="View all events">
+                View
+              </button>
+            </div>
           ))}
           {games.length === 0 && <p className="muted">No games recorded yet.</p>}
         </div>
