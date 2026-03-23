@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import type { Event, EventType } from '../types'
+import type { Event, EventType, Outcome } from '../types'
 import type { GameMeta } from '../types'
 
 function formatTime(s: number): string {
@@ -11,14 +11,6 @@ function formatTime(s: number): string {
   return `${m}:${String(ss).padStart(2, '0')}`
 }
 
-const ALL_EVENT_TYPES: EventType[] = [
-  'possession_start',
-  'pass',
-  'turnover',
-  'game-paused',
-  'game-continued',
-]
-
 const EVENT_TYPE_LABELS: Record<EventType, string> = {
   'possession_start': 'Possession start',
   'pass': 'Pass',
@@ -26,6 +18,17 @@ const EVENT_TYPE_LABELS: Record<EventType, string> = {
   'game-paused': 'Game paused',
   'game-continued': 'Game continued',
 }
+
+type OutcomeFilter = 'success' | 'drop' | 'throwaway' | 'goal' | 'goal-drop' | 'goal-throwaway'
+
+const OUTCOME_FILTERS: { key: OutcomeFilter; label: string }[] = [
+  { key: 'success',         label: 'Success' },
+  { key: 'goal',            label: 'Goal' },
+  { key: 'drop',            label: 'Pass dropped' },
+  { key: 'throwaway',       label: 'Pass throwaway' },
+  { key: 'goal-drop',       label: 'Goal dropped' },
+  { key: 'goal-throwaway',  label: 'Goal throwaway' },
+]
 
 interface GameReviewScreenProps {
   meta: GameMeta
@@ -44,7 +47,7 @@ export function GameReviewScreen({ meta, events, onBack }: GameReviewScreenProps
   }, [events])
 
   const [selectedPlayers, setSelectedPlayers] = useState<Set<string>>(new Set())
-  const [selectedTypes, setSelectedTypes] = useState<Set<EventType>>(new Set())
+  const [selectedOutcomes, setSelectedOutcomes] = useState<Set<OutcomeFilter>>(new Set())
 
   function togglePlayer(name: string) {
     setSelectedPlayers(prev => {
@@ -55,22 +58,25 @@ export function GameReviewScreen({ meta, events, onBack }: GameReviewScreenProps
     })
   }
 
-  function toggleType(t: EventType) {
-    setSelectedTypes(prev => {
+  function toggleOutcome(o: OutcomeFilter) {
+    setSelectedOutcomes(prev => {
       const next = new Set(prev)
-      if (next.has(t)) next.delete(t)
-      else next.add(t)
+      if (next.has(o)) next.delete(o)
+      else next.add(o)
       return next
     })
   }
 
   const filtered = useMemo(() => {
     return events.filter(ev => {
-      if (selectedTypes.size > 0 && !selectedTypes.has(ev.event_type)) return false
+      if (selectedOutcomes.size > 0) {
+        if (ev.event_type !== 'pass') return false
+        if (!selectedOutcomes.has(ev.outcome as OutcomeFilter)) return false
+      }
       if (selectedPlayers.size > 0 && !selectedPlayers.has(ev.player)) return false
       return true
     })
-  }, [events, selectedPlayers, selectedTypes])
+  }, [events, selectedPlayers, selectedOutcomes])
 
   function outcomeTag(ev: Event) {
     if (ev.event_type !== 'pass') return null
@@ -97,15 +103,15 @@ export function GameReviewScreen({ meta, events, onBack }: GameReviewScreenProps
 
       <div className="game-review-filters">
         <div className="review-filter-group">
-          <span className="review-filter-label">Event type</span>
+          <span className="review-filter-label">Pass outcome</span>
           <div className="review-filter-chips">
-            {ALL_EVENT_TYPES.map(t => (
+            {OUTCOME_FILTERS.map(({ key, label }) => (
               <button
-                key={t}
-                className={`review-chip ${selectedTypes.has(t) ? 'active' : ''}`}
-                onClick={() => toggleType(t)}
+                key={key}
+                className={`review-chip ${selectedOutcomes.has(key) ? 'active' : ''}`}
+                onClick={() => toggleOutcome(key)}
               >
-                {EVENT_TYPE_LABELS[t]}
+                {label}
               </button>
             ))}
           </div>
@@ -126,8 +132,8 @@ export function GameReviewScreen({ meta, events, onBack }: GameReviewScreenProps
             </div>
           </div>
         )}
-        {(selectedPlayers.size > 0 || selectedTypes.size > 0) && (
-          <button className="btn-text" onClick={() => { setSelectedPlayers(new Set()); setSelectedTypes(new Set()) }}>
+        {(selectedPlayers.size > 0 || selectedOutcomes.size > 0) && (
+          <button className="btn-text" onClick={() => { setSelectedPlayers(new Set()); setSelectedOutcomes(new Set()) }}>
             Clear filters
           </button>
         )}
