@@ -68,6 +68,7 @@ export interface YouTubePlayerHandle {
   pause: () => void
   setPlaybackRate: (rate: number) => void
   getCurrentTime: () => number
+  focus: () => void
 }
 
 interface YouTubePlayerProps {
@@ -92,6 +93,7 @@ export const YouTubePlayer = forwardRef<YouTubePlayerHandle, YouTubePlayerProps>
       pause: () => playerRef.current?.pauseVideo(),
       setPlaybackRate: (r) => playerRef.current?.setPlaybackRate(r),
       getCurrentTime: () => playerRef.current?.getCurrentTime() ?? 0,
+      focus: () => wrapperRef.current?.querySelector('iframe')?.focus(),
     }))
 
     useEffect(() => {

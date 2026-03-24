@@ -42,18 +42,6 @@ export function RecordingScreen({ gameId, meta: initialMeta, players, initialTim
   }, [clock.state.running, clock.pause, clock.resume])
 
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      const tag = (e.target as HTMLElement).tagName
-      if (e.code === 'Space' && tag !== 'INPUT' && tag !== 'TEXTAREA') {
-        e.preventDefault()
-        toggleClock()
-      }
-    }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [toggleClock])
-
-  useEffect(() => {
     const hasVideo = !!initialMeta.videoUrl
     if (existingEvents && existingEvents.length > 0) {
       gs.initFromEvents(gameId, existingEvents, players)
@@ -105,6 +93,24 @@ export function RecordingScreen({ gameId, meta: initialMeta, players, initialTim
     clock.seekTo(s)
     ytRef.current?.seekTo(s)
   }, [clock.seekTo])
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return
+      if (e.code === 'Space') {
+        e.preventDefault()
+        toggleClock()
+      } else if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+        e.preventDefault()
+        const delta = e.code === 'ArrowLeft' ? -5 : 5
+        handleSeek(Math.max(0, getTime() + delta))
+        ytRef.current?.focus()
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [toggleClock, handleSeek, getTime])
 
   const handleSpeedChange = useCallback((s: number) => {
     clock.setSpeed(s)
