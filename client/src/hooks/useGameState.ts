@@ -152,12 +152,13 @@ export function useGameState() {
     const isPending = s.pendingPassIndex === index
     const updated = { ...s.events[index], outcome }
     void updateEvent(s.gameId, updated)
-    setState(prev => ({
-      ...prev,
-      events: prev.events.map((e, i) => (i === index ? updated : e)),
-      pendingPassIndex: isPending && isTerminal ? null : prev.pendingPassIndex,
-      needsPossessionStart: isPending && isTerminal ? true : prev.needsPossessionStart,
-    }))
+    setState(prev => {
+      const newEvents = prev.events.map((e, i) => (i === index ? updated : e))
+      const newPendingPassIndex = isPending && isTerminal ? null : prev.pendingPassIndex
+      const derived = deriveState(newEvents)
+      const currentPlayer = newPendingPassIndex !== null ? prev.currentPlayer : derived.currentPlayer
+      return { ...prev, events: newEvents, pendingPassIndex: newPendingPassIndex, ...derived, currentPlayer }
+    })
   }, [])
 
   const updateEventTimestamp = useCallback((index: number, timestamp: number) => {
