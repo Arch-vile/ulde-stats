@@ -687,22 +687,33 @@ button:not(:disabled):active {
 }
 
 .possession-header {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  padding: 0.4rem 0.3rem 0.2rem;
+  padding: 0.25rem 0.3rem 0.1rem;
   border-top: 1px solid var(--border);
 }
 
+
 .event-row {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 0.35rem 0.5rem;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.5rem;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.82rem;
+  min-height: 0;
+}
+
+.ev-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .event-row:hover {
@@ -752,26 +763,38 @@ button:not(:disabled):active {
   color: var(--accent);
 }
 
+.ev-edit,
+.ev-insert,
 .ev-delete {
-  margin-left: auto;
   background: none;
   border: none;
-  color: var(--text-muted);
   font-size: 1rem;
   line-height: 1;
   cursor: pointer;
   padding: 0 2px;
-  opacity: 0;
-  transition: opacity 0.1s;
+  flex-shrink: 0;
 }
 
-.event-row:hover .ev-delete {
-  opacity: 0.5;
+.ev-edit {
+  color: var(--text-muted);
+  opacity: 0.6;
+  font-size: 0.9rem;
 }
 
-.ev-delete:hover {
-  opacity: 1 !important;
+.ev-insert {
+  color: var(--success);
+  opacity: 0.6;
+}
+
+.ev-delete {
   color: var(--danger);
+  opacity: 0.6;
+}
+
+.ev-edit:hover,
+.ev-insert:hover,
+.ev-delete:hover {
+  opacity: 1;
 }
 
 .ev-time-input {
@@ -784,6 +807,54 @@ button:not(:disabled):active {
   border-radius: 3px;
   padding: 0 3px;
   outline: none;
+}
+
+.insert-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding: 0.5rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin: 0.2rem 0.3rem;
+}
+
+.insert-form select,
+.insert-form input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.25rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+}
+
+.insert-form input {
+  width: 5rem;
+}
+
+.insert-form select:focus,
+.insert-form input:focus {
+  outline: 1px solid var(--accent);
+}
+
+.insert-submit {
+  background: var(--accent);
+  color: #000;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  border-radius: 4px;
+}
+
+.insert-cancel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
 }
 
 .outcome-picker {

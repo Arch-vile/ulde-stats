@@ -73,9 +73,10 @@ interface EventTimelineProps {
   onUpdateEvent: (index: number, fields: Partial<Omit<Event, 'event_number'>>) => void
   onDeleteEvent: (index: number) => void
   onInsertEvent: (afterEventNumber: number, event: Omit<Event, 'event_number'>) => void
+  onSeek?: (timestamp: number) => void
 }
 
-export function EventTimeline({ events, players, onUpdateEvent, onDeleteEvent, onInsertEvent }: EventTimelineProps) {
+export function EventTimeline({ events, players, onUpdateEvent, onDeleteEvent, onInsertEvent, onSeek }: EventTimelineProps) {
   const [editingIndex, setEditingIndex] = useState<number | null>(null)
   const [editForm, setEditForm] = useState<EntryForm>(emptyForm)
   const [insertingAfter, setInsertingAfter] = useState<number | null>(null)
@@ -204,20 +205,12 @@ export function EventTimeline({ events, players, onUpdateEvent, onDeleteEvent, o
         return (
           <div key={gi} className="possession-group">
             <div className="possession-header">Possession {pid}</div>
-            {reversedEvs.map(({ index, event: ev }, rowIdx) => {
+            {reversedEvs.map(({ index, event: ev }) => {
               const isLast = index === events.length - 1
               const isEditing = editingIndex === index
-              const nextInOrder = rowIdx > 0 ? reversedEvs[rowIdx - 1].event : null
+              const nextEvent = index < events.length - 1 ? events[index + 1] : null
               return (
                 <div key={index}>
-                  {insertingAfter === ev.event_number ? (
-                    renderForm(insertForm, setInsertForm, submitInsert, () => setInsertingAfter(null), 'Add')
-                  ) : (
-                    <div
-                      className="insert-between"
-                      onClick={() => openInsert(ev.event_number, ev.timestamp, nextInOrder?.timestamp ?? null)}
-                    >+</div>
-                  )}
                   {isEditing ? (
                     renderForm(editForm, setEditForm, () => submitEdit(index), () => setEditingIndex(null), 'Save')
                   ) : (
@@ -231,7 +224,7 @@ export function EventTimeline({ events, players, onUpdateEvent, onDeleteEvent, o
                         ev.event_type === 'game-continued' ? 'ev-game-continued' : '',
                         (index > 0 && ev.timestamp < events[index - 1].timestamp) || hasMismatchedThrower(events, index) ? 'ev-warn' : '',
                       ].filter(Boolean).join(' ')}
-                      onClick={() => openEdit(index, ev)}
+                      onClick={() => onSeek?.(ev.timestamp)}
                     >
                       <span className="ev-num">#{ev.event_number}</span>
                       <span className="ev-time">{formatTime(ev.timestamp)}</span>
@@ -240,11 +233,24 @@ export function EventTimeline({ events, players, onUpdateEvent, onDeleteEvent, o
                         {outcomeSuffix(ev)}
                       </span>
                       <button
+                        className="ev-edit"
+                        onClick={e => { e.stopPropagation(); openEdit(index, ev) }}
+                        title="Edit event"
+                      >✎</button>
+                      <button
+                        className="ev-insert"
+                        onClick={e => { e.stopPropagation(); openInsert(ev.event_number, ev.timestamp, nextEvent?.timestamp ?? null) }}
+                        title="Insert event after"
+                      >+</button>
+                      <button
                         className="ev-delete"
                         onClick={e => { e.stopPropagation(); onDeleteEvent(index) }}
                         title="Delete event"
                       >×</button>
                     </div>
+                  )}
+                  {insertingAfter === ev.event_number && (
+                    renderForm(insertForm, setInsertForm, submitInsert, () => setInsertingAfter(null), 'Add')
                   )}
                 </div>
               )

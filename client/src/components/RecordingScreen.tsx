@@ -231,6 +231,7 @@ export function RecordingScreen({ gameId, meta: initialMeta, players, initialTim
               onUpdateEvent={gs.updateGameEvent}
               onDeleteEvent={handleDeleteEvent}
               onInsertEvent={gs.insertGameEvent}
+              onSeek={handleSeek}
             />
           </div>
         </div>
