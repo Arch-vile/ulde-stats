@@ -486,6 +486,17 @@ button:not(:disabled):active {
 }
 
 /* ── Player Grid ── */
+.player-grid-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.player-grid-toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .player-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
@@ -504,7 +515,6 @@ button:not(:disabled):active {
   transition: border-color 0.1s, background 0.1s;
 }
 
-
 .player-btn.current {
   background: var(--current-bg);
   border-color: var(--current-border);
@@ -514,6 +524,49 @@ button:not(:disabled):active {
 .player-btn.needs-start {
   border-style: dashed;
   border-color: #555;
+}
+
+.player-btn.dragging {
+  opacity: 0.3;
+}
+
+.player-canvas {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 4px;
+  height: 380px;
+}
+
+.canvas-cell {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  display: flex;
+  align-items: stretch;
+}
+
+.positioning .canvas-cell {
+  border-style: dashed;
+  border-color: var(--border);
+}
+
+.canvas-cell.drag-over {
+  border-color: var(--accent);
+  border-style: solid;
+  background: rgba(74, 158, 255, 0.1);
+}
+
+.canvas-cell .player-btn {
+  flex: 1;
+  height: auto;
+  cursor: grab;
+  font-size: 0.75rem;
+  padding: 0 2px;
+}
+
+.player-btn.drag-over {
+  border-color: var(--accent);
+  border-style: solid;
 }
 
 /* ── Action Bar (outcomes + turnover) ── */

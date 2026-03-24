@@ -251,6 +251,10 @@ export function useGameState() {
     })
   }, [])
 
+  const reorderPlayers = useCallback((newOrder: string[]) => {
+    setState(prev => ({ ...prev, players: newOrder }))
+  }, [])
+
   return {
     state,
     initGame,
@@ -265,5 +269,6 @@ export function useGameState() {
     insertGameEvent,
     deleteGameEvent,
     addPlayer,
+    reorderPlayers,
   }
 }
