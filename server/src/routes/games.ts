@@ -5,8 +5,8 @@ import type { GameMeta } from '../types'
 const router = Router()
 
 router.post('/', (req, res) => {
-  const { date, teamName, opponent, tournament } = req.body as Omit<GameMeta, 'id' | 'roster'>
-  const gameId = createGame({ date, teamName, opponent, tournament, roster: [] })
+  const { date, teamName, opponent, tournament, videoUrl } = req.body as Omit<GameMeta, 'id' | 'roster'>
+  const gameId = createGame({ date, teamName, opponent, tournament, videoUrl, roster: [] })
   res.json({ gameId })
 })
 
