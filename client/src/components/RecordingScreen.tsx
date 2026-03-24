@@ -70,10 +70,6 @@ export function RecordingScreen({ gameId, meta: initialMeta, players, initialTim
     gs.updateEventOutcome(index, outcome)
   }
 
-  const handleUpdateTimestamp = (index: number, timestamp: number) => {
-    gs.updateEventTimestamp(index, timestamp)
-  }
-
   const handleDeleteEvent = (index: number) => {
     gs.deleteGameEvent(index)
   }
@@ -170,8 +166,7 @@ export function RecordingScreen({ gameId, meta: initialMeta, players, initialTim
           <EventTimeline
             events={gs.state.events}
             players={gs.state.players}
-            onUpdateOutcome={handleUpdateOutcome}
-            onUpdateTimestamp={handleUpdateTimestamp}
+            onUpdateEvent={gs.updateGameEvent}
             onDeleteEvent={handleDeleteEvent}
             onInsertEvent={gs.insertGameEvent}
           />

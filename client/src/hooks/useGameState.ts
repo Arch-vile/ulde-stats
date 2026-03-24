@@ -146,6 +146,19 @@ export function useGameState() {
     }))
   }, [])
 
+  const updateGameEvent = useCallback((index: number, fields: Partial<Omit<Event, 'event_number'>>) => {
+    const s = stateRef.current
+    const updated = { ...s.events[index], ...fields }
+    void updateEvent(s.gameId, updated)
+    setState(prev => {
+      const newEvents = prev.events.map((e, i) => (i === index ? updated : e))
+      const newPendingPassIndex = prev.pendingPassIndex === index ? null : prev.pendingPassIndex
+      const derived = deriveState(newEvents)
+      const currentPlayer = newPendingPassIndex !== null ? prev.currentPlayer : derived.currentPlayer
+      return { ...prev, events: newEvents, pendingPassIndex: newPendingPassIndex, ...derived, currentPlayer }
+    })
+  }, [])
+
   const updateEventOutcome = useCallback((index: number, outcome: Outcome) => {
     const s = stateRef.current
     const isTerminal = outcome === 'goal' || outcome === 'drop' || outcome === 'throwaway' || outcome === 'goal-drop' || outcome === 'goal-throwaway'
@@ -246,6 +259,7 @@ export function useGameState() {
     recordTurnover,
     recordGamePause,
     recordGameContinue,
+    updateGameEvent,
     updateEventOutcome,
     updateEventTimestamp,
     insertGameEvent,

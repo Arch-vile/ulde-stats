@@ -656,6 +656,10 @@ button:not(:disabled):active {
   opacity: 0.75;
 }
 
+.event-row.ev-warn {
+  background: rgba(255, 60, 60, 0.15);
+}
+
 .ev-num {
   font-size: 0.65rem;
   color: var(--text-muted);
