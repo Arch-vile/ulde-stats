@@ -48,7 +48,7 @@ export function RecordingScreen({ gameId, meta: initialMeta, players, initialTim
 
   useEffect(() => {
     if (existingEvents && existingEvents.length > 0) {
-      gs.initFromEvents(gameId, existingEvents)
+      gs.initFromEvents(gameId, existingEvents, players)
       const lastTs = existingEvents[existingEvents.length - 1].timestamp
       clock.setInitialTimestamp(lastTs)
     } else {
