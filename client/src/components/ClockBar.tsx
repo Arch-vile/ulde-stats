@@ -74,7 +74,7 @@ export function ClockBar({ currentTime, running, speed, onPause, onResume, onSpe
           }}
         />
       ) : (
-        <span className="clock-time" style={{ cursor: 'pointer' }} onClick={startEdit} title="Click to set time">
+        <span className="clock-time" style={{ cursor: 'pointer', color: running ? 'green' : undefined }} onClick={startEdit} title="Click to set time">
           {display}
         </span>
       )}

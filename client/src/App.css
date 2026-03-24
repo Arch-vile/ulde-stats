@@ -1,10 +1,3 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
 :root {
   --bg: #111;
@@ -463,26 +456,54 @@ button:not(:disabled):active {
   height: 100vh;
 }
 
-.recording-main {
+.recording-body {
   display: flex;
   flex: 1;
   overflow: hidden;
 }
 
-.recording-left {
+.recording-video-area {
+  flex: 1;
+  min-width: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.recording-no-video {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.recording-sidebar {
+  width: 340px;
+  flex-shrink: 0;
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.recording-sidebar-controls {
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
   padding: 0.8rem;
-  flex: 1;
-  min-width: 0;
+  border-bottom: 1px solid var(--border);
 }
 
-.recording-right {
-  width: 280px;
-  flex-shrink: 0;
-  border-left: 1px solid var(--border);
+.recording-sidebar-timeline {
+  flex: 1;
   overflow-y: auto;
+  min-height: 0;
+}
+
+.recording-sidebar .btn-action {
+  font-size: 0.72rem;
+  padding: 0.6rem 0.2rem;
 }
 
 /* ── Player Grid ── */
@@ -625,7 +646,6 @@ button:not(:disabled):active {
   border-radius: 8px;
   letter-spacing: 0.08em;
   flex-shrink: 0;
-  margin-top: auto;
 }
 
 .btn-turnover:disabled {
