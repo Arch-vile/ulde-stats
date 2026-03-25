@@ -36,6 +36,31 @@ function outcomeSuffix(ev: Event): string {
   return ''
 }
 
+function holdDuration(events: Event[], index: number): number {
+  const ev = events[index]
+  if (ev.event_type !== 'pass' && ev.event_type !== 'turnover') return 0
+  let prevTimestamp: number | null = null
+  for (let i = index - 1; i >= 0; i--) {
+    const prev = events[i]
+    if (prev.event_type === 'game-paused' || prev.event_type === 'game-continued') continue
+    prevTimestamp = prev.timestamp
+    break
+  }
+  if (prevTimestamp === null) return 0
+  let pausedTime = 0
+  let pauseStart: number | null = null
+  for (let i = index - 1; i >= 0; i--) {
+    const e = events[i]
+    if (e.timestamp < prevTimestamp) break
+    if (e.event_type === 'game-continued') pauseStart = e.timestamp
+    else if (e.event_type === 'game-paused' && pauseStart !== null) {
+      pausedTime += pauseStart - e.timestamp
+      pauseStart = null
+    }
+  }
+  return ev.timestamp - prevTimestamp - pausedTime
+}
+
 function hasMismatchedThrower(events: Event[], index: number): boolean {
   const ev = events[index]
   if (ev.event_type !== 'pass') return false
@@ -222,7 +247,7 @@ export function EventTimeline({ events, players, onUpdateEvent, onDeleteEvent, o
                         ev.event_type === 'turnover' ? 'ev-turnover' : '',
                         ev.event_type === 'game-paused' ? 'ev-game-paused' : '',
                         ev.event_type === 'game-continued' ? 'ev-game-continued' : '',
-                        (index > 0 && ev.timestamp < events[index - 1].timestamp) || hasMismatchedThrower(events, index) ? 'ev-warn' : '',
+                        (index > 0 && ev.timestamp < events[index - 1].timestamp) || hasMismatchedThrower(events, index) || holdDuration(events, index) > 8 ? 'ev-warn' : '',
                       ].filter(Boolean).join(' ')}
                       onClick={() => onSeek?.(ev.timestamp)}
                     >
