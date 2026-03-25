@@ -20,15 +20,18 @@ const EVENT_TYPE_LABELS: Record<EventType, string> = {
   'game-continued': 'Game continued',
 }
 
-type OutcomeFilter = 'success' | 'drop' | 'throwaway' | 'goal' | 'goal-drop' | 'goal-throwaway'
+type OutcomeFilter = 'success' | 'drop' | 'throwaway' | 'goal' | 'goal-drop' | 'goal-throwaway' | 'fail'
+
+const FAIL_OUTCOMES = new Set(['drop', 'throwaway', 'goal-drop', 'goal-throwaway'])
 
 const OUTCOME_FILTERS: { key: OutcomeFilter; label: string }[] = [
   { key: 'success',        label: 'Success' },
   { key: 'goal',           label: 'Goal' },
-  { key: 'drop',           label: 'Pass dropped' },
-  { key: 'throwaway',      label: 'Pass throwaway' },
-  { key: 'goal-drop',      label: 'Goal dropped' },
-  { key: 'goal-throwaway', label: 'Goal throwaway' },
+  { key: 'fail',           label: 'Fail' },
+  { key: 'drop',           label: 'Drop' },
+  { key: 'throwaway',      label: 'Throwaway' },
+  { key: 'goal-drop',      label: 'Goal drop' },
+  { key: 'goal-throwaway', label: 'Goal TA' },
 ]
 
 interface GameReviewScreenProps {
@@ -79,7 +82,11 @@ export function GameReviewScreen({ meta, events, onBack }: GameReviewScreenProps
     return events.filter(ev => {
       if (selectedOutcomes.size > 0) {
         if (ev.event_type !== 'pass') return false
-        if (!selectedOutcomes.has(ev.outcome as OutcomeFilter)) return false
+        const outcome = ev.outcome as OutcomeFilter
+        const matches =
+          selectedOutcomes.has(outcome) ||
+          (selectedOutcomes.has('fail') && FAIL_OUTCOMES.has(outcome))
+        if (!matches) return false
       }
       if (selectedPlayers.size > 0 && !selectedPlayers.has(ev.player)) return false
       return true
@@ -103,8 +110,9 @@ export function GameReviewScreen({ meta, events, onBack }: GameReviewScreenProps
     setCurrentVideoTime(timestamp)
   }
 
-  // Auto-advance jump: 5s pre-roll, does NOT reset the guard
+  // Seek with 5s pre-roll
   function jumpToEvent(timestamp: number) {
+    lastJumpedFromIdx.current = -1
     const t = Math.max(0, timestamp - 5)
     ytRef.current?.seekTo(t)
     setCurrentVideoTime(t)
@@ -155,7 +163,19 @@ export function GameReviewScreen({ meta, events, onBack }: GameReviewScreenProps
         if (evs[i].timestamp <= t) activeIdx = i
         else break
       }
-      if (activeIdx < 0 || activeIdx >= evs.length - 1) return
+
+      // Before the first filtered event — jump to it (guard with sentinel -2)
+      if (activeIdx < 0) {
+        if (evs.length > 0 && lastJumpedFromIdx.current !== -2) {
+          const guard = -2
+          lastJumpedFromIdx.current = guard
+          const t = Math.max(0, evs[0].timestamp - 5)
+          ytRef.current?.seekTo(t)
+          setCurrentVideoTime(t)
+        }
+        return
+      }
+      if (activeIdx >= evs.length - 1) return
 
       const activeEvent = evs[activeIdx]
       const nextEvent = evs[activeIdx + 1]
@@ -164,8 +184,11 @@ export function GameReviewScreen({ meta, events, onBack }: GameReviewScreenProps
       // After 2s of play past the active event, if next event is 10+ seconds away, jump.
       // Guard against re-triggering: only jump once per active event index.
       if (t >= activeEvent.timestamp + 2 && gap >= 10 && lastJumpedFromIdx.current !== activeIdx) {
-        lastJumpedFromIdx.current = activeIdx
-        jumpToEvent(nextEvent.timestamp)
+        const guardIdx = activeIdx
+        lastJumpedFromIdx.current = guardIdx
+        const target = Math.max(0, nextEvent.timestamp - 5)
+        ytRef.current?.seekTo(target)
+        setCurrentVideoTime(target)
       }
     }, 200)
     return () => clearInterval(id)
@@ -245,7 +268,7 @@ export function GameReviewScreen({ meta, events, onBack }: GameReviewScreenProps
             hasVideo ? 'review-clickable' : '',
             ev.event_number === activeEventNumber ? 'review-active' : '',
           ].filter(Boolean).join(' ')}
-          onClick={hasVideo ? () => seekToTime(ev.timestamp) : undefined}
+          onClick={hasVideo ? () => isPlaying ? jumpToEvent(ev.timestamp) : seekToTime(ev.timestamp) : undefined}
         >
           <span className="review-num">#{ev.event_number}</span>
           <span className="review-time">{formatTime(ev.timestamp)}</span>
