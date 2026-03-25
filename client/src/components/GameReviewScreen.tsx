@@ -249,7 +249,9 @@ export function GameReviewScreen({ meta, events, onBack }: GameReviewScreenProps
         >
           <span className="review-num">#{ev.event_number}</span>
           <span className="review-time">{formatTime(ev.timestamp)}</span>
-          <span className="review-type">{EVENT_TYPE_LABELS[ev.event_type]}</span>
+          {ev.event_type !== 'pass' && (
+            <span className="review-type">{EVENT_TYPE_LABELS[ev.event_type]}</span>
+          )}
           <span className="review-players">
             {ev.player && <span className="review-player">{ev.player}</span>}
             {ev.target_player && (
